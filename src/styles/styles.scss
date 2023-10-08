@@ -1,0 +1,27 @@
+// Write your overrides
+.dp__input{
+  padding: 12px 4px 12px 40px !important;
+}
+
+.dp__theme_dark ,.dp__theme_light  {
+   --dp-background-color:  rgb(var(--v-theme-surface));
+   --dp-text-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+   --dp-hover-color: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
+   --dp-hover-text-color: gba(var(--v-theme-on-surface),1);
+   --dp-hover-icon-color: var(--v-theme-on-surface);
+   --dp-primary-color: #40A579;
+   --dp-primary-text-color:#fff;
+   --dp-secondary-color: #8A8D93;
+   --dp-border-color:rgba(var(--v-border-color), var(--v-border-opacity));
+   --dp-menu-border-color: rgba(var(--v-border-color), var(--v-border-opacity));
+   --dp-border-color-hover:rgba(var(--v-border-color),var(--v-medium-emphasis-opacity) )
+   --dp-border-radius:10px  !important;
+   --dp-disabled-color:var(--v-disabled-opacity);
+   --dp-scroll-bar-background: var(--v-theme-on-surface);
+   --dp-scroll-bar-color: #484848;
+   --dp-success-color: #00701a;
+   --dp-success-color-disabled: #428f59;
+   --dp-icon-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+   --dp-danger-color: #e53935;
+   --dp-highlight-color: rgba(0, 92, 178, 0.2);
+}
