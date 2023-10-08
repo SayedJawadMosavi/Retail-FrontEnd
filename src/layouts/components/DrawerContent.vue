@@ -31,7 +31,7 @@ const upgradeBanner = computed(() => {
           class="font-weight-semibold leading-normal text-xl text-uppercase"
           style="color: #9155FD"
         >
-          Zargari MIS
+          Retail MIS
         </h1>
       </Transition>
     </RouterLink>

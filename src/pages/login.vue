@@ -14,21 +14,21 @@
           class=" mb-1 px-4 mt-2"
           style="color: #9155FD;font-size: 18px;"
         >
-         Login to Zargari managment system  
+         Login to Retail managment system  
         </h5>
       </VCardText>
 
       <VCardText class="">
         <VForm ref="formRef">
           <VRow>
-            <!-- email -->
+            <!-- name -->
             <VCol cols="12">
               <VTextField
-                v-model="form.email"
+                v-model="form.name"
                 dir="ltr"
-                label="Email Address"
-                type="email"
-                :rules="validationRules(v$.email, 'email')"
+                label="Name"
+                type="name"
+                :rules="validationRules(v$.name, 'name')"
                 @keydown.enter="submit"
               />
             </VCol>
@@ -98,11 +98,11 @@ import authV1Tree from '@/assets/images/pages/auth-v1-tree.png'
 import useAuth from '@/plugins/authServices'
 import useRules from '@/plugins/vuelidate/vuelidateRules'
 import { useVuelidate } from '@vuelidate/core'
-import { minLength, required,email } from '@vuelidate/validators'
+import { minLength, required } from '@vuelidate/validators'
 import { toast } from 'vue3-toastify'
 const formRef = ref()
 const form = ref({
-  email: '',
+  name: '',
   password: '',
   remember: false,
 })
@@ -116,7 +116,7 @@ const validationRules = useRules.validate
   const rules = {
 
     password: { required },
-    email: { required ,email},
+    name: { required ,name},
  
 
   
@@ -126,9 +126,9 @@ const v$ = useVuelidate(rules, form)
 const isPasswordVisible = ref(false)
 const loading = ref(false)
 const submit = async () => {
-  // login(email,password)
+  // login(name,password)
   loading.value = true
-  await login(form.value.email, form.value.password)
+  await login(form.value.name, form.value.password)
   loading.value = false
 }
 const validateForm = async () => {

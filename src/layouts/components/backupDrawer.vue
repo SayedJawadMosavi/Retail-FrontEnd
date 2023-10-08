@@ -26,7 +26,7 @@ const upgradeBanner = computed(() => {
 
       <Transition name="vertical-nav-app-title">
         <h1 class="font-weight-semibold leading-normal text-xl text-uppercase">
-         Zargari
+         Retail
         </h1>
       </Transition>
     </RouterLink>

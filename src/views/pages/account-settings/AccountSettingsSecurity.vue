@@ -144,48 +144,7 @@ const systems = [
     actions: ['customer_view', 'customer_create', 'customer_delete', 'customer_restore','customer_force_delete'],
     allowed_roles: ['admin'],
   },
-  {
-    system_id: 'employees',
-    system_name: 'employees',
-    actions: ['employee_view', 'employee_create', 'employee_delete', 'employee_restore','employee_force_delete'],
-    allowed_roles: ['admin'],
-  },
-  {
-    system_id: 'salaries',
-    system_name: 'salaries',
-    actions: ['salary_view', 'salary_create', 'salary_delete', 'salary_restore','salary_force_delete'],
-    allowed_roles: ['admin', 'finance_manager'],
-  },
-  {
-    system_id: 'vendor',
-    system_name: 'vendor',
-    actions: ['vendor_view', 'vendor_create', 'vendor_delete', 'vendor_restore','vendor_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','editor'],
-  },
-  {
-    system_id: 'packages',
-    system_name: 'Pakages',
-    actions: ['package_view', 'package_create', 'package_delete', 'package_restore','package_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','editor'],
-  },
-  {
-    system_id: 'purchases',
-    system_name: 'Purchases',
-    actions: ['purchase_view', 'purchase_create', 'purchase_delete', 'purchase_restore','purchase_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','editor'],
-  },
-  {
-    system_id: 'contracts',
-    system_name: 'Contracts',
-    actions: ['contract_view', 'contract_create', 'contract_delete', 'contract_restore','contract_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','editor'],
-  },
-  {
-    system_id: 'incomes',
-    system_name: 'Expense Income',
-    actions: ['income_view', 'income_create', 'income_delete', 'income_restore','income_force_delete'],
-    allowed_roles: ['admin', 'finance_manager'],
-  },
+  
  
 ]
 

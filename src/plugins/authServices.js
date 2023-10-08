@@ -13,9 +13,9 @@ import { toast } from 'vue3-toastify'
 
 
 // Define a function to log in a user
-async function login(email, password) {
+async function login(name, password) {
   try {
-    const response = await axios.post('login', { email, password })
+    const response = await axios.post('login', { name, password })
     const { token, user } = response.data
     toast.success('SuccessFully Logined.')
   
