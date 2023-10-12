@@ -8,14 +8,14 @@ const props = defineProps({
 const total_data = [
 
   {
-    title: 'Total Income ',
+    title: 'مجموع عواید ',
     stats: '12.5k',
     icon: 'mdi-currency-usd',
     color: 'success',
   },
 
   {
-    title: 'Total Expense ',
+    title: 'مجموع مصارف ',
     stats: '1.54k',
     icon: 'mdi-currency-usd',
     color: 'error',
@@ -30,7 +30,7 @@ const total_data = [
   <VCard>
     <VCardText>
       <h6 class="text-sm mb-12">
-        <span class="font-weight-regular"> All income and expense today</span>
+        <span class="font-weight-regular"> تمام معلومات امروز</span>
       </h6>
       <VRow>
         <VCol

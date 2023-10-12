@@ -2,7 +2,7 @@
 
 <template>
   <VCard style="direction: ltr;"
-    title=" Balance"
+  title="موجودی حساب"
     subtitle=""
     class="position-relative"
   >

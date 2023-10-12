@@ -48,7 +48,7 @@
           <VDivider class="my-2" />
 
           <!-- 👉 Profile -->
-         <VListItem
+          <VListItem
             style="cursor: pointer"
             to="account-settings"
           >
@@ -60,7 +60,7 @@
               />
             </template>
 
-            <VListItemTitle>Profile</VListItemTitle>
+            <VListItemTitle>پروفایل</VListItemTitle>
           </VListItem>
 
           <!-- Divider -->
@@ -76,7 +76,7 @@
               />
             </template>
 
-            <VListItemTitle @click="confirmRef.showDialog('logout')"> Logout </VListItemTitle>
+            <VListItemTitle @click="confirmRef.showDialog('logout')"> خروج </VListItemTitle>
           </VListItem>
         </VList>
       </VMenu>
@@ -100,13 +100,13 @@ const role = computed(() => {
   let val = ''
   switch (store.user?.role) {
     case 'admin':
-      val = 'Admin'
+      val = 'ادمین'
       break
     case 'finance_manager':
-      val = 'Financial Manager'
+      val = 'مدیر مالی'
       break
     case 'finance_manager':
-      val = 'Financial Manager'
+      val = 'مدیر مالی'
       break
     default:
       break

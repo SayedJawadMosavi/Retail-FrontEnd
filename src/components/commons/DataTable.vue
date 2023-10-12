@@ -1,3 +1,5 @@
+
+
 <template>
   <div class="pt-5">
     <VTabs
@@ -76,10 +78,7 @@
                 />
               </template>
 
-              <template
-                v-else
-                style="white-space: nowrap"
-              >
+              <template v-else     style="white-space: nowrap">
                 {{ header.key == 'created_at' ? formateDate(row[header.key]) : row[header.key] }}
               </template>
             </td>
@@ -96,47 +95,23 @@
             color="primary"
             indeterminate
           />
-          <p>Loading Data</p>
+          <p>بارگیری دیتا...</p>
         </div>
       </VTable>
       <VCardActions>
-        <div
-          v-if="extraSalaryInfo"
-          class="d-flex align-center"
-        >
-          <div class="pe-3 text-error me-5">
-            <span class="d-inline-block pe-1"> Total Paid</span> {{ extraSalaryInfo.total_paid }}
-          </div>
-          <div class="pe-3 me-5 text-warning">
-            <span class="d-inline-block pe-1"> Total Remainder </span>
-            {{ extraSalaryInfo.total_salary - extraSalaryInfo.total_paid }} 
-          </div>
-        </div>
         <div
           v-if="extraInfo"
           class="d-flex align-center"
         >
           <div class="pe-3 text-primary me-5">
-            {{ extraInfo.currency }}
-            <span class="d-inline-block pe-1"> Total Income </span> {{ extraInfo.total_income_afg }} Af
+            <span class="d-inline-block pe-1">مجموع آمد: </span> {{ extraInfo.total_income }}$
           </div>
           <div class="pe-3 text-error me-5">
-            <span class="d-inline-block pe-1"> Total Expense</span> {{ extraInfo.total_outgoing_afg }} Af
+            <span class="d-inline-block pe-1">مجموع رفت: </span> {{ extraInfo.total_outgoing }}$
           </div>
-          <div class="pe-3 me-5 text-warning">
-            <span class="d-inline-block pe-1"> Exist Account </span>
-            {{ extraInfo.total_income_afg - extraInfo.total_outgoing_afg }} Af
-          </div>
-          <div class="pe-3 text-primary me-5">
-            <span class="d-inline-block pe-1"> Total Income </span> {{ extraInfo.total_income_usd }}$
-          </div>
-          <div class="pe-3 text-error me-5">
-            <span class="d-inline-block pe-1"> Total Expense </span> {{ extraInfo.total_outgoing_usd }}$
-          </div>
-
-          <div class="pe-3 me-5 text-warning">
-            <span class="d-inline-block pe-1"> Exist Account </span>
-            {{ extraInfo.total_income_usd - extraInfo.total_outgoing_usd }} $
+          <div class="pe-3 me-5">
+            <span class="d-inline-block pe-1"> موجودی حساب: </span>
+            {{ extraInfo.total_income - extraInfo.total_outgoing }}$
           </div>
         </div>
         <VSpacer />
@@ -145,7 +120,7 @@
             v-model="itemPerPage"
             class="item-per-page"
             density="compact"
-            :items="[10, 20, 50, 100, 500]"
+            :items="[10, 20, 50, 100, 150]"
           />
           <VPagination
             v-model="page"
@@ -157,6 +132,8 @@
     </VCard>
   </div>
 </template>
+
+
 
 <script setup>
 import { computed, ref } from 'vue'
@@ -180,10 +157,6 @@ const props = defineProps({
     default: () => [],
   },
   extraInfo: {
-    type: Object,
-    default: () => {},
-  },
-  extraSalaryInfo: {
     type: Object,
     default: () => {},
   },
@@ -225,6 +198,7 @@ const selectAll = all => {
   if (all) {
     selectedItems.value = []
   } else {
+   
     selectedItems.value = JSON.parse(JSON.stringify(props.items))
   }
 }
@@ -283,3 +257,5 @@ defineExpose({
   }
 }
 </style>
+
+

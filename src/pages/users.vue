@@ -6,9 +6,9 @@
       :selected-items="datatableRefs?.selectedItems"
       :items="breadCrumbs"
       :search-options="search"
-      page="User List"
-      create-text="New User"
-      edit-text="Edit User"
+      page="لیست کاربران"
+      create-text="افزودن کاربر"
+      edit-text="ویرایش کاربر"
       page-icon="mdi-accounts"
       :show-create="scope(['user_create'])"
       :show-print="scope(['user_create'])"
@@ -89,7 +89,7 @@ const userEditRefs = ref()
 const apiLoading = ref(false)
 const datatableRefs = ref()
 
-const options = ref({ page: 1, itemPerPage: 20, tab: 'users' })
+const options = ref({ page: 1, itemPerPage: 20, tab: 'incomings' })
 const searchOption = ref({})
 const tableRecords = ref([])
 
@@ -153,13 +153,13 @@ const getRole = item => {
   let color = ''
   let name = ''
   if (item.role == 'admin') {
-    name = 'admin'
+    name = 'ادمین'
     color = 'primary'
   } else if (item.role == 'finance_manager') {
-    name = 'finance manager'
+    name = 'مدیر مالی'
     color = 'info'
   } else {
-    name = 'editor'
+    name = 'مدیر صرافی'
     color = 'warning'
   }
 

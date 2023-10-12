@@ -3,21 +3,20 @@
     <!-- 👉 Footer: left content -->
     <span
       class="d-flex align-center"
-      style="direction: ltr"
+      style="direction: rtl"
     >
-     
-     Developed By
+      &copy;
+      {{ new Date().getFullYear() }} 
+      توسعه توسط شرکت تکنالوژی
 
       <a
-        href="tel:+93745145758"
+        href="tel:+۹۳۷۴۸۸۷۵۴۰۳"
         class="ms-3 mb-1"
-      >Nethub
+      >نت هب
         <VIcon
-          style="direction: ltr"
+          style="direction: rtl"
           icon="mdi-phone"
         /></a>
-        &copy;
-      {{ new Date().getFullYear() }} 
     </span>
   </div>
 </template>

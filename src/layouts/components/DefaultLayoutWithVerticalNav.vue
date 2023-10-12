@@ -15,7 +15,7 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
     <template #navbar>
       <VSpacer />
 
-      <!-- <LangSwitcher /> -->
+      <LangSwitcher />
       <NavbarThemeSwitcher />
 
       <UserProfile />

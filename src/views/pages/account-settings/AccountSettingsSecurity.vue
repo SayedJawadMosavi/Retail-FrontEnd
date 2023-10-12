@@ -2,7 +2,7 @@
   <VCard style="pointer-events: none">
     <VCardText>
       <p class="text-base font-weight-medium mt-2">
-    Role :
+        نقش:
         <VChip
           small
           :color="getRole().color"
@@ -15,28 +15,28 @@
       <VRow>
         <VCol cols="12">
           <p class="text-base font-weight-medium mt-2">
-          permissions
+            صلاحیت ها:
           </p>
           <VTable class="text-no-wrap">
             <thead>
               <tr>
                 <th scope="col">
-                    Access To System
+                  دسترسی به سیستم
                 </th>
                 <th scope="col">
-                    View Information
+                  دیدن معلومات
                 </th>
                 <th scope="col">
-                Create and Edit Information
+                  ایجاد و ویرایش معلومات
                 </th>
                 <th scope="col">
-                Delete Information
+                  حذف معلومات
                 </th>
                 <th scope="col">
-                  Restore Information
+                  بازیابی معلومات
                 </th>
                 <th scope="col">
-                Delete For Ever
+                  حذف دایمی
                 </th>
               </tr>
             </thead>
@@ -103,9 +103,9 @@ const payload = ref({
 const apiLoading = ref(false)
 
 const roles = [
-  { id: 'admin', name: 'Admin' },
-  { id: 'finance_manager', name: 'Financial Manager' },
-  { id: 'bank_manager', name: 'Editor' },
+  { id: 'admin', name: 'ادمین' },
+  { id: 'finance_manager', name: 'مدیر مالی' },
+  { id: 'bank_manager', name: 'مدیر صرافی' },
 ]
 const validateForm = async () => {
   formRef.value.validate()
@@ -134,17 +134,22 @@ const resetForm = ref()
 const systems = [
   {
     system_id: 'users',
-    system_name: 'Users',
+    system_name: 'کاربران',
     actions: ['user_view', 'user_create', 'user_delete', 'user_restore','user_force_delete'],
     allowed_roles: ['admin'],
   },
   {
-    system_id: 'customers',
-    system_name: 'customers',
-    actions: ['customer_view', 'customer_create', 'customer_delete', 'customer_restore','customer_force_delete'],
+    system_id: 'employees',
+    system_name: 'کارمندان',
+    actions: ['employee_view', 'employee_create', 'employee_delete', 'employee_restore','car_force_delete'],
     allowed_roles: ['admin'],
   },
-  
+  {
+    system_id: 'salaries',
+    system_name: 'معاشات',
+    actions: ['salary_view', 'salary_create', 'salary_delete', 'salary_restore','car_force_delete'],
+    allowed_roles: ['admin', 'finance_manager'],
+  },
  
 ]
 
@@ -152,13 +157,13 @@ const getRole = () => {
   let color = ''
   let name = ''
   if (store.user.role == 'admin') {
-    name = 'Admin'
+    name = 'ادمین'
     color = 'primary'
   } else if (store.user.role == 'finance_manager') {
-    name = 'Financial Manager'
+    name = 'مدیر مالی'
     color = 'info'
   } else {
-    name = 'Editor'
+    name = 'مدیر صرافی'
     color = 'warning'
   }
 

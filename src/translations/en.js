@@ -1,4 +1,6 @@
 export default {
+  "title_header":"Retail Management System",
+  "user_menu_title":"User and Employee Management",
   "dashboard":"Dashboard",
   "users": "Users",
   "required": "{field} ضروری میباشد!",

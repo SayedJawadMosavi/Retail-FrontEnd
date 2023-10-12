@@ -31,7 +31,7 @@ const upgradeBanner = computed(() => {
           class="font-weight-semibold leading-normal text-xl text-uppercase"
           style="color: #9155FD"
         >
-          Retail MIS
+          {{$t('title_header')}}
         </h1>
       </Transition>
     </RouterLink>
@@ -41,11 +41,13 @@ const upgradeBanner = computed(() => {
   <ul>
     <VerticalNavLink
       :item="{
-        title: 'Dashboard',
+        title: $t('dashboard'),
         to: 'index',
         icon: { icon: 'mdi-home-outline' },
       }"
     />
+
+ 
 
 
 

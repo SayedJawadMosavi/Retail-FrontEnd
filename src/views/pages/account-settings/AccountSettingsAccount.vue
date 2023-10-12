@@ -2,7 +2,7 @@
 <template>
   <VRow>
     <VCol cols="12">
-      <VCard title="Account Details">
+      <VCard title="جزییات حساب کاربری">
         <VForm ref="formRef">
           <VDivider />
           <VCardText>
@@ -13,9 +13,9 @@
               >
                 <VTextField
                   v-model="payload.name"
-                  label="User Name"
+                  label="نام کاربر"
                   prepend-inner-icon="mdi-account"
-                  :rules="validationRules($v.name, 'User Name')"
+                  :rules="validationRules($v.name, 'نام کاربر')"
                 />
               </VCol>
             </VRow>
@@ -26,9 +26,9 @@
               >
                 <VTextField
                   v-model="payload.email"
-                  label="Email"
+                  label="ایمل"
                   append-inner-icon="mdi-email"
-                  :rules="validationRules($v.email, 'Email')"
+                  :rules="validationRules($v.email, 'ایمل')"
                   dir="ltr"
                 />
               </VCol>
@@ -41,7 +41,7 @@
               :loading="apiLoading"
               @click="validateForm"
             >
-              Save
+              ذخیره
             </VBtn>
 
             <VBtn
@@ -49,7 +49,7 @@
               variant="tonal"
               @click="closeDialog"
             >
-              Restore
+              بازنشانی
             </VBtn>
           </VCardText>
         </VForm>
@@ -57,7 +57,7 @@
     </VCol>
 
     <VCol cols="12">
-      <VCard title="Change Password">
+      <VCard title="تغیر دادن پسورد">
         <VForm ref="passwordRef">
           <VCardText>
             <!-- 👉 Current Password -->
@@ -69,10 +69,10 @@
                 <!-- 👉 current password -->
                 <VTextField
                   v-model.trim="passwordPayload.current_password"
-                  :rules="validationRules($v2.current_password, 'Current Password')"
+                  :rules="validationRules($v2.current_password, 'پسورد فعلی')"
                   :type="isCurrentPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isCurrentPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                  label="Current Password"
+                  label="پسورد فعلی"
                   dir="ltr"
                   @click:append-inner="isCurrentPasswordVisible = !isCurrentPasswordVisible"
                 />
@@ -87,10 +87,10 @@
                 <!-- 👉 new password -->
                 <VTextField
                   v-model.trim="passwordPayload.newPassword"
-                  :rules="validationRules($v2.newPassword, 'New Password')"
+                  :rules="validationRules($v2.newPassword, 'پسورد جدید')"
                   :type="isNewPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isNewPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                  label="New Password"
+                  label="پسورد جدید"
                   dir="ltr"
                   @click:append-inner="isNewPasswordVisible = !isNewPasswordVisible"
                 />
@@ -107,10 +107,10 @@
                 <VTextField
                   v-model="passwordPayload.confirm_password"
                   dir="ltr"
-                  :rules="validationRules($v2.confirm_password, 'Confirm New Password')"
+                  :rules="validationRules($v2.confirm_password, 'تایید پسورد جدید')"
                   :type="isConfirmPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isConfirmPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                  label="Confirm New Password"
+                  label="تایید پسورد جدید"
                   @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
                 />
               </VCol>
@@ -125,7 +125,7 @@
               :loading="apiLoading2"
               @click="submitPassword"
             >
-              Save
+              ذخیره
             </VBtn>
 
             <VBtn
@@ -134,7 +134,7 @@
               variant="tonal"
               @click="resetForm('password')"
             >
-              Restore
+              بازنشانی
             </VBtn>
           </VCardText>
         </VForm>
@@ -260,7 +260,6 @@ async function submit() {
     let formData = new FormData()
     formData.append('name', data.name)
     formData.append('profile', profileData.value)
-    console.log('profile',profileData.value)
     formData.append('email', data.email)
     const res = await axios.post('users/id?_method=PUT', formData)
     store.$updateUser({ usr: res.data })
@@ -277,7 +276,7 @@ async function submitPassword() {
   try {
     passwordRef.value.validate()
     if ($v2.value.$invalid) {
-      toast.error(' please fill the form correctly')
+      toast.error('لطفا فورم را دقیق خانه پری کنید!')
 
       return false
     }

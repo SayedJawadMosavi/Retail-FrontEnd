@@ -8,10 +8,10 @@ import { loadFonts } from '@/plugins/webfontloader'
 import router from '@/router'
 import '@/styles/styles.scss'
 import '@core/scss/index.scss'
+import VueDatePicker from '@vuepic/vue-datepicker'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
-
-import VueDatePicker from '@vuepic/vue-datepicker'
+import store from './store'
 
 import '@vuepic/vue-datepicker/dist/main.css'
 loadFonts()
@@ -26,6 +26,7 @@ const app = createApp(App)
 app.use(vuetify)
 app.use(i18n)
 app.use(router)
+app.use(store)
 app.use(createPinia())
 app.component('VueDatePicker', VueDatePicker)
 app.use(Vue3Toasity, {

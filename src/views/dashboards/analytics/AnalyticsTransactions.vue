@@ -7,19 +7,19 @@ const props = defineProps({
 })
 const statistics = [
   {
-    title: 'Users',
+    title: 'کاربران',
     stats: '12.5k',
     icon: 'mdi-account-outline',
     color: 'success',
   },
   {
-    title: 'Customers',
+    title: 'مشتریان',
     stats: '12.5k',
     icon: 'mdi-account-outline',
     color: 'info',
   },
   {
-    title: 'Employees',
+    title: 'کارمندان',
     stats: '12.5k',
     icon: 'mdi-account-outline',
     color: 'primary',
@@ -33,13 +33,13 @@ const statistics = [
 <template>
   <VCard>
     <VCardItem>
-      <VCardTitle>All</VCardTitle>
+      <VCardTitle>معاملات</VCardTitle>
     </VCardItem>
 
     <VCardText>
       <h6 class="text-sm mb-12">
         <!-- <span>48.5% افزایش 😎</span> -->
-        <span class="font-weight-regular"> All Information</span>
+        <span class="font-weight-regular"> تمام معاملات سیستم</span>
       </h6>
 
       <VRow>
@@ -47,7 +47,7 @@ const statistics = [
           v-for="(item, index) in statistics"
           :key="index"
           cols="6"
-          sm="2"
+          sm="3"
         >
           <div class="d-flex align-center">
             <div class="me-3">

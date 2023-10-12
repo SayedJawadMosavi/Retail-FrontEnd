@@ -22,16 +22,16 @@ axios.interceptors.response.use(
   response => {
     const status =response.status
     if (status == 201) {
-      toast.success('Information SuccessFully Added')
+      toast.success('معلومات موفقانه اضافه شد!')
     }
     else if (status == 202) {
-      toast.success('Information SuccessFully Updated!')
+      toast.success('معلومات موفقانه ویرایش شد!')
     }
     else if (status == 203) {
-      toast.success('Information SuccessFully Restored !')
+      toast.success('معلومات موفقانه بازیابی شد!')
     }
     else if (status == 206) {
-      toast.success(' Information SuccessFully Deleted!')
+      toast.success('معلومات موفقانه حذف شد!')
     }
 
 
@@ -45,18 +45,18 @@ axios.interceptors.response.use(
       router.push('/login') // replace '/login' with the actual login page route
     }
     if (status === 402) {
-      toast.error('You dont have permission')
+      toast.error('شما اجازه به این قسمت از سیستم را ندارید!')
 
     }
     if (error?.code == 'ERR_NETWORK') {
       router.push('/network-error') 
     } 
     if (status == 500) {
-      toast.error(error?.response?.data??' server error')
+      toast.error(error?.response?.data??'خطا رخ داد')
     }
     if (status == 422) {
       const message = error?.response?.data?.message
-      toast.error(message??' Data is incorrect')
+      toast.error(message??'دیتا اشتباه است')
     }
     
     return Promise.reject(error)

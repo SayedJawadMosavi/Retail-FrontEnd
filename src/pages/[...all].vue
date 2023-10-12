@@ -20,7 +20,7 @@
         to="/"
         class="mt-10"
       >
-          Back to Home Page
+         باز گشت به صفحه اصلی
       </VBtn>
     </div>
 

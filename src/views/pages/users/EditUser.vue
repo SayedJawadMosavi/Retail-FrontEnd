@@ -2,7 +2,7 @@
   <VExpandTransition>
     <div v-show="expand">
       <VCard
-        title="Edit User"
+        title="ویرایش کاربر"
         class="my-5"
       >
         <VForm ref="formRef">
@@ -14,9 +14,9 @@
               >
                 <VTextField
                   v-model.trim="payload.name"
-                  label="User Name"
+                  label="نام کاربر"
                   prepend-inner-icon="mdi-account"
-                  :rules="validationRules($v.name, 'User Name')"
+                  :rules="validationRules($v.name, 'نام کاربر')"
                   :autocomplete="false"
                 />
               </VCol>
@@ -29,9 +29,9 @@
                 <VTextField
                   v-model.trim="payload.email"
                   :autocomplete="false"
-                  label="Email"
+                  label="ایمل"
                   append-inner-icon="mdi-email"
-                  :rules="validationRules($v.email, 'Email')"
+                  :rules="validationRules($v.email, 'ایمل')"
                   dir="ltr"
                 />
               </VCol>
@@ -44,7 +44,7 @@
                 <VSelect
                   v-model="payload.role"
                   :items="roles"
-                  label="Role"
+                  label="نقش"
                   append-inner-icon="mdi-shield-sun-outline"
                   class="search-by"
                   item-title="name"
@@ -55,33 +55,33 @@
             <VRow>
               <VCol cols="12">
                 <p class="text-base font-weight-medium mt-2">
-              permissions
+                  صلاحیت ها:
                 </p>
                 <p class="font-weight-medium">
-                  Modify which user should have permissions
+                  تعیین کنید که کاربر کدام صلاحیت ها را داشته باشد.
                 </p>
 
                 <VTable class="text-no-wrap">
                   <thead>
                     <tr>
                       <th scope="col">
-                          Access To System
+                        دسترسی به سیستم
                       </th>
                       <th scope="col">
-                          View Information
+                        دیدن معلومات
                       </th>
                       <th scope="col">
-                     Create and Edit Information
+                        ایجاد و ویرایش معلومات
                       </th>
                       <th scope="col">
-                      Delete Information
+                        حذف معلومات
                       </th>
                       <th scope="col">
-                       Restore Information
+                        بازیابی معلومات
                       </th>
                       <th scope="col">
-                     Delete For Ever
-                     </th>
+                        حذف دائمی
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -137,7 +137,7 @@
               :loading="apiLoading"
               @click="validateForm"
             >
-             Edit
+              ویرایش
             </VBtn>
 
             <VBtn
@@ -145,7 +145,7 @@
               variant="tonal"
               @click="closeDialog"
             >
-              Close Form
+              بستن فورم
             </VBtn>
           </VCardText>
         </VForm>
@@ -185,9 +185,9 @@ const emit = defineEmits(['closeForm'])
 
 const apiLoading = ref(false)
 const roles = [
-  { id: 'admin', name: 'Admin' },
-  { id: 'finance_manager', name: 'Financial Manager' },
-  { id: 'bank_manager', name: 'Editor' },
+  { id: 'admin', name: 'ادمین' },
+  { id: 'finance_manager', name: 'مدیر مالی' },
+  { id: 'bank_manager', name: 'مدیر صرافی' },
 ]
 
 const payload = ref({
@@ -200,20 +200,25 @@ const payload = ref({
 const expand = ref(false)
 const formRef = ref()
 const systems = [
-{
+  {
     system_id: 'users',
-    system_name: 'Users',
-    actions: ['user_view', 'user_create', 'user_delete', 'user_restore','user_force_delete'],
+    system_name: 'کاربران',
+    actions: ['user_view', 'user_create', 'user_delete', 'user_restore', "user_force_delete"],
     allowed_roles: ['admin'],
   },
   {
-    system_id: 'customers',
-    system_name: 'customers',
-    actions: ['customer_view', 'customer_create', 'customer_delete', 'customer_restore','customer_force_delete'],
+    system_id: 'employees',
+    system_name: 'کارمندان',
+    actions: ['employee_view', 'employee_create', 'employee_delete', 'employee_restore',"employee_force_delete"],
     allowed_roles: ['admin'],
   },
- 
- 
+  {
+    system_id: 'salaries',
+    system_name: 'معاشات',
+    actions: ['salary_view', 'salary_create', 'salary_delete', 'salary_restore',"salary_force_delete"],
+    allowed_roles: ['admin', 'finance_manager'],
+  },
+
 ]
 
 // ==================================== START VALIDATION =======================================

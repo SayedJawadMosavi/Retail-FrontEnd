@@ -1,19 +1,20 @@
 
-
+import i18n from '@/plugins/i18n'
+const $t = i18n.global.t
 
 const tabs = [
-  { title: 'Users', icon: 'mdi-accounts', count: 0 ,key:'users'},
-  { title: 'Deleted', icon:'mdi-trash',count:0,key:'trash'},
+  { title: 'کاربران', icon: 'mdi-accounts', count: 0 ,key:'users'},
+  { title: 'حذف شده ها', icon:'mdi-trash',count:0,key:'trash'},
 ]
 const breadCrumbs=[
   {
-    title: 'Dashbaord',
+    title: 'داشبورد',
     disabled: false,
     href: '/',
   },
     
   {
-    title: 'User List',
+    title: 'لیست کاربران',
     disabled: true,
     href: 'users',
   },
@@ -23,40 +24,37 @@ const breadCrumbs=[
 
 const search=[
   {
-    name: 'Common',
+    name: 'عمومی',
     id: 'all',
   },
   {
-    name:'id',
+    name:'آی دی',
     id: 'id',
   },
-  {
-    name:'date based',
-    id: 'created_at',
-  },
+
 ]
 
 
 const headers= [
  
   {
-    title: '#ID',
+    title: $t('title_header'),
     key: 'id',
     width:'80px',
   },
  
  
   {
-    title: 'Email',
+    title: 'ایمل',
     key: 'email',
   },
   {
-    title:'Role',
+    title:'نقش',
     key: 'role',
   },
  
   {
-    title: 'Register Date',
+    title: 'تاریخ ثبت',
     key: 'created_at',
   },
     
