@@ -6,18 +6,18 @@
         <div>سیستم مدیریتی فروشات</div>
       </div>
     </div>
-    <div style="text-align: right">
+    <div style="text-align: left">
       <div style="display: flex;">
         <div style=" min-width: 90px;">
-          شروع تاریخ:
-        </div> <div style="direction: ltr;">
+          شروع تاریخ: &nbsp;&nbsp;&nbsp;
+        </div> <div >
           {{ startDate.toLocaleDateString() }}
         </div>
       </div>
       <div style="display: flex;">
         <div style=" min-width: 90px;">
-          ختم تاریخ:
-        </div> <span style="direction: ltr;">
+          ختم تاریخ:&nbsp;&nbsp;&nbsp;
+        </div> <span >
           {{ endDate.toLocaleDateString() }}
 
         </span>
@@ -54,6 +54,7 @@
           :key="index"
           style="text-align: right; border: 1px solid grey; padding: 0px 6px; white-space: nowrap"
         >
+        {{ header.key=='ids'? i+1: '' }}
         {{ header.key=='employee_name'? item?.employee?.first_name: '' }}
           {{ header.key=='position'? item?.employee?.job_title: '' }}
         {{ header.key=='created_at'?  moment(item.created_at, "YYYY-MM-DD").format("ll") : item[header.key] }}

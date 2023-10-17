@@ -37,10 +37,10 @@ const tabs = [
       title: 'دیدن جزییات',
       key: 'view_expense',
     },
-    {
-      title: 'پرنت',
-      key: 'print',
-    },
+    // {
+    //   title: 'پرنت',
+    //   key: 'print',
+    // },
     {
       title: 'اسم محصول',
       key: 'product_name',
@@ -67,7 +67,7 @@ const tabs = [
     },
     {
       title: 'مقدار',
-      key: 'qunatity',
+      key: 'quantity',
    
                
     },

@@ -63,7 +63,49 @@
             />
           </VBtn>
         </template>
-  
+  <template #paid_amount="{ item }">
+        <VChip
+          style="direction: ltr"
+          small
+          color="success"
+          class="font-weight-medium"
+        >
+          {{ item?.payments_sum_amount?.toFixed(2) ?? 0 }} $
+        </VChip>
+      </template>
+      <template #total_price="{ item }">
+        <VChip
+          style="direction: ltr"
+          small
+          color="primary"
+          class="font-weight-medium"
+        >
+          {{ item.total_price?.toFixed(2) ?? 0 }} $
+        </VChip>
+      </template>
+      <template #reminder="{ item }">
+        <VChip
+          style="direction: ltr"
+          small
+          color="error"
+          class="font-weight-medium"
+        >
+          {{ item.remainder?.toFixed(2) ?? 0 }} $
+        </VChip>
+      </template>
+
+      <template #extra_expense_sum_price="{ item }">
+        <VChip
+          style="direction: ltr"
+          small
+          color="warning"
+          class="font-weight-medium"
+        >
+          {{ item.extra_expense_sum_price?.toFixed(2) ?? 0 }} $
+        </VChip>
+      </template>
+
+
         <template #view_expense="{ item }">
           <VBtn
             variant="text"

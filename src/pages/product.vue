@@ -56,6 +56,16 @@
           {{item.category.name}}
           </div>
         </template>
+        <template #quantity="{ item }">
+          <VChip
+          style="direction: ltr"
+          small
+          :color="item.quantity>0 ?'success' :'error'"
+          class="font-weight-medium"
+        >
+          {{ item.quantity }} 
+        </VChip>
+        </template>
         <template #status="{ item }">
           <VSwitch
             :model-value="item.status"
@@ -86,8 +96,8 @@
             variant="text"
             icon
             color="success"
-            :loading="expenseLoading && selectedId == item.id"
-            @click="viewExpense(item)"
+            :loading="detailLoading && selectedId == item.id"
+            @click="viewDetails(item)"
           >
             <VIcon
               size="30"
@@ -129,7 +139,7 @@
   const expand = ref(false)
   const searchOption = ref({})
   const printLoading = ref(false)
-  const expenseLoading = ref(false)
+  const detailLoading = ref(false)
   const printData = ref([])
   const printRefs = ref()
   const total = ref(0)
@@ -150,11 +160,11 @@
     }
   }
   
-  const viewExpense = async item => {
-    expenseLoading.value = true
+  const viewDetails = async item => {
+    detailLoading.value = true
     selectedId.value = item.id
-    await router.replace('view-purchase-expense/' + item.id)
-    expenseLoading.value = false
+    await router.replace('view-product-detail/' + item.id)
+    detailLoading.value = false
   }
   const sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))

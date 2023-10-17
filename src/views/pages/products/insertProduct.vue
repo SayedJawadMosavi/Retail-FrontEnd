@@ -146,10 +146,10 @@ import { toast } from 'vue3-toastify'
   
   const expand = ref(false)
 const loadingCategory = ref(false)
+const Categories = ref([])
   
   const apiLoading = ref(false)
   const isSubmited = ref(false)
-  const Categories = ref([])
   const formRef = ref()
   const formData = ref({
     product_name: '',

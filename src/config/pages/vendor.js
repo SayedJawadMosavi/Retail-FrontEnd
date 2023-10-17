@@ -70,7 +70,25 @@ const tabs = [
       key: 'email',
     },
     
-
+    {
+      title: 'مجموع مصارف اضای ',
+      key: 'extra_expense_sum_price',
+    },
+ 
+    {
+      title: 'مجموع پول',
+      key: 'total_price',
+    },
+   
+    {
+      title: 'مجموع پرداخت شده',
+      key: 'paid_amount',
+    },
+  
+    {
+      title: 'باقی مانده',
+      key: 'reminder',
+    },
  
     
     // {
