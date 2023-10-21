@@ -3,7 +3,7 @@ const $t = i18n.global.t
 const vendor_menu= [
 
   {
-    title: 'معامله داران',
+    title: 'ثبت ولست معامله داران ',
     to: 'vendor',
     icon: { icon: 'mdi-people' },
   },

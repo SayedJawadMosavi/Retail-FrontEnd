@@ -3,12 +3,12 @@ const $t = i18n.global.t
 const product_menu= [
 
   {
-    title: ' محصولات',
+    title: '  ثبت ولست محصولات',
     to: 'product',
     icon: { icon: 'mdi-shopping-outline' },
   },
   {
-    title: 'لیست رفت و آمد',
+    title: 'ثبت ولست رفت و آمد',
     to: 'incomings',
     icon: { icon: 'mdi-gesture-tap' },
   },

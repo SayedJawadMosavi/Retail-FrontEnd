@@ -1,5 +1,5 @@
 const tabs = [
-    { title: 'کتگوری ها', icon: 'mdi-account-group-outline', count: 0 , key: 'products'},
+    { title: 'گدام ها', icon: 'mdi-account-group-outline', count: 0 , key: 'stocks'},
     { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
   ]
   
@@ -23,9 +23,9 @@ const tabs = [
     },
       
     {
-      title: 'کتگوری',
+      title: 'گدام محصولات',
       disabled: true,
-      href: 'product-category',
+      href: '',
     },
   ]
   const headers= [ 
@@ -33,14 +33,14 @@ const tabs = [
       title: 'شماره',
       key: 'id',
     },
-    // {
-    //   title: 'دیدن جزییات',
-    //   key: 'view_expense',
-    // },
-  
   
     {
-      title: 'اسم کتگوری',
+      title: 'دیدن جزییات',
+      key: 'view_detail',
+    },
+  
+    {
+      title: 'اسم گدام',
       key: 'name',
                
     },

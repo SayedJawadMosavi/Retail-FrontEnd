@@ -1,12 +1,12 @@
 const employee_menu =[ 
     // { heading: 'مدیریت کارمندان' },
     {
-      title: 'لیست کارمندان',
+      title: 'ثبت ولست کارمندان',
       to: 'employees',
       icon: { icon: 'mdi-account-group-outline' },
     },
     {
-      title: 'لیست معاشات',
+      title: 'پرداخت ولست معاشات',
       to: 'salaries',
       icon: { icon: 'mdi-cash-multiple' },
     },

@@ -1,7 +1,7 @@
 const purchase_menu= [
   
     {
-      title: 'خرید محصولات',
+      title: 'خرید ولست محصولات',
       to: 'purchase',
     icon: { icon: 'mdi-gesture-tap' }
  

@@ -6,51 +6,31 @@
           <VCardText>
             <p class="text-base font-weight-medium mt-2">معلومات</p>
             <VRow class="mb-3">
-              <VCol
+                <VCol
                 cols="12"
                 md="6"
               >
-                <VTextField
-                  v-model="formData.organization_name"
-                  label="اسم کمپنی "
+                <v-autocomplete
+                  v-model="formData.product"
+                  label="محصول"
                   prepend-inner-icon="mdi-account"
-                  :rules="validationRules(v$.organization_name, 'اسم کمپنی')"
-                />
+                  :items="products"
+                  :item-title="ca => `${ca.product_name}`"
+                  return-object
+                  :loading="loadingProduct"
+                  :rules="validationRules(v$.product, 'محصول')"
+                ></v-autocomplete>
               </VCol>
               <VCol
                 cols="12"
                 md="6"
               >
                 <VTextField
-                  v-model="formData.name"
-                  label="شخص ارتباطی "
-                  prepend-inner-icon="mdi-account"
-                  :rules="validationRules(v$.name, 'شخص ارتباطی')"
-                />
-              </VCol>
-
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="formData.email"
-                  label=" ایمیل آدرس"
-                  prepend-inner-icon="mdi-email"
-                />
-              </VCol>
-
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="formData.phone_number"
-                  dir="ltr"
-                  label="شماره تماس"
-                  prepend-inner-icon="mdi-phone"
-                  :rules="validationRules(v$.phone_number, 'شماره تماس')"
-                  @input="convertToEnglishNumbers('phone_number')"
+                :model-value="formData?.product?.quantity"
+                  dir="rtl"
+                  prepend-inner-icon="mdi-counter"
+                readonly
+                  @input="convertToEnglishNumbers('quantity_exist')"
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
@@ -58,13 +38,35 @@
                 cols="12"
                 md="6"
               >
-                <VTextField
-                  v-model="formData.address"
-                  label="آدرس"
-                  prepend-inner-icon="mdi-map-marker"
-                  :rules="validationRules(v$.address, 'آدرس')"
-                />
+                <v-autocomplete
+                  v-model="formData.stock"
+                  label="گدام"
+                  prepend-inner-icon="mdi-account"
+                  :items="stocks"
+                  :item-title="ca => `${ca.name}`"
+                  return-object
+                  :loading="loadingStock"
+                  :rules="validationRules(v$.stock, 'گدام')"
+                ></v-autocomplete>
               </VCol>
+              
+
+             
+              <VCol
+                  cols="12"
+                  md="6"
+                >
+                  <VTextField
+                    v-model="formData.amount"
+                    dir="rtl"
+                    label="مقدار"
+                    prepend-inner-icon="mdi-code-equal"
+                    :rules="validationRules(v$.amount, 'مقدار')"
+                    @input="convertToEnglishNumbers('amount')"
+                    @keypress="useRules.preventNonNumeric"
+                  />
+                </VCol>
+              
               <VCol
                 cols="12"
                 md="12"
@@ -115,7 +117,7 @@
 import { axios } from '@/plugins/axios-plugin'
 import useRules from '@/plugins/vuelidate/vuelidateRules'
 import { useVuelidate } from '@vuelidate/core'
-import { minLength, required } from '@vuelidate/validators'
+import { required } from '@vuelidate/validators'
 import { ref } from 'vue'
 import { toast } from 'vue3-toastify'
 
@@ -128,17 +130,20 @@ const props = defineProps({
 // =======================> starts states <===============================
 
 const expand = ref(false)
+const loadingStock = ref(false)
+const stocks = ref([])
+const loadingProduct = ref(false)
+const products = ref([])
 
 const apiLoading = ref(false)
 const isSubmited = ref(false)
-
 const formRef = ref()
 const formData = ref({
-  name: '',
-  organization_name: '',
-  phone_number: '',
-  email: '',
-  address: '',
+  product: '',
+
+  quantity_exist: '',
+  stock: '',
+  amount: '',
   description: '',
 })
 
@@ -146,10 +151,11 @@ const formData = ref({
 const validationRules = useRules.validate
 
 const rules = {
-  name: { required, minLength: minLength(3) },
-  organization_name: { required, minLength: minLength(3) },
-  phone_number: { required, minLength: minLength(10) },
-  address: { required },
+  product: { required },
+  amount: { required },
+
+  stock: { required },
+
 }
 
 const v$ = useVuelidate(rules, formData)
@@ -161,14 +167,34 @@ const closeDialog = () => {
   v$.value.$reset()
   resetForm()
 }
+async function getStocks() {
+  try {
+    loadingStock.value = true
+    const { data } = await axios.get('stock-list')
 
+    stocks.value = data
+  } catch (error) {
+    console.error('error', error)
+  }
+  loadingStock.value = false
+}
+async function getProducts() {
+  try {
+    loadingStock.value = true
+    const { data } = await axios.get('product-list')
+
+    products.value = data
+  } catch (error) {
+    console.error('error', error)
+  }
+  loadingStock.value = false
+}
 async function submit() {
   try {
     apiLoading.value = true
-    if (formData.value.id) await axios.put('vendor/id', formData.value)
-    else await axios.post('vendor', formData.value)
+    if (formData.value.id) await axios.put('product_stocks_transfer/id', formData.value)
+    else await axios.post('product_stocks_transfer', formData.value)
 
-   
     isSubmited.value = false
     expand.value = false
     resetForm()
@@ -181,18 +207,22 @@ async function submit() {
 }
 
 function toggleDialog(item = null) {
+  getStocks()
+  getProducts()
   if (item) {
     formData.value = JSON.parse(JSON.stringify(item))
+    formData.value.amount=item.quantity
+  
   }
   expand.value = true
 }
 
 const resetForm = () => {
   formData.value = {
-    name: null,
-    organization_name: null,
-    email: null,
-    address: null,
+    product: null,
+    stock: null,
+    amount: null,
+
     description: null,
   }
   v$.value.$reset()

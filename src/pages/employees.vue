@@ -371,7 +371,7 @@ const print = async () => {
     printData.value = data
     await sleep(1)
     const printable = window.open('', '_blank')
-    printable.document.write('<html><head><style>@page { size: A4 landscape }</style>')
+    printable.document.write('<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>')
     printable.document.write('</head><body>')
     printable.document.write(printRefs.value.$el.innerHTML)
     printable.document.write('</body></html>')

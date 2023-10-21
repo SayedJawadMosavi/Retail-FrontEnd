@@ -144,7 +144,7 @@ const loadingCategory = ref(false)
     getCategory();
     if (item) {
       formData.value = JSON.parse(JSON.stringify(item))
-      formData.value.category_id = item.category.name
+     
     }
     expand.value = true
   }

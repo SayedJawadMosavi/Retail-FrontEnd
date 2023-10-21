@@ -183,7 +183,7 @@
             >
               <VTextarea
                 v-model="payload.description"
-                label=" Description"
+                label=" توضیحات"
                 prepend-inner-icon="mdi-info"
               />
             </VCol>

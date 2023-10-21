@@ -10,61 +10,64 @@
                 cols="12"
                 md="6"
               >
-                <VTextField
-                  v-model="formData.organization_name"
-                  label="اسم کمپنی "
+                <v-autocomplete
+                  v-model="formData.sender"
+                  @update:modelValue="Calculate"
+                  label="ازگدام"
                   prepend-inner-icon="mdi-account"
-                  :rules="validationRules(v$.organization_name, 'اسم کمپنی')"
-                />
-              </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="formData.name"
-                  label="شخص ارتباطی "
-                  prepend-inner-icon="mdi-account"
-                  :rules="validationRules(v$.name, 'شخص ارتباطی')"
-                />
+                  :items="stocks"
+                  :item-title="ca => `${ca.name}`"
+                  return-object
+                  :loading="loadingStock"
+                  :rules="validationRules(v$.sender, 'ازگدام')"
+                ></v-autocomplete>
               </VCol>
 
               <VCol
                 cols="12"
                 md="6"
               >
-                <VTextField
-                  v-model="formData.email"
-                  label=" ایمیل آدرس"
-                  prepend-inner-icon="mdi-email"
-                />
+                <v-autocomplete
+                  v-model="formData.product"
+                  label="محصول"
+                  prepend-inner-icon="mdi-account"
+                  :items="products"
+                  :item-title="ca => `${ca.product.product_name}  ${ca.quantity}`"
+                  return-object
+                  :loading="loadingProduct"
+                  :rules="validationRules(v$.product, 'محصول')"
+                ></v-autocomplete>
               </VCol>
-
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <v-autocomplete
+                  v-model="formData.receiver"
+                  label="به گدام"
+                  prepend-inner-icon="mdi-account"
+                  :items="Tostocks"
+                  :item-title="ca => `${ca.name}`"
+                  return-object
+                  :loading="loadingStock2"
+                  :rules="validationRules(v$.receiver, 'به گدام')"
+                ></v-autocomplete>
+              </VCol>
               <VCol
                 cols="12"
                 md="6"
               >
                 <VTextField
-                  v-model="formData.phone_number"
-                  dir="ltr"
-                  label="شماره تماس"
-                  prepend-inner-icon="mdi-phone"
-                  :rules="validationRules(v$.phone_number, 'شماره تماس')"
-                  @input="convertToEnglishNumbers('phone_number')"
+                  v-model="formData.amount"
+                  dir="rtl"
+                  label="مقدار"
+                  prepend-inner-icon="mdi-code-equal"
+                  :rules="validationRules(v$.amount, 'مقدار')"
+                  @input="convertToEnglishNumbers('amount')"
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="formData.address"
-                  label="آدرس"
-                  prepend-inner-icon="mdi-map-marker"
-                  :rules="validationRules(v$.address, 'آدرس')"
-                />
-              </VCol>
+
               <VCol
                 cols="12"
                 md="12"
@@ -115,7 +118,7 @@
 import { axios } from '@/plugins/axios-plugin'
 import useRules from '@/plugins/vuelidate/vuelidateRules'
 import { useVuelidate } from '@vuelidate/core'
-import { minLength, required } from '@vuelidate/validators'
+import { required } from '@vuelidate/validators'
 import { ref } from 'vue'
 import { toast } from 'vue3-toastify'
 
@@ -128,17 +131,23 @@ const props = defineProps({
 // =======================> starts states <===============================
 
 const expand = ref(false)
+const loadingStock = ref(false)
+const loadingStock2 = ref(false)
+const stocks = ref([])
+const Tostocks = ref([])
+const loadingProduct = ref(false)
+const products = ref([])
 
 const apiLoading = ref(false)
 const isSubmited = ref(false)
-
 const formRef = ref()
 const formData = ref({
-  name: '',
-  organization_name: '',
-  phone_number: '',
-  email: '',
-  address: '',
+  product: '',
+
+  quantity_exist: '',
+  sender: '',
+  receiver: '',
+  amount: '',
   description: '',
 })
 
@@ -146,10 +155,11 @@ const formData = ref({
 const validationRules = useRules.validate
 
 const rules = {
-  name: { required, minLength: minLength(3) },
-  organization_name: { required, minLength: minLength(3) },
-  phone_number: { required, minLength: minLength(10) },
-  address: { required },
+  product: { required },
+  amount: { required },
+
+  sender: { required },
+  receiver: { required },
 }
 
 const v$ = useVuelidate(rules, formData)
@@ -161,14 +171,42 @@ const closeDialog = () => {
   v$.value.$reset()
   resetForm()
 }
+async function getStocks() {
+  try {
+    loadingStock.value = true
+    const { data } = await axios.get('stock-list')
 
+    stocks.value = data
+  } catch (error) {
+    console.error('error', error)
+  }
+  loadingStock.value = false
+}
+
+const Calculate = value => {
+  try {
+    loadingStock.value = true
+
+    axios.get('product-list/' + value.id).then(function (response) {
+      products.value = response.data
+
+      loadingStock.value = false
+    })
+    axios.get('stock-list/' + value.id).then(function (response) {
+      Tostocks.value = response.data
+
+      loadingStock2.value = false
+    })
+  } catch (error) {
+    console.error('error', error)
+  }
+}
 async function submit() {
   try {
     apiLoading.value = true
-    if (formData.value.id) await axios.put('vendor/id', formData.value)
-    else await axios.post('vendor', formData.value)
+    if (formData.value.id) await axios.put('stock_to_stocks_transfer/id', formData.value)
+    else await axios.post('stock_to_stocks_transfer', formData.value)
 
-   
     isSubmited.value = false
     expand.value = false
     resetForm()
@@ -181,18 +219,27 @@ async function submit() {
 }
 
 function toggleDialog(item = null) {
+  getStocks()
+
   if (item) {
     formData.value = JSON.parse(JSON.stringify(item))
+    formData.value.amount = item.quantity
+    console.log('fdbdfbdf',item.product_stock.product.product_name)
+    // axios.get('product-list').then(function (response) {
+    //   products.value = response.data
+    // })
+    formData.value.product = item.product_stock.product.product_name
   }
   expand.value = true
 }
 
 const resetForm = () => {
   formData.value = {
-    name: null,
-    organization_name: null,
-    email: null,
-    address: null,
+    product: null,
+    sender: null,
+    receiver: null,
+    amount: null,
+
     description: null,
   }
   v$.value.$reset()

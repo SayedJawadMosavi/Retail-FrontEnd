@@ -55,6 +55,7 @@
           style="text-align: right; border: 1px solid grey; padding: 0px 6px; white-space: nowrap"
         >
         {{ header.key=='ids'? i+1: '' }}
+        {{ header.key=='products_name'? item?.product?.product_name: '' }}
         {{ header.key=='employee_name'? item?.employee?.first_name: '' }}
           {{ header.key=='position'? item?.employee?.job_title: '' }}
         {{ header.key=='created_at'?  moment(item.created_at, "YYYY-MM-DD").format("ll") : item[header.key] }}

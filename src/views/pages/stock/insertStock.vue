@@ -11,10 +11,10 @@
                   md="6"
                 >
                   <VTextField
-                    v-model="formData.product_name"
-                    label="اسم محصول "
+                    v-model="formData.name"
+                    label="اسم گدام "
                     prepend-inner-icon="mdi-shopping-outline"
-                    :rules="validationRules(v$.product_name, 'اسم محصول')"
+                    :rules="validationRules(v$.name, 'اسم گدام')"
                   />
                 </VCol>
   
@@ -23,75 +23,14 @@
                   md="6"
                 >
                   <VTextField
-                    v-model="formData.company_name"
-                    label="اسم کمپنی "
+                    v-model="formData.address"
+                    label="آدرس "
                     prepend-inner-icon="mdi-account"
-                    :rules="validationRules(v$.company_name, 'اسم کمپنی')"
+                    :rules="validationRules(v$.address, 'آدرس')"
                   />
                 </VCol>
                
-                <VCol
-                cols="12"
-                md="6"
-              >
-                <v-autocomplete
-                  v-model="formData.category_id"
-                  label="کتگوری"
-             
-                  prepend-inner-icon="mdi-account"
-                  :items="Categories"
-                  :item-title="ca => `${ca.name}`"
-                  return-object
-                  :loading="loadingCategory"
-                  :rules="validationRules(v$.category_id, 'کتگوری')"
-                ></v-autocomplete>
-              </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.code"
-                    dir="ltr"
-                    label="کود"
-                    prepend-inner-icon="mdi-code-equal"
-                    :rules="validationRules(v$.code, 'کود')"
-                    @input="convertToEnglishNumbers('code')"
-                    @keypress="useRules.preventNonNumeric"
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.color"
-                    label="رنگ"
-                    prepend-inner-icon="mdi-eyedropper-variant"
-                 
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.size"
-                    label="سایز"
-                    prepend-inner-icon="mdi-size-s"
-                 
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="12"
-                >
-                  <VTextarea
-                    v-model="formData.description"
-                    label=" توضیحات"
-                    prepend-inner-icon="mdi-info"
-                  />
-                </VCol>
+                
               </VRow>
               <VRow />
             </VCardText>
@@ -146,29 +85,22 @@ import { toast } from 'vue3-toastify'
   
   const expand = ref(false)
 const loadingCategory = ref(false)
-const Categories = ref([])
   
   const apiLoading = ref(false)
   const isSubmited = ref(false)
+  const stocks = ref([])
   const formRef = ref()
   const formData = ref({
-    product_name: '',
-    company_name: '',
-    code: '',
-    category_id: '',
-    color: '',
-    size: '',
-    description: '',
+    name: '',
+    address: '',
   })
   
   ///   |=============================> start validation <==============================|
   const validationRules = useRules.validate
   
   const rules = {
-    product_name: { required, minLength: minLength(3) },
-    company_name: { required, minLength: minLength(3) },
-    category_id: { required},
-    code: { required },
+    name: { required, minLength: minLength(1) },
+    address: { required, minLength: minLength(3) },
   }
   
   const v$ = useVuelidate(rules, formData)
@@ -180,28 +112,18 @@ const Categories = ref([])
     v$.value.$reset()
     resetForm()
   }
-  async function getCategory() {
-  try {
-    loadingCategory.value = true
-    const { data } = await axios.get('category-list')
 
-    Categories.value = data
-  } catch (error) {
-    console.error('error', error)
-  }
-  loadingCategory.value = false
-}
   async function submit() {
     try {
       apiLoading.value = true
-      if (formData.value.id) await axios.put('product/id', formData.value)
-      else await axios.post('product', formData.value)
+      if (formData.value.id) await axios.put('stock/id', formData.value)
+      else await axios.post('stock', formData.value)
   
-     
       isSubmited.value = false
       expand.value = false
-      resetForm()
+  
       props.fetchRecord()
+      resetForm()
     } catch (error) {
       console.error('error', error)
       toast.error(' مشکل در سرور وجود دارد !')
@@ -210,22 +132,18 @@ const Categories = ref([])
   }
   
   function toggleDialog(item = null) {
-    getCategory();
+
     if (item) {
       formData.value = JSON.parse(JSON.stringify(item))
-      formData.value.category_id = item.category.name
+     
     }
     expand.value = true
   }
   
   const resetForm = () => {
     formData.value = {
-        product_name: null,
-      company_name: null,
-      category_id: null,
-      size: null,
-      color: null,
-      description: null,
+        name: null,
+        address: null,
     }
     v$.value.$reset()
     formRef.value.resetValidation()
