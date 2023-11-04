@@ -17,7 +17,9 @@
         <VForm ref="formRef">
           <VRow>
             <VCol cols="12">
-              <p class="mb-0">شروع تاریخ</p>
+              <p class="mb-0">
+                شروع تاریخ
+              </p>
 
               <span style="direction: ltr">
                 <VueDatePicker
@@ -33,7 +35,9 @@
             </VCol>
 
             <VCol cols="12">
-              <p class="mb-0">ختم تاریخ</p>
+              <p class="mb-0">
+                ختم تاریخ
+              </p>
               <span style="direction: ltr">
                 <VueDatePicker
                   v-model="formdata.end_date"
@@ -63,7 +67,7 @@
           variant="tonal"
           @click="getReport"
         >
-         تهیه راپور
+          تهیه راپور
           <VIcon
             icon="mdi-export"
             end
@@ -110,14 +114,30 @@
       <VTable class="text-no-wrap">
         <thead>
           <tr>
-            <th scope="col">شماره</th>
-            <th scope="col">قیمت به ین</th>
-            <th scope="col">مقدار</th>
-            <th scope="col">نرخ تبادله</th>
-            <th scope="col">مصرف</th>
-            <th scope="col">مجموع</th>
-            <th scope="col">تاریخ</th>
-            <th scope="col">توضیحات</th>
+            <th scope="col">
+              شماره
+            </th>
+            <th scope="col">
+              قیمت به ین
+            </th>
+            <th scope="col">
+              مقدار
+            </th>
+            <th scope="col">
+              نرخ تبادله
+            </th>
+            <th scope="col">
+              مصرف
+            </th>
+            <th scope="col">
+              مجموع
+            </th>
+            <th scope="col">
+              تاریخ
+            </th>
+            <th scope="col">
+              توضیحات
+            </th>
           </tr>
         </thead>
 
@@ -252,6 +272,7 @@ const openDialogs = type => {
 const getReport = async () => {
   if (formdata.value.start_date == null || formdata.value.end_date == null) {
     toast.error('please fill the form correctly')
+    
     return false
   }
   try {
@@ -290,7 +311,7 @@ const forceDelete = async (item, type) => {
 }
 
 onMounted(() => {
-console.log('fdf',detail_id.value)
+  console.log('fdf',detail_id.value)
 })
 </script>
 

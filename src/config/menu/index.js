@@ -1,7 +1,11 @@
 
+import customer_menu from "./customer_menu"
 import employee_menu from "./employee_menu"
+import expense_income_menu from "./expense_income_menu"
 import product_menu from "./product_menu"
 import purchase_menu from "./purchase_menu"
+import report_menu from "./report_menu"
+import sell_menu from "./sell_menu"
 import stock__product_transfer_menu from "./stock__product__transfer_menu"
 import stock_product_menu from "./stock_product_menu"
 import stock_to_stock_transfer_menu from "./stock_to_stock_transfer_menu"
@@ -20,7 +24,11 @@ const menus = [
   ...stock__product_transfer_menu,
   ...stock_product_menu,
   ...stock_to_stock_transfer_menu,
+  ...customer_menu,
+  ...sell_menu,
+  ...expense_income_menu,
   ...employee_menu,
+  ...report_menu,
 
 ]
 export default menus

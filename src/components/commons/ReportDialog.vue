@@ -122,8 +122,54 @@ const sleep = ms => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+const Employee_header = [
+  {
+    title: 'شماره',
+    key: 'id',
+  },
+  {
+    title: 'اسم',
+    key: 'first_name',
+  },
+  {
+    title: 'تخلص',
+    key: 'last_name',
+  },
+  {
+    title: 'ایمیل',
+    key: 'email',
+  },
+  {
+    title: 'عنوان وظیفه',
+    key: 'job_title',
+    width: '100px',
+  },
 
+  {
+    title: 'شماره تلفن',
+    key: 'phone_number',
+  },
+  {
+    title: 'آدرس فعلی',
+    key: 'current_address',
+    width: '180px',
+  },
+  {
+    title: 'آدرس دائمی',
+    key: 'permenent_address',
+    width: '180px',
+  },
+  {
+    title: 'تاریخ شروع ',
+    key: 'created_at',
+    width: '130px',
+  },
 
+  {
+    title: 'معاش',
+    key: 'salary',
+  },
+]
 
 const incoming_header= [
   {
@@ -154,43 +200,96 @@ const salary_header = [
     width: '80px',
   },
   {
-      title: 'نام کارمند',
-      key: 'employee_name',
-    },
-    {
-      title:'موقف',
-      key: 'position',
-    },
-    {
-      title:'مقدار معاش',
-      key: 'salary',
-    },
-    {
-      title:'قابل پرداختی',
-      key: 'payable_amount',
-    },
-    {
-      title:'مقدار پرداختی',
-      key: 'paid',
-    },
-    {
-      title:'تعداد حاضر',
-      key: 'present',
-    },
-    {
-      title:'تعداد غیرحاضر',
-      key: 'absent',
-    },
-    {
-      title:'باقیمانده معاش',
-      key: 'remainder',
-    },
-    {
-      title: 'تاریخ پرداخت',
-      key: 'created_at',
-    },
+    title: 'نام کارمند',
+    key: 'employee_name',
+  },
+  {
+    title:'موقف',
+    key: 'position',
+  },
+  {
+    title:'مقدار معاش',
+    key: 'salary',
+  },
+  {
+    title:'قابل پرداختی',
+    key: 'payable_amount',
+  },
+  {
+    title:'مقدار پرداختی',
+    key: 'paid',
+  },
+  {
+    title:'تعداد حاضر',
+    key: 'present',
+  },
+  {
+    title:'تعداد غیرحاضر',
+    key: 'absent',
+  },
+  {
+    title:'باقیمانده معاش',
+    key: 'remainder',
+  },
+  {
+    title: 'تاریخ پرداخت',
+    key: 'created_at',
+  },
 ]
+const customer_header = [
+  {
+    title: 'شماره',
+    key: 'id',
+  },
+  
+  // {
+  //   title: 'View More',
+  //   key: 'profile',
+  // },
+   
+  {
+    title: 'اسم',
+    key: 'first_name',
+                 
+  },
 
+  {
+    title: 'تخلص',
+    key: 'last_name',
+     
+                 
+  },
+  {
+    title: 'شماره تماس',
+    key: 'phone_number',
+  },
+  {
+    title: 'ایمیل',
+    key: 'email',
+  },
+  {
+    title: 'آدرس',
+    key: 'address',
+  },
+  {
+    title: 'مجموع پول',
+    key: 'total_price',
+  },
+   
+  {
+    title: 'مجموع پرداخت شده',
+    key: 'payments_sum_amount',
+  },
+  
+  {
+    title: 'باقی مانده',
+    key: 'remainder',
+  },
+  {
+    title: 'توضیحات',
+    key: 'description',
+  },
+]
 const formRef = ref()
 const printRefs = ref()
 const headers = ref([])
@@ -232,7 +331,7 @@ const showPrintConfirm = type => {
 
 
 const print = async () => {
-
+  console.log('dfvdfvd',printType.value)
   formRef.value.validate()
   if ($v.value.$invalid) {
     toast.error('لطفا فورم را دقیق خانه پری کنید!')
@@ -252,9 +351,26 @@ const print = async () => {
       headers.value = incoming_header
       title.value="گزارش رفت"
     }
+    if (printType.value == 'employee ') {
+      headers.value = Employee_header
+      title.value = 'Employee Report'
+    }
     if (printType.value == 'salaries') {
       headers.value = salary_header
       title.value = 'راپور معاشات'
+    }
+    if (printType.value == 'customers') {
+      headers.value = customer_header
+      title.value = 'راپور مشتری'
+    }
+    if (printType.value == 'income') {
+      headers.value = incoming_header
+      title.value = 'Income Report'
+    }
+
+    if (printType.value == 'expense') {
+      headers.value = incoming_header
+      title.value = 'Expense Report'
     }
     let { data } = await axios.get('reports', { params: { type:printType.value, ...payload.value } })
     

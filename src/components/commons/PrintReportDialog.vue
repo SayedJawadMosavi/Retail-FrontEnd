@@ -10,22 +10,29 @@
       <div style="display: flex;">
         <div style=" min-width: 90px;">
           شروع تاریخ: &nbsp;&nbsp;&nbsp;
-        </div> <div >
+        </div> <div>
           {{ startDate.toLocaleDateString() }}
         </div>
       </div>
       <div style="display: flex;">
         <div style=" min-width: 90px;">
           ختم تاریخ:&nbsp;&nbsp;&nbsp;
-        </div> <span >
+        </div> <span>
           {{ endDate.toLocaleDateString() }}
 
         </span>
       </div>
-      <div style="display: flex;" v-show="flag=='loan'">
+      <div
+        v-show="flag=='loan'"
+        style="display: flex;"
+      >
         <div style=" min-width: 90px; font-size: 30px;">
-       Balance   :
-        </div> <span class="text-error" :style="`${total > 0  ? 'color:red' : 'color:green'}`" style="font-size: 30px;" >
+          باقی مانده   :
+        </div> <span
+          class="text-error"
+          :style="`${total > 0 ? 'color:red' : 'color:green'}`"
+          style="font-size: 30px;"
+        >
           {{ Math.abs(total) }}
 
         </span>
@@ -54,11 +61,22 @@
           :key="index"
           style="text-align: right; border: 1px solid grey; padding: 0px 6px; white-space: nowrap"
         >
-        {{ header.key=='ids'? i+1: '' }}
-        {{ header.key=='products_name'? item?.product?.product_name: '' }}
-        {{ header.key=='employee_name'? item?.employee?.first_name: '' }}
+          {{ header.key=='ids'? i+1: '' }}
+          
+          {{ header.key=='category_name'? item?.category?.name: '' }}
+          {{ header.key=='created_b'? item?.user?.name: '' }}
+          {{ header.key=='paid_amount'? item?.payments_sum_amount: '' }}
+          <!-- {{ header.key=='total_price'? item?.total_price: '' }} -->
+          {{ header.key=='products_name'? item?.product?.product_name: '' }}
+          {{ header.key=='vendor_name'? item?.vendor?.name: '' }}
+          {{ header.key=='container_name'? item?.container?.name: '' }}
+          <!-- {{ header.key=='extra_expense_sum_price'? item?.extra_expense_sum_price: '' }} -->
+          {{ header.key=='purchase_remainder'? item?.remainder: '' }}
+          {{ header.key=='sell_remainder'? item?.remainder: '' }}
+          {{ header.key=='employee_name'? item?.employee?.first_name: '' }}
+          {{ header.key=='customer_name'? item?.customer?.first_name: '' }}
           {{ header.key=='position'? item?.employee?.job_title: '' }}
-        {{ header.key=='created_at'?  moment(item.created_at, "YYYY-MM-DD").format("ll") : item[header.key] }}
+          {{ header.key=='created_at'? moment(item.created_at, "YYYY-MM-DD").format("ll") : item[header.key] }}
         </td>
       </tr>
     </table>

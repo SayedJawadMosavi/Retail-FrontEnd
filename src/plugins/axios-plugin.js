@@ -1,9 +1,9 @@
 
 import useAuth from '@/plugins/authServices'
-
 import main_axios from 'axios'
 import { toast } from 'vue3-toastify'
 import router from '../router'
+
 
 
 const { logout } = useAuth()
@@ -56,7 +56,7 @@ axios.interceptors.response.use(
     }
     if (status == 422) {
       const message = error?.response?.data?.message
-      toast.error(message??'دیتا اشتباه است')
+      toast.error(message??' مقدار بیشتر از موجود شده نمی تواند')
     }
     
     return Promise.reject(error)

@@ -26,7 +26,7 @@
                   color="primary"
                   class="font-weight-medium"
                 >
-                  {{ purchaseInfo.total_price?.toFixed(2) ?? 0 }} $
+                  {{ sellInfo.total_price?.toFixed(2) ?? 0 }} $
                 </VChip>
               </div>
   
@@ -43,7 +43,7 @@
                   color="success"
                   class="font-weight-medium"
                 >
-                  {{ purchaseInfo.payments_sum_amount?.toFixed(2) ?? 0 }} $
+                  {{ sellInfo.payments_sum_amount?.toFixed(2) ?? 0 }} $
                 </VChip>
               </div>
   
@@ -60,14 +60,14 @@
                   color="error"
                   class="font-weight-medium"
                 >
-                  {{ purchaseInfo.remainder?.toFixed(2) ?? 0 }} $
+                  {{ sellInfo.remainder?.toFixed(2) ?? 0 }} $
                 </VChip>
               </div>
             </VCardText>
             <VDivider />
           </VCol>
           <VCol
-            v-show="purchaseInfo.remainder > 0"
+            v-show="sellInfo.remainder > 0"
             cols="12"
             md="5"
             order-md="0"
@@ -155,7 +155,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="(item, index) in purchaseInfo.payments"
+              v-for="(item, index) in sellInfo.payments"
               :key="index"
               :class="`${item.deleted_at ? 'text-error' : ''}`"
             >
@@ -242,7 +242,7 @@
                     size="small"
                     color="info"
                     :loading="restoreLoading"
-                    @click="restoreRecord(item, 'payments')"
+                    @click="restorePayment(item, 'payments')"
                   >
                     <VIcon
                       start
@@ -285,7 +285,7 @@
                     icon
                     size="small"
                     :loading="apiLoading2 && selectedItem == item"
-                    @click="deleteRecord(item, 'payments')"
+                    @click="deletePayment(item, 'payments')"
                   >
                     <VIcon
                       icon="mdi-trash"
@@ -314,7 +314,7 @@ import ConfirmDialog from '@/components/commons/ConfirmDialog.vue'
 import { formateDate, scope } from '@/@core/utils/index'
   
 const props = defineProps({
-  purchaseInfo: {
+  sellInfo: {
     type: Object,
     default: () => {},
   },
@@ -326,7 +326,7 @@ const props = defineProps({
   
 const route = useRoute()
   
-const purchase_id = ref(route.params.purchase_id)
+const sell_id = ref(route.params.sell_id)
   
 const formRefs = ref()
 const editData = ref({
@@ -344,12 +344,12 @@ const selectedItem = ref({})
 const payload = ref({
   created_at: new Date(),
   amount: null,
-  purchase_id: purchase_id,
-  vendor_id: props.purchaseInfo.vendor_id,
+  sell_id: sell_id,
+  customer_id: props.sellInfo.customer_id,
 })
   
 const remaining = computed(() => {
-  return props.purchaseInfo?.remainder
+  return props.sellInfo?.remainder
 })
   
 // ==================================== START VALIDATION =======================================
@@ -357,7 +357,7 @@ const validationRules = useRules.validate
   
 const expenseRule = {
   created_at: { required },
-  purchase_id: { required },
+  sell_id: { required },
    
   amount: { required, minValue: minValue(0), maxValue: maxValue(remaining) },
 }
@@ -367,8 +367,8 @@ const resetForm = (type = 'items') => {
   payload.value = {
     created_at: new Date(),
     amount: null,
-    purchase_id: purchase_id,
-    vendor_id: props.purchaseInfo.vendor_id,
+    sell_id: sell_id,
+    customer_id: props.sellInfo.customer_id,
   }
   v$.value.$reset()
   formRefs.value.resetValidation()
@@ -385,7 +385,7 @@ const editPayment = async (item, type = 'open') => {
   } else {
     try {
       apiLoading2.value = true
-      const { data } = await axios.put(`purchase-payment`, editData.value)
+      const { data } = await axios.put(`sell-payment`, editData.value)
       await props.updateChanges()
       editData.value.id = null
       editData.value.amount = null
@@ -459,7 +459,7 @@ async function submit() {
   try {
     apiLoading2.value = true
   
-    const { data } = await axios.post(`purchase-payment`, payload.value)
+    const { data } = await axios.post(`sell-payment`, payload.value)
     await props.updateChanges()
   
     resetForm()

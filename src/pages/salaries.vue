@@ -14,7 +14,9 @@
           <VForm ref="formRef">
             <VRow>
               <VCol cols="12">
-                <p class="mb-0">شروع تاریخ</p>
+                <p class="mb-0">
+                  شروع تاریخ
+                </p>
 
                 <span style="direction: ltr">
                   <VueDatePicker
@@ -26,14 +28,14 @@
                     close-on-auto-apply
                     formate="MM/dd/yyyy"
                     :offset="-130"
-          
                   />
                 </span>
-                
               </VCol>
 
               <VCol cols="12">
-                <p class="mb-0">ختم تاریخ</p>
+                <p class="mb-0">
+                  ختم تاریخ
+                </p>
                 <span style="direction: ltr">
                   <VueDatePicker
                     v-model="payload.end_date"
@@ -44,10 +46,8 @@
                     close-on-auto-apply
                     formate="MM/dd/yyyy"
                     :offset="-130"
-          
                   />
                 </span>
-                
               </VCol>
             </VRow>
           </VForm>
@@ -66,7 +66,7 @@
             variant="tonal"
             @click="getReport"
           >
-          تهیه راپور
+            تهیه راپور
             <VIcon
               icon="mdi-export"
               end
@@ -74,7 +74,6 @@
           </VBtn>
         </VCardActions>
       </VCard>
-     
     </VDialog>
     <ReportDialog ref="reportRefs" />
     <!-- <PageFilter /> -->
@@ -87,19 +86,20 @@
       create-text="پرداخت معاش"
       edit-text="ویرایش پرداخت معاش"
       page-icon="mdi-cash"
-      :show-create="scope(['user_create']) || true"
-      :show-update="scope(['user_create'])"
-      :show-delete="scope(['user_delete'])"
-      :show-restore="scope(['user_restore'])"
+      :show-create="scope(['salaries_create']) || true"
+      :show-update="scope(['salaries_create'])"
+      :show-delete="scope(['salaries_delete'])"
+      :show-restore="scope(['salaries_restore'])"
       @on-force-delete="deleteRecord('force-delete')"
       @on-create="addSalary"
       @on-delete="deleteRecord"
       @on-restore="restoreRecord"
       @on-search="searchRecord"
     >
-    <template #default>
-        <VBtn style="margin-left: 10px;"
+      <template #default>
+        <VBtn
           v-if="options.tab != 'trash'"
+          style="margin-left: 10px;"
           class="font-weight-bold mr-2"
           @click="TakeReport"
         >

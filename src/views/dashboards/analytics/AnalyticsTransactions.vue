@@ -7,24 +7,48 @@ const props = defineProps({
 })
 const statistics = [
   {
-    title: 'کاربران',
+    title: 'Users',
     stats: '12.5k',
     icon: 'mdi-account-outline',
     color: 'success',
   },
+ 
   {
-    title: 'مشتریان',
-    stats: '12.5k',
-    icon: 'mdi-account-outline',
-    color: 'info',
-  },
-  {
-    title: 'کارمندان',
+    title: 'Employees',
     stats: '12.5k',
     icon: 'mdi-account-outline',
     color: 'primary',
   },
-
+  {
+    title: 'vendors',
+    stats: '1.54k',
+    icon: 'mdi-account',
+    color: 'warning',
+  },
+  {
+    title: 'purchases',
+    stats: '$88k',
+    icon: 'mdi-currency-usd',
+    color: 'info',
+  },
+  {
+    title: 'Sell',
+    stats: '$88k',
+    icon: 'mdi-currency-usd',
+    color: 'info',
+  },
+  {
+    title: 'Active Customer',
+    stats: '$88k',
+    icon: 'mdi-currency-usd',
+    color: 'info',
+  },
+  {
+    title: 'De Active Customer',
+    stats: '$88k',
+    icon: 'mdi-currency-usd',
+    color: 'info',
+  },
 ]
 
 // icon: 'mdi-trending-up',

@@ -14,9 +14,23 @@
               >
                 <VTextField
                   v-model="formData.name"
-                  label="اسم کتگوری "
+                  label="اسم کانتینر "
                   prepend-inner-icon="mdi-shopping-outline"
-                  :rules="validationRules(v$.name, 'اسم کتگوری')"
+                  :rules="validationRules(v$.name, 'اسم کانتینر')"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.expense"
+                  label="مقدار مصرف"
+                  append-inner-icon="mdi-cash"
+                  :rules="validationRules(v$.expense, 'مقدار مصرف')"
+                  dir="ltr"
+                  @input="convertToEnglishNumbers('expense')"
+                  @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
             </VRow>
@@ -59,7 +73,7 @@
 import { axios } from '@/plugins/axios-plugin'
 import useRules from '@/plugins/vuelidate/vuelidateRules'
 import { useVuelidate } from '@vuelidate/core'
-import { minLength, required } from '@vuelidate/validators'
+import { minValue, required,minLength } from '@vuelidate/validators'
 import { ref } from 'vue'
 import { toast } from 'vue3-toastify'
   
@@ -72,7 +86,7 @@ const props = defineProps({
 // =======================> starts states <===============================
   
 const expand = ref(false)
-const loadingCategory = ref(false)
+const loadingContainer = ref(false)
   
 const apiLoading = ref(false)
 const isSubmited = ref(false)
@@ -80,15 +94,17 @@ const Categories = ref([])
 const formRef = ref()
 const formData = ref({
   name: '',
-  company_name: '',
+  expense: '',
+ 
 })
   
 ///   |=============================> start validation <==============================|
 const validationRules = useRules.validate
   
 const rules = {
-  name: { required, minLength: minLength(2) },
-
+  name: { required, minLength: minLength(1) },
+  expense: { required, minValue: minLength(1) },
+ 
 }
   
 const v$ = useVuelidate(rules, formData)
@@ -100,26 +116,25 @@ const closeDialog = () => {
   v$.value.$reset()
   resetForm()
 }
-async function getCategory() {
+async function getContainer() {
   try {
-    loadingCategory.value = true
+    loadingContainer.value = true
     const { data } = await axios.get('category-list')
 
     Categories.value = data
   } catch (error) {
     console.error('error', error)
   }
-  loadingCategory.value = false
+  loadingContainer.value = false
 }
 async function submit() {
   try {
     apiLoading.value = true
-    if (formData.value.id) await axios.put('product-category/id', formData.value)
-    else await axios.post('product-category', formData.value)
-  
+    if (formData.value.id) await axios.put('container/id', formData.value)
+    else await axios.post('container', formData.value)
     isSubmited.value = false
     expand.value = false
-  
+    resetForm()
     props.fetchRecord()
   } catch (error) {
     console.error('error', error)
@@ -129,7 +144,7 @@ async function submit() {
 }
   
 function toggleDialog(item = null) {
-  getCategory()
+  getContainer()
   if (item) {
     formData.value = JSON.parse(JSON.stringify(item))
      
@@ -140,6 +155,7 @@ function toggleDialog(item = null) {
 const resetForm = () => {
   formData.value = {
     name: null,
+    expense: null,
   }
   v$.value.$reset()
   formRef.value.resetValidation()

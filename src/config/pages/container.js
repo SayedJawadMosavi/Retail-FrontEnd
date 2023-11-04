@@ -1,5 +1,5 @@
 const tabs = [
-  { title: 'کتگوری ها', icon: 'mdi-account-group-outline', count: 0 , key: 'products'},
+  { title: 'کانتینر ها', icon: 'mdi-account-group-outline', count: 0 , key: 'containers'},
   { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
 ]
   
@@ -23,9 +23,9 @@ const breadCrumbs=[
   },
       
   {
-    title: 'برگشت به محصولات',
+    title: 'برگشت به خرید',
     disabled: false,
-    to: 'product',
+    to: 'purchase',
   },
 ]
 const headers= [ 
@@ -41,8 +41,13 @@ const headers= [
   
   
   {
-    title: 'اسم کتگوری',
+    title: 'اسم کانتیر',
     key: 'name',
+               
+  },
+  {
+    title: ' مصرف',
+    key: 'expense',
                
   },
   

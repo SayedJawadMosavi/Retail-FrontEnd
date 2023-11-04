@@ -20,7 +20,12 @@ const total_data = [
     icon: 'mdi-currency-usd',
     color: 'error',
   },
-
+  {
+    title: 'باقی مانده ',
+    stats: '1.54k',
+    icon: 'mdi-currency-usd',
+    color: 'error',
+  },
 ]
 
 // icon: 'mdi-trending-up',

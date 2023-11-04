@@ -1,13 +1,14 @@
 
 
 <template>
-  <VCard style="direction: ltr;"
-  title="موجودی حساب"
+  <VCard
+    style="direction: ltr;"
+    title="موجودی حساب"
     subtitle=""
     class="position-relative"
   >
-    <VCardText >
-      <h5 class="text-2xl font-weight-medium text-primary">
+    <VCardText>
+      <h5 :class=" `${accountMoney< 0 ? 'text-error text-2xl font-weight-medium' : 'text-success text-2xl font-weight-medium'}`">
         <div
           style="direction: ltr"
           class="text-start"
@@ -15,7 +16,6 @@
           {{ accountMoney }} $
         </div>
         <br>
-        
       </h5>
     </VCardText>
 
@@ -52,6 +52,7 @@ const props = defineProps({
 const vuetifyTheme = useTheme()
 const triangleBg = computed(() => {
   console.log("DFvgdf",props.accountMoneyUSDaccount)
+  
   return vuetifyTheme.global.name.value === 'light' ? triangleLight : triangleDark
 })
 </script>

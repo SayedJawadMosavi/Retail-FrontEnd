@@ -1,11 +1,11 @@
 const tabs = [
-  { title: 'معامله داران', icon: 'mdi-account-group-outline', count: 0 , key: 'vendors'},
+  { title: 'مشتری', icon: 'mdi-account-group-outline', count: 0 , key: 'customers'},
   { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
 ]
-  
+    
 const search=[
   {
-    name: 'عمموی',
+    name: 'عمومی',
     id: 'all',
   },
   {
@@ -13,7 +13,11 @@ const search=[
     id: 'id',
   },
   
-   
+  // {
+  //   name: 'Register Date',
+  //   id: 'created_at',
+  // },
+     
 ]
 const breadCrumbs=[
   {
@@ -21,11 +25,11 @@ const breadCrumbs=[
     disabled: false,
     href: '/',
   },
-      
+        
   {
-    title: 'معامله دار',
+    title: 'مشتری',
     disabled: true,
-    href: 'vendors',
+    href: 'customers',
   },
 ]
 const headers= [ 
@@ -33,48 +37,36 @@ const headers= [
     title: 'شماره',
     key: 'id',
   },
-  {
-    title: 'دیدن جزییات',
-    key: 'view_expense',
-  },
-  {
-    title: 'پرنت',
-    key: 'print',
-  },
+  
+  // {
+  //   title: 'View More',
+  //   key: 'profile',
+  // },
+   
   {
     title: 'اسم',
-    key: 'name',
-   
-               
+    key: 'first_name',
+                 
   },
-  
+
   {
-    title: 'اسم کمپنی',
-    key: 'organization_name',
-               
+    title: 'تخلص',
+    key: 'last_name',
+     
+                 
   },
   {
     title: 'شماره تماس',
     key: 'phone_number',
-   
-               
+  },
+  {
+    title: 'ایمیل',
+    key: 'email',
   },
   {
     title: 'آدرس',
     key: 'address',
-   
-               
   },
-  {
-    title: 'ایمیل آدرس',
-    key: 'email',
-  },
-    
-  {
-    title: 'مجموع مصارف اضای ',
-    key: 'extra_expense_sum_price',
-  },
- 
   {
     title: 'مجموع پول',
     key: 'total_price',
@@ -89,16 +81,6 @@ const headers= [
     title: 'باقی مانده',
     key: 'reminder',
   },
- 
-    
-  // {
-  //   title: ' Start Date',
-  //   key: 'start_date',
-  // },
-  // {
-  //   title: ' End Date',
-  //   key: 'end_date',
-  // },
   {
     title: 'توضیحات',
     key: 'description',
@@ -107,10 +89,10 @@ const headers= [
     title: 'حالت',
     key: 'status',
   },
-  
+    
 ]
-  
-  
+    
+    
 export default function usePageConfig() {
   return {
     headers,
@@ -119,4 +101,4 @@ export default function usePageConfig() {
     search,
   }
 }
-  
+    

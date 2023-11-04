@@ -1,116 +1,117 @@
 const tabs = [
-    { title: 'محصولات', icon: 'mdi-account-group-outline', count: 0 , key: 'products'},
-    { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
-  ]
+  { title: 'محصولات', icon: 'mdi-account-group-outline', count: 0 , key: 'products'},
+  { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
+]
   
-  const search=[
-    {
-      name: 'عمموی',
-      id: 'all',
-    },
-    {
-      name: 'شماره ',
-      id: 'id',
-    },
+const search=[
+  {
+    name: 'عمموی',
+    id: 'all',
+  },
+  {
+    name: 'شماره ',
+    id: 'id',
+  },
   
    
-  ]
-  const breadCrumbs=[
-    {
-      title: 'داشبورد',
-      disabled: false,
-      href: '/',
-    },
+]
+const breadCrumbs=[
+  {
+    title: 'داشبورد',
+    disabled: false,
+    href: '/',
+  },
       
-    {
-      title: 'محصولات',
-      disabled: true,
-      href: 'vendors',
-    },
-  ]
-  const headers= [ 
-    {
-      title: 'شماره',
-      key: 'id',
-    },
-    {
-      title: 'دیدن جزییات',
-      key: 'view_expense',
-    },
-    // {
-    //   title: 'پرنت',
-    //   key: 'print',
-    // },
-    {
-      title: 'اسم محصول',
-      key: 'product_name',
+  {
+    title: 'محصولات',
+    disabled: true,
+    href: 'vendors',
+  },
+]
+const headers= [ 
+  {
+    title: 'شماره',
+    key: 'id',
+  },
+  {
+    title: 'دیدن جزییات',
+    key: 'view_expense',
+  },
+
+  // {
+  //   title: 'پرنت',
+  //   key: 'print',
+  // },
+  {
+    title: 'اسم محصول',
+    key: 'product_name',
    
                
-    },
+  },
   
-    {
-      title: 'اسم کتگوری',
-      key: 'category',
+  {
+    title: 'اسم کتگوری',
+    key: 'category',
                
-    },
-    {
-      title: 'کمپنی',
-      key: 'company_name',
+  },
+  {
+    title: 'کمپنی',
+    key: 'company_name',
    
                
-    },
-    {
-      title: 'کود',
-      key: 'code',
+  },
+  {
+    title: 'کود',
+    key: 'code',
    
                
-    },
-    {
-      title: 'مقدار',
-      key: 'quantity',
+  },
+  {
+    title: 'مقدار',
+    key: 'quantity',
    
                
-    },
-    {
-      title: 'رنگ',
-      key: 'color',
+  },
+  {
+    title: 'رنگ',
+    key: 'color',
    
                
-    },
-    {
-      title: 'سایز',
-      key: 'size',
-    },
+  },
+  {
+    title: 'سایز',
+    key: 'size',
+  },
     
 
  
     
-    // {
-    //   title: ' Start Date',
-    //   key: 'start_date',
-    // },
-    // {
-    //   title: ' End Date',
-    //   key: 'end_date',
-    // },
-    {
-      title: 'توضیحات',
-      key: 'description',
-    },
-    {
-      title: 'حالت',
-      key: 'status',
-    },
+  // {
+  //   title: ' Start Date',
+  //   key: 'start_date',
+  // },
+  // {
+  //   title: ' End Date',
+  //   key: 'end_date',
+  // },
+  {
+    title: 'توضیحات',
+    key: 'description',
+  },
+  {
+    title: 'حالت',
+    key: 'status',
+  },
   
-  ]
+]
   
   
-  export default function usePageConfig() {
-    return {
-      headers,
-      tabs,
-      breadCrumbs,
-      search,
-    }
+export default function usePageConfig() {
+  return {
+    headers,
+    tabs,
+    breadCrumbs,
+    search,
   }
+}
   

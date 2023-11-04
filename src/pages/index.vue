@@ -9,30 +9,37 @@
         v-model:account-money="accountMoney"
       />
     </VCol>
-    <!-- <VCol
+    <!--
+      <VCol
       cols="12"
       md="6"
-    >
+      >
       <AnalyticsCurrentBalanceUSD
-        v-if="scope(['income_view'])"
-        v-model:account-money-u="accountMoneyU"
+      v-if="scope(['income_view'])"
+      v-model:account-money-u="accountMoneyU"
       />
-    </VCol> -->
+      </VCol> 
+    -->
 
     <VCol
+      v-if="scope(['dashboard_view'])"
       cols="12"
       md="12"
     >
-      <AnalyticsTransactions :transactions="transactions" />
+      <AnalyticsTransactions
+        v-if="scope(['dashboard_view'])"
+        :transactions="transactions"
+      />
     </VCol>
     <VCol
       cols="12"
       md="12"
     >
-      <AnalyticsIncomeExpense :allIncomeExpense="allIncomeExpense" />
+      <AnalyticsIncomeExpense
+        v-if="scope(['dashboard_view'])"
+        :all-income-expense="allIncomeExpense"
+      />
     </VCol>
-   
-
   </VRow>
 </template>
 
@@ -75,8 +82,8 @@ const expiredData = ref([])
 const getAnalytics = async () => {
   try {
     const { data } = await axios.get('analytics')
-    accountMoney.value = data.account_money_afg
-    accountMoneyU.value = data.account_money_usd
+
+    accountMoney.value = data.account_money_usd
     transactions.value = data.transactions
     orders.value = data.expired_contract_alarm
     expiredData.value = data.expired_contract

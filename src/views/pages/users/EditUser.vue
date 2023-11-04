@@ -60,27 +60,52 @@
                 <p class="font-weight-medium">
                   تعیین کنید که کاربر کدام صلاحیت ها را داشته باشد.
                 </p>
-
+                <VCheckbox
+                  v-model="flag"
+                  label="انتخاب همه"
+                  @click="selectAll(payload.permissions.length)"
+                />
                 <VTable class="text-no-wrap">
                   <thead>
                     <tr>
                       <th scope="col">
                         دسترسی به سیستم
                       </th>
+
                       <th scope="col">
-                        دیدن معلومات
+                        <VCheckbox
+                          v-model="viewflag"
+                          label=" دیدن معلومات"
+                          @click="selectView('view')"
+                        />
                       </th>
                       <th scope="col">
-                        ایجاد و ویرایش معلومات
+                        <VCheckbox
+                          v-model="createEditflag"
+                          label="  ایجاد و ویرایش معلومات"
+                          @click="selectView('create_edit')"
+                        />
                       </th>
                       <th scope="col">
-                        حذف معلومات
+                        <VCheckbox
+                          v-model="Deleteflag"
+                          label="   حذف معلومات"
+                          @click="selectView('delete_info')"
+                        />
                       </th>
                       <th scope="col">
-                        بازیابی معلومات
+                        <VCheckbox
+                          v-model="Restoreflag"
+                          label="    بازیابی معلومات "
+                          @click="selectView('restore_info')"
+                        />
                       </th>
                       <th scope="col">
-                        حذف دائمی
+                        <VCheckbox
+                          v-model="forceDeleteflag"
+                          label="   حذف دايمی"
+                          @click="selectView('force_delete_info')"
+                        />
                       </th>
                     </tr>
                   </thead>
@@ -189,7 +214,12 @@ const roles = [
   { id: 'finance_manager', name: 'مدیر مالی' },
   { id: 'bank_manager', name: 'مدیر صرافی' },
 ]
-
+const flag = ref(false)
+const viewflag = ref(false)
+const createEditflag = ref(false)
+const Deleteflag = ref(false)
+const Restoreflag = ref(false)
+const forceDeleteflag = ref(false)
 const payload = ref({
   id: null,
   name: null,
@@ -203,23 +233,160 @@ const systems = [
   {
     system_id: 'users',
     system_name: 'کاربران',
-    actions: ['user_view', 'user_create', 'user_delete', 'user_restore', "user_force_delete"],
+    actions: ['user_view', 'user_create', 'user_delete', 'user_restore', 'user_force_delete'],
+    allowed_roles: ['admin'],
+  },
+  {
+    system_id: 'Dashboard',
+    system_name: 'داشبورد',
+    actions: ['dashboard_view'],
     allowed_roles: ['admin'],
   },
   {
     system_id: 'employees',
     system_name: 'کارمندان',
-    actions: ['employee_view', 'employee_create', 'employee_delete', 'employee_restore',"employee_force_delete"],
+    actions: ['employee_view', 'employee_create', 'employee_delete', 'employee_restore', 'employee_force_delete'],
     allowed_roles: ['admin'],
   },
   {
     system_id: 'salaries',
     system_name: 'معاشات',
-    actions: ['salary_view', 'salary_create', 'salary_delete', 'salary_restore',"salary_force_delete"],
+    actions: ['salary_view', 'salary_create', 'salary_delete', 'salary_restore', 'salary_force_delete'],
     allowed_roles: ['admin', 'finance_manager'],
   },
-
+  {
+    system_id: 'customer',
+    system_name: 'مشتری',
+    actions: ['customer_view', 'customer_create', 'customer_delete', 'customer_restore', 'customer_force_delete'],
+    allowed_roles: ['admin', 'finance_manager', 'editor'],
+  },
+  {
+    system_id: 'income_expense',
+    system_name: 'مصارف وآمد',
+    actions: [
+      'income_expense_view',
+      'income_expense_create',
+      'income_expense_delete',
+      'income_expense_restore',
+      'income_expense_force_delete',
+    ],
+    allowed_roles: ['admin', 'finance_manager', 'editor'],
+  },
+  {
+    system_id: 'product',
+    system_name: ' محصولات',
+    actions: ['product_view', 'product_create', 'product_delete', 'product_restore', 'product_force_delete'],
+    allowed_roles: ['admin', 'finance_manager', 'editor'],
+  },
+  {
+    system_id: 'purchase',
+    system_name: ' خرید',
+    actions: ['purchase_view', 'purchase_create', 'purchase_delete', 'purchase_restore', 'purchase_force_delete'],
+    allowed_roles: ['admin', 'finance_manager', 'editor'],
+  },
+  {
+    system_id: 'sell',
+    system_name: ' فروش',
+    actions: ['sell_view', 'sell_create', 'sell_delete', 'sell_restore', 'sell_force_delete'],
+    allowed_roles: ['admin', 'finance_manager', 'editor'],
+  },
+  {
+    system_id: 'stock_product_transfer',
+    system_name: ' انتقال محصول به گدام',
+    actions: [
+      'stock_product_transfer_view',
+      'stock_product_transfer_create',
+      'stock_product_transfer_delete',
+      'stock_product_transfer_restore',
+      'stock_product_transfer_force_delete',
+    ],
+    allowed_roles: ['admin', 'finance_manager', 'editor'],
+  },
+  {
+    system_id: 'stock_to_stock_transfer',
+    system_name: ' انتقال گدام به گادم',
+    actions: [
+      'stock_to_stock_transfer_view',
+      'stock_to_stock_transfer_create',
+      'stock_to_stock_transfer_delete',
+      'stock_to_stock_transfer_restore',
+      'stock_product_transfer_force_delete',
+    ],
+    allowed_roles: ['admin', 'finance_manager', 'editor'],
+  },
+  {
+    system_id: 'stock',
+    system_name: 'گدام ',
+    actions: ['stock_view', 'stock_create', 'stock_delete', 'stock_restore', 'stock_force_delete'],
+    allowed_roles: ['admin', 'finance_manager'],
+  },
+  {
+    system_id: 'stock',
+    system_name: 'معامله داران ',
+    actions: ['vendor_view', 'vendor_create', 'vendor_delete', 'vendor_restore', 'vendor_force_delete'],
+    allowed_roles: ['admin', 'finance_manager'],
+  },
 ]
+const selectAll = all => {
+  systems.forEach(element => {
+    if (flag.value==false) {
+      element.actions.forEach(index => {
+        payload.value.permissions.push(index)
+      })
+      
+    }else{
+      flag.value==false
+      viewflag.value==""
+      payload.value.permissions =[]
+      
+    }
+    
+  })
+}
+const selectView = all => {
+  systems.forEach(element => {
+    if (all=="view") {
+      if (viewflag.value==false) {
+        payload.value.permissions.push(element.actions[0])
+      }else{
+        payload.value.permissions.splice(payload.value.permissions.indexOf(element.actions[0]), 1)
+      }
+      
+    }else if(all=="create_edit"){
+      if (createEditflag.value==false) {
+        payload.value.permissions.push(element.actions[1])
+      }else{
+        payload.value.permissions.splice(payload.value.permissions.indexOf(element.actions[1]), 1)
+      }
+    }
+    else if(all=="delete_info"){
+      if (Deleteflag.value==false) {
+        payload.value.permissions.push(element.actions[2])
+      }else{
+        payload.value.permissions.splice(payload.value.permissions.indexOf(element.actions[2]), 1)
+      }
+    }
+    else if(all=="restore_info"){
+      if (Restoreflag.value==false) {
+        payload.value.permissions.push(element.actions[3])
+      }else{
+        payload.value.permissions.splice(payload.value.permissions.indexOf(element.actions[3]), 1)
+      }
+    }
+    else if(all=="force_delete_info"){
+      if (forceDeleteflag.value==false) {
+        payload.value.permissions.push(element.actions[4])
+      }else{
+        payload.value.permissions.splice(payload.value.permissions.indexOf(element.actions[4]), 1)
+  
+      }
+    }
+ 
+
+    //  payload.value.permissions =[];
+
+  })
+}
 
 // ==================================== START VALIDATION =======================================
 const validationRules = useRules.validate
@@ -239,9 +406,7 @@ const $v = useVuelidate(rules, payload)
 
 // ==================================== START METHODS =======================================
 
-const downloadForm = () => {
- 
-}
+const downloadForm = () => {}
 const resetForm = () => {
   payload.value = {
     id: null,

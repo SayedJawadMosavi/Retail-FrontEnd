@@ -6,37 +6,23 @@
       :selected-items="datatableRefs?.selectedItems"
       :items="breadCrumbs"
       :search-options="search"
-      page="لیست خرید"
-      create-text="افزودن "
+      page="لیست فروشات"
+      create-text="فروش "
       print-text="پرنت"
       page-icon="mdi-shopping-outline"
-      :show-create="scope(['purchase_create'])"
-      :show-delete="scope(['purchase_delete'])"
-      :show-restore="scope(['purchase_restore'])"
-      :show-force-delete="scope(['purchase_force_delete'])"
-      @on-create="createPurchase"
+      :show-create="scope(['sell_create'])"
+      :show-delete="scope(['sell_delete'])"
+      :show-restore="scope(['sell_restore'])"
+      :show-force-delete="scope(['sell_force_delete'])"
+      @on-create="sellProduct"
       @on-force-delete="deleteRecord('force-delete')"
       @on-delete="deleteRecord"
       @on-restore="restoreRecord"
       @on-search="searchRecord"
       @on-print="printRecord"
-    >
-      <template #default>
-        <VBtn
-         
-          class="font-weight-bold bg-info"
-          to="container"
-        >
-          کانتینر
-          <VIcon
-            end
-            icon="mdi-export"
-          />
-        </VBtn>
-      </template>
-    </BreadCrumbs>
+    />
 
-    <AddPurchase
+    <SellProduct
       ref="pruchaseRef"
       :fetch-record="fetchRecord"
     />
@@ -82,17 +68,6 @@
         </VChip>
       </template>
 
-      <template #extra_expense_sum_price="{ item }">
-        <VChip
-          style="direction: ltr"
-          small
-          color="warning"
-          class="font-weight-medium"
-        >
-          {{ item.extra_expense_sum_price?.toFixed(2) ?? 0 }} $
-        </VChip>
-      </template>
-
       <template #view_profile="{ item }">
         <VBtn
           variant="text"
@@ -119,61 +94,14 @@
           />
         </VBtn>
       </template>
-      <template #status="{ item }">
-        <VBtn
-          v-if="item.status=='pending'"
-          variant="text"
-          icon
-          :loading="selectedItemStatus.id == item.id && statusLoading"
-          @click="checkStatus(item)"
-        >
-          <VTooltip
-            activator="parent"
-            location="top"
-          >
-            رسیده نشده
-          </VTooltip>
-          <VIcon
-            size="30"
-            :class="item.status=='recieved' ?'primary' :'info'"
-            icon="mdi-send-check-outline"
-          />
-        </VBtn>
-        <VBtn
-          v-else
-          variant="text"
-          icon
-        >
-          <VTooltip
-            activator="parent"
-            location="top"
-          >
-            رسید
-          </VTooltip>
-          <VIcon
-            size="30"
-            color="success"
-            icon="mdi-check"
-          />
-        </VBtn>
-      </template>
-      <template #description="{ item }">
+
+      <template #customer_name="{ item }">
         <div style="white-space: nowrap">
-          {{ item.description }}
-        </div>
-      </template>
-      <template #vendor_name="{ item }">
-        <div style="white-space: nowrap">
-          {{ item.vendor.name }}
-        </div>
-      </template>
-      <template #container_name="{ item }">
-        <div style="white-space: nowrap">
-          {{ item.container.name }}
+          {{ item.customer.first_name }}
         </div>
       </template>
     </DataTable>
-    <PurchasePrint
+    <SellPrint
       ref="printableContent"
       :print-item="printItem"
     />
@@ -182,14 +110,14 @@
 </template>
 
 <script setup>
-import AddPurchase from '@/views/pages/purchase/AddPurchase.vue'
+import SellProduct from '@/views/pages/sell/SellProduct.vue'
 import { onMounted, ref } from 'vue'
 import { axios } from '@/plugins/axios-plugin'
 import BreadCrumbs from '@/components/commons/BreadCrumbs.vue'
 import DataTable from '@/components/commons/DataTable.vue'
-import usePageConfig from '@/config/pages/purchase'
+import usePageConfig from '@/config/pages/sell'
 import router from '@/router'
-import PurchasePrint from '@/views/pages/purchase/PurchasePrint.vue'
+import SellPrint from '@/views/pages/sell/sellPrint.vue'
 import { scope } from '@/@core/utils/index'
 
 const { tabs, headers, breadCrumbs, search } = usePageConfig()
@@ -202,7 +130,7 @@ const printItem = ref({})
 const printableContent = ref()
 const selectedItemStatus = ref({})
 const statusLoading = ref(false)
-const options = ref({ page: 1, itemPerPage: 20, tab: 'purchases' })
+const options = ref({ page: 1, itemPerPage: 20, tab: 'sells' })
 const searchOption = ref({})
 const tableRecords = ref([])
 const profileLoading = ref(false)
@@ -234,7 +162,7 @@ const getOrderInfo = async id => {
   try {
     // apiLoading.value = true
 
-    const { data } = await axios.get('purchase/' + id)
+    const { data } = await axios.get('sell/' + id)
 
     // apiLoading.value = false
 
@@ -244,7 +172,7 @@ const getOrderInfo = async id => {
   }
 }
 
-const createPurchase = () => {
+const sellProduct = () => {
   pruchaseRef.value.openDialog()
 }
 
@@ -252,13 +180,10 @@ const viewProfile = async item => {
   profileLoading.value = true
   selectedId.value = item.id
 
-  await router.replace('view-purchase/' + item.id)
+  await router.replace('view-sell/' + item.id)
   profileLoading.value = false
 }
 const checkStatus = async item => {
-
-  
-
   try {
     selectedItemStatus.value = item
     statusLoading.value = true
@@ -268,7 +193,6 @@ const checkStatus = async item => {
     console.error(error)
   }
   statusLoading.value = false
-  
 }
 
 const onTableChange = value => {
@@ -280,7 +204,7 @@ const onTableChange = value => {
 const deleteRecord = async (type = 'delete') => {
   try {
     const ids = datatableRefs.value?.selectedItems?.map(row => row.id) ?? []
-    await axios.delete(`${type}/purchase/${ids}`)
+    await axios.delete(`${type}/sell/${ids}`)
     datatableRefs.value.selectedItems = []
     fetchRecord()
   } catch (error) {
@@ -290,7 +214,7 @@ const deleteRecord = async (type = 'delete') => {
 const restoreRecord = async () => {
   try {
     const ids = datatableRefs.value?.selectedItems?.map(row => row.id) ?? []
-    await axios.post('restore/purchase/' + ids)
+    await axios.post('restore/sell/' + ids)
     datatableRefs.value.selectedItems = []
     fetchRecord()
   } catch (error) {
@@ -306,7 +230,7 @@ const printRecord = () => {}
 const fetchRecord = async () => {
   try {
     apiLoading.value = true
-    const { data } = await axios.get('purchase', { params: options.value })
+    const { data } = await axios.get('sell', { params: options.value })
     tableRecords.value = data.data
     total.value = data.total
     extraTotal.value = data.extraTotal
@@ -323,11 +247,11 @@ onMounted(() => {
 
 <!--
   <script>
-  import AddPurchase from '@/views/pages/order/AddPurchase.vue'
+  import SellProduct from '@/views/pages/order/SellProduct.vue'
   
   export default {
   components: {
-  AddPurchase,
+  SellProduct,
   },
   }
   </script> 

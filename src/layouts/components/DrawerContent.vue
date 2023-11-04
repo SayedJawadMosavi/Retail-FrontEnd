@@ -21,17 +21,19 @@ const upgradeBanner = computed(() => {
       class="app-logo d-flex align-center gap-x-3 app-title-wrapper"
     >
       <!-- ℹ️ You can also use img tag or VImg here -->
-      <div
+      <!--
+        <div
         class="d-flex"
         v-html="logo"
-      />
+        /> 
+      -->
 
       <Transition name="vertical-nav-app-title">
         <h1
           class="font-weight-semibold leading-normal text-xl text-uppercase"
           style="color: #9155FD"
         >
-          {{$t('title_header')}}
+          {{ $t('title_header') }}
         </h1>
       </Transition>
     </RouterLink>
@@ -64,8 +66,6 @@ const upgradeBanner = computed(() => {
         v-if="menu.title"
         :item="menu"
       />
-
-      
     </template>
 
     <!-- 👉 User Interface -->

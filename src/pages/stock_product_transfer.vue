@@ -11,21 +11,20 @@
       create-text=" انتقال به گدام ها"
       edit-text="ویرایش  "
       icon="mdi-shopping-outline"
-      :show-create="scope(['user_create'])"
-      :show-delete="scope(['user_delete'])"
-      :show-restore="scope(['user_restore'])"
-      :show-force-delete="scope(['user_force_delete'])"
+      :show-create="scope(['stock_product_transfer_create'])"
+      :show-delete="scope(['stock_product_transfer_delete'])"
+      :show-restore="scope(['stock_product_transfer_restore'])"
+      :show-force-delete="scope(['stock_product_transfer_force_delete'])"
       @on-create="createIncome"
       @on-delete="deleteRecord"
       @on-force-delete="deleteRecord('force-delete')"
       @on-restore="restoreRecord"
       @on-search="searchRecord"
     >
-     
       <template #default>
         <VBtn
           class="font-weight-bold bg-info"
-          :to="'stock'"
+          to="stock"
         >
           افزودن ولست گدام
           <VIcon
@@ -53,7 +52,7 @@
       :extra-info="extraInfo"
       @table-change="onTableChange($event)"
     >
-    <template #products_name="{ item }">
+      <template #products_name="{ item }">
         <div style="white-space: nowrap">
           {{ item.product.product_name }}
         </div>

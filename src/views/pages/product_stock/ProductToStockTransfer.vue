@@ -4,13 +4,15 @@
       <VCard>
         <VForm ref="formRef">
           <VCardText>
-            <p class="text-base font-weight-medium mt-2">معلومات</p>
+            <p class="text-base font-weight-medium mt-2">
+              معلومات
+            </p>
             <VRow class="mb-3">
-                <VCol
+              <VCol
                 cols="12"
                 md="6"
               >
-                <v-autocomplete
+                <VAutocomplete
                   v-model="formData.product"
                   label="محصول"
                   prepend-inner-icon="mdi-account"
@@ -19,17 +21,17 @@
                   return-object
                   :loading="loadingProduct"
                   :rules="validationRules(v$.product, 'محصول')"
-                ></v-autocomplete>
+                />
               </VCol>
               <VCol
                 cols="12"
                 md="6"
               >
                 <VTextField
-                :model-value="formData?.product?.quantity"
+                  :model-value="formData?.product?.quantity"
                   dir="rtl"
                   prepend-inner-icon="mdi-counter"
-                readonly
+                  readonly
                   @input="convertToEnglishNumbers('quantity_exist')"
                   @keypress="useRules.preventNonNumeric"
                 />
@@ -38,7 +40,7 @@
                 cols="12"
                 md="6"
               >
-                <v-autocomplete
+                <VAutocomplete
                   v-model="formData.stock"
                   label="گدام"
                   prepend-inner-icon="mdi-account"
@@ -47,25 +49,25 @@
                   return-object
                   :loading="loadingStock"
                   :rules="validationRules(v$.stock, 'گدام')"
-                ></v-autocomplete>
+                />
               </VCol>
               
 
              
               <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.amount"
-                    dir="rtl"
-                    label="مقدار"
-                    prepend-inner-icon="mdi-code-equal"
-                    :rules="validationRules(v$.amount, 'مقدار')"
-                    @input="convertToEnglishNumbers('amount')"
-                    @keypress="useRules.preventNonNumeric"
-                  />
-                </VCol>
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.amount"
+                  dir="rtl"
+                  label="مقدار"
+                  prepend-inner-icon="mdi-code-equal"
+                  :rules="validationRules(v$.amount, 'مقدار')"
+                  @input="convertToEnglishNumbers('amount')"
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
               
               <VCol
                 cols="12"
@@ -88,10 +90,10 @@
               :loading="apiLoading"
               @click="validateForm"
             >
-              <v-icon
+              <VIcon
                 start
                 icon="mdi-checkbox-marked-circle"
-              ></v-icon>
+              />
               ذخیره
             </VBtn>
 
@@ -100,10 +102,10 @@
               variant="tonal"
               @click="closeDialog"
             >
-              <v-icon
+              <VIcon
                 start
                 icon="mdi-cancel"
-              ></v-icon>
+              />
               کنسل
             </VBtn>
           </VCardText>

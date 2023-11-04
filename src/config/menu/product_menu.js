@@ -7,11 +7,7 @@ const product_menu= [
     to: 'product',
     icon: { icon: 'mdi-shopping-outline' },
   },
-  {
-    title: 'ثبت ولست رفت و آمد',
-    to: 'incomings',
-    icon: { icon: 'mdi-gesture-tap' },
-  },
+ 
  
 ]
 export default  product_menu
