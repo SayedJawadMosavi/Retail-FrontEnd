@@ -3,40 +3,47 @@
     class="order-print-only"
     style="direction: rtl"
   >
-    <div style="border: 1px solid #40a579; border-radius: 10px; padding: 15px">
+    <div style="border: 1px solid black; border-radius: 10px; padding: 15px">
       <div style="display: flex; justify-content: space-between">
         <div style="display: flex; align-items: center; flex-direction: column">
-          <div style="color: #40a579; font-size: 12px">
-            Retail Mis Management System
-          </div>
-          <div style="color: #40a579; font-size: 12px">
-            سیستم مدیریتی فروشگاه
+          <div style="color: black; font-size: 12px">
+            <div style="color: black; font-size: 12px">
+              Zaher
+            </div>
+            Zaher Mandozai Trading .Co
           </div>
         </div>
-
-        <div style="font-size: 10px; color: #40a579">
-          شماره تماس : 07775645645
-        </div>
+  
+        
         <div style="display: flex; align-items: start; flex-wrap: nowrap">
           <div
             class="d-flex"
             style="padding-right: 12px"
           >
-            <div style="color: #40a579; font-size: 12px">
-              Retail Mis
-            </div>
-            <div style="color: #40a579; font-size: 12px">
-              احمدی فروشگاه
+            <div style="color: black; font-size: 12px">
+              دظاهر طاهر مندوزی تجارتی شرکت
             </div>
           </div>
-          <div
+          
+          <!--
+            <div
             style="scale: 1.1"
             v-html="logo"
-          />
+            /> 
+          -->
         </div>
       </div>
-      <div style="font-size: 14px; color: #40a579; direction: rtl; margin-top: 10px">
-        آدرس: کابل جاده شهرنو مقابل تانک تیل پارک تاور
+      <div style="font-size: 14px; color: black; direction: rtl; margin-top: 12px">
+        آدرس: گل خان مومند پلازه جاده میوند کابل
+      </div>
+      <div style="font-size: 10px; color: black disply:flex">
+        0771468882 -  شماره تماس : 0764830802 
+      </div>
+    
+      <div style="font-size: 10px; color: black ">
+        <span style="direction: rtl">    02502100001171 :   اکونت دالری</span> 
+       
+        <span style="direction: rtl"> 02502200000837 :   اکونت افغانی</span>
       </div>
     </div>
 
@@ -50,7 +57,7 @@
      
 
       <div style="display: flex; justify-content: space-between">
-        <div>اسم مشتری : {{ printItem?.customer?.name }}</div>
+        <div>اسم مشتری : {{ printItem?.customer?.first_name }}</div>
       </div>
     </div>
     <hr style="padding: 0 10px; height: 1px; background-color: black; margin: 10px 0px">

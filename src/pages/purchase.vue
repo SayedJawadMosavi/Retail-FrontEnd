@@ -58,7 +58,7 @@
           color="success"
           class="font-weight-medium"
         >
-          {{ item?.payments_sum_amount?.toFixed(2) ?? 0 }} $
+          {{ item?.payments_sum_amount ?? 0 }} $
         </VChip>
       </template>
       <template #total_price="{ item }">
@@ -125,7 +125,7 @@
           variant="text"
           icon
           :loading="selectedItemStatus.id == item.id && statusLoading"
-          @click="checkStatus(item)"
+          @click="openDialogs(item)"
         >
           <VTooltip
             activator="parent"
@@ -191,7 +191,9 @@ import usePageConfig from '@/config/pages/purchase'
 import router from '@/router'
 import PurchasePrint from '@/views/pages/purchase/PurchasePrint.vue'
 import { scope } from '@/@core/utils/index'
-
+import { required, numeric, minLength, maxLength, minValue, maxValue, email, helpers } from '@vuelidate/validators'
+import useRules from '@/plugins/vuelidate/vuelidateRules'
+import { useVuelidate } from '@vuelidate/core'
 const { tabs, headers, breadCrumbs, search } = usePageConfig()
 const total = ref(0)
 const extraTotal = ref({})
@@ -207,7 +209,9 @@ const searchOption = ref({})
 const tableRecords = ref([])
 const profileLoading = ref(false)
 const selectedId = ref(null)
-
+const printType = ref()
+const printLoading = ref(false)
+const show = ref(false)
 const sleep = ms => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -254,6 +258,20 @@ const viewProfile = async item => {
 
   await router.replace('view-purchase/' + item.id)
   profileLoading.value = false
+}
+
+
+
+const validationRules = useRules.validate
+
+const openDialogs = item => {
+  console.log('items',item)
+  printType.value = options.value.tab
+  payload.value = {
+    amount: new Date(),
+    product_id  :null,
+  }
+  show.value = true
 }
 const checkStatus = async item => {
 

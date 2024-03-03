@@ -26,7 +26,7 @@
                   color="primary"
                   class="font-weight-medium"
                 >
-                  {{ sellInfo.total_price?.toFixed(2) ?? 0 }} $
+                  {{ sellInfo.total_price ?? 0 }} $
                 </VChip>
               </div>
   
@@ -43,7 +43,7 @@
                   color="success"
                   class="font-weight-medium"
                 >
-                  {{ sellInfo.payments_sum_amount?.toFixed(2) ?? 0 }} $
+                  {{ sellInfo.payments_sum_amount ?? 0 }} $
                 </VChip>
               </div>
   
@@ -346,6 +346,7 @@ const payload = ref({
   amount: null,
   sell_id: sell_id,
   customer_id: props.sellInfo.customer_id,
+  customer_name: props.sellInfo.customer.first_name,
 })
   
 const remaining = computed(() => {
@@ -369,6 +370,8 @@ const resetForm = (type = 'items') => {
     amount: null,
     sell_id: sell_id,
     customer_id: props.sellInfo.customer_id,
+    customer_name: props.sellInfo.customer.first_name,
+
   }
   v$.value.$reset()
   formRefs.value.resetValidation()

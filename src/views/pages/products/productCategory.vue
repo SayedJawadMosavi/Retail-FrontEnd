@@ -119,7 +119,7 @@ async function submit() {
   
     isSubmited.value = false
     expand.value = false
-  
+    resetForm()
     props.fetchRecord()
   } catch (error) {
     console.error('error', error)

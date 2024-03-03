@@ -7,7 +7,9 @@
       >
         <VForm ref="formRef">
           <VCardText>
-            <p class="text-base font-weight-medium mt-2">معلومات خرید:</p>
+            <p class="text-base font-weight-medium mt-2">
+              معلومات خرید:
+            </p>
 
             <VRow class="mb-3">
               <VCol
@@ -36,7 +38,7 @@
                 cols="12"
                 md="3"
               >
-                <v-autocomplete
+                <VAutocomplete
                   v-model="payload.container_id"
                   label="کانتینر"
                   prepend-inner-icon="mdi-truck-fast"
@@ -45,14 +47,14 @@
                   return-object
                   :loading="loadingContainer"
                   :rules="validationRules($v.container_id, 'کانتینر')"
-                ></v-autocomplete>
+                />
               </VCol>
 
               <VCol
                 cols="12"
                 md="3"
               >
-                <v-autocomplete
+                <VAutocomplete
                   v-model="payload.vendor_id"
                   label="اسم معامله دار"
                   prepend-inner-icon="mdi-account"
@@ -61,7 +63,7 @@
                   return-object
                   :loading="loadingVendor"
                   :rules="validationRules($v.vendor_id, 'اسم معامله دار')"
-                ></v-autocomplete>
+                />
               </VCol>
 
               
@@ -82,7 +84,9 @@
 
           <!-- 👉 Password Requirements -->
           <VCardText>
-            <p class="text-base font-weight-medium mt-2">معلومات محصول:</p>
+            <p class="text-base font-weight-medium mt-2">
+              معلومات محصول:
+            </p>
 
             <VRow
               v-for="(item, index) in payload.items"
@@ -93,7 +97,9 @@
                 cols="12"
               >
                 <div class="d-flex align-center">
-                  <p class="mb-0 font-weight-medium pe-2">شماره #{{ index + 1 }}</p>
+                  <p class="mb-0 font-weight-medium pe-2">
+                    شماره #{{ index + 1 }}
+                  </p>
                   <VBtn
                     density="compact"
                     color="error"
@@ -106,9 +112,9 @@
               </VCol>
               <VCol
                 cols="12"
-                md="3"
+                md="2"
               >
-                <v-autocomplete
+                <VAutocomplete
                   v-model="item.product_id"
                   label="اسم محصول"
                   prepend-inner-icon="mdi-account"
@@ -117,7 +123,7 @@
                   return-object
                   :loading="loadingProduct"
                   :rules="validateCollection($v.items.$each.$response.$errors[index].product_id, 'اسم محصول')"
-                ></v-autocomplete>
+                />
               </VCol>
               <VCol
                 cols="12"
@@ -152,6 +158,37 @@
                 md="2"
               >
                 <VTextField
+                  v-model="item.carton_amount"
+                  label="مقدار به کارتن"
+                  prepend-inner-icon="mdi-counter"
+                  :rules="validateCollection($v.items.$each.$response.$errors[index].carton_amount, 'مقدار به کارتن')"
+                  dir="ltr"
+              
+                  @update:modelValue="getAmount(index,item)"
+                  @input="convertToEnglishNumbers('items', 'carton_amount', index)"
+               
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="2"
+              >
+                <VTextField
+                  v-model="item.carton"
+                  label="تعداد به کارتن"
+                  prepend-inner-icon="mdi-counter"
+                  :rules="validateCollection($v.items.$each.$response.$errors[index].carton, 'تعداد به کارتن')"
+                  dir="ltr"
+                  @input="convertToEnglishNumbers('items', 'carton', index)"
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="2"
+              >
+                <VTextField
                   v-model="item.cost"
                   label="قیمت به ین"
                   prepend-inner-icon="mdi-cash"
@@ -168,15 +205,14 @@
               >
                 <VTextField
                   v-model="item.expense"
-                  label="مصرف"
+                  label="مصرف فی کارتن"
                   prepend-inner-icon="mdi-counter"
-                  :rules="validateCollection($v.items.$each.$response.$errors[index].expense, 'مصرف')"
+                  :rules="validateCollection($v.items.$each.$response.$errors[index].expense, 'مصرف فی کارتن')"
                   dir="ltr"
                   @input="convertToEnglishNumbers('items', 'expense', index)"
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
-             
             </VRow>
 
             <!-- {{ validationRules($v.items.$each.$response.$errors[0].name, 'قیمت فی کیلو') }} -->
@@ -194,7 +230,9 @@
           <!-- extra expense -->
 
           <VCardText>
-            <p class="text-base font-weight-medium mt-2">مصارف اضافی:</p>
+            <p class="text-base font-weight-medium mt-2">
+              مصارف اضافی:
+            </p>
 
             <VRow
               v-for="(expense, index2) in $v.extra_expense.$model"
@@ -205,7 +243,9 @@
                 class="pb-0 pt-5"
               >
                 <div class="d-flex align-center">
-                  <p class="mb-0 font-weight-medium pe-2">مصارف #{{ index2 + 1 }}</p>
+                  <p class="mb-0 font-weight-medium pe-2">
+                    مصارف #{{ index2 + 1 }}
+                  </p>
                   <VBtn
                     size="small"
                     density="compact"
@@ -253,7 +293,9 @@
           </VCardText>
 
           <VCardText>
-            <p class="text-base font-weight-medium mt-2">معلومات مالی:</p>
+            <p class="text-base font-weight-medium mt-2">
+              معلومات مالی:
+            </p>
 
             <VRow>
               <VCol
@@ -362,7 +404,7 @@ const itemTotalValue = computed(() => {
   
     
     amount = parseFloat(row.cost / row.rate)
-    totals += parseFloat(((amount) *1+1*row.expense) * row.quantity)
+    totals += parseFloat(((amount) *1+1*row.expense) * row.carton)
 
   })
 
@@ -383,7 +425,9 @@ const finalTotal = computed(() => {
 
 
 const remainder = computed(() => {
-  return finalTotal.value - payload.value.paid_amount
+  const total=finalTotal.value - payload.value.paid_amount
+  
+  return total.toFixed(2)
 })
 
 // ==================================== START DATA =======================================
@@ -409,6 +453,8 @@ const payload = ref({
       quantity: 0,
       expense: 0,
       rate: 0,
+      carton_amount: 0,
+      carton: 0,
       total: 0,
       cost: 0,
     },
@@ -432,6 +478,8 @@ const rules = {
       product_id: { required},
       quantity: { required, numeric, minValue: minValue(1) },
       cost: { required,numeric, minValue: minValue(1) },
+      carton_amount: { required,numeric, minValue: minValue(1) },
+      carton: { required,numeric, minValue: minValue(1) },
       rate: { required ,numeric, minValue: minValue(1)},
   
   
@@ -467,6 +515,8 @@ const resetForm = () => {
         cost: null,
         rate: null,
         total: null,
+        carton_amount: null,
+        carton: null,
         product_id: null,
       },
     ],
@@ -474,6 +524,12 @@ const resetForm = () => {
   }
   $v.value.$reset()
   formRef.value.resetValidation()
+}
+
+const getAmount = (index, item) => {
+  const items = payload.value.items
+  const total=item.quantity/item.carton_amount
+  items[index].carton = total.toFixed(2)
 }
 
 async function getContainer() {
@@ -558,6 +614,8 @@ const addMore = type => {
       quantity: null,
       rate: null,
       total: null,
+      carton_amount: null,
+      carton: null,
       expense: 0,
     })
   } else if (type == 'extra_expense') {

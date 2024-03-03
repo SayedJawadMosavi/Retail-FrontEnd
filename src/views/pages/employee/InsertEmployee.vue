@@ -1,189 +1,187 @@
 <template>
-    <VExpandTransition>
-      <div v-show="expand">
-        <VCard>
-          <VForm ref="formRef">
-            <VCardText>
-              <p class="text-base font-weight-medium mt-2">
-                معلومات شخصی
-              </p>
-              <VRow class="mb-3">
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.first_name"
-                    label="اسم "
-                    prepend-inner-icon="mdi-account"
-                    :rules="validationRules(v$.first_name, 'اسم')"
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.last_name"
-                    label="تخلص "
-                    prepend-inner-icon="mdi-account"
-                    :rules="validationRules(v$.last_name, 'تخلص')"
-                  />
-                </VCol>
-  
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.job_title"
-                    label="عنوان وظیفه"
-                    prepend-inner-icon="mdi-work"
-                    :rules="validationRules(v$.job_title, 'عنوان وظیفه')"
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.email"
-                    label="ایمیل آدرس"
-                    prepend-inner-icon="mdi-email"
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.phone_number"
-                    dir="ltr"
-                    label="شماره تلفن"
-                    prepend-inner-icon="mdi-phone"
-                    :rules="validationRules(v$.phone_number, 'شماره تلفن')"
-                    @input="convertToEnglishNumbers('phone_number')"
-                    @keypress="useRules.preventNonNumeric"
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.current_address"
-                    label="آدرس فعلی"
-                    prepend-inner-icon="mdi-home"
-                    :rules="validationRules(v$.current_address, 'آدرس فعلی')"
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.permenent_address"
-                    label="آدرس دائمی"
-                    prepend-inner-icon="mdi-home"
-                    :rules="validationRules(v$.permenent_address, 'آدرس دايمی')"
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.salary"
-                    dir="ltr"
-                    label="معاش"
-                    prepend-inner-icon="mdi-money"
-                    :rules="validationRules(v$.salary, 'معاش')"
-                    @input="convertToEnglishNumbers('salary')"
-                    @keypress="useRules.preventNonNumeric"
-                  />
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <p class="mb-1">
-                    تاریخ شروع قرارداد
-                  </p>
-                  <span dir="ltr">
-                    <VueDatePicker
-                      v-model="formData.employment_start_date"
-                      :offset="-250"
-                      label="employment start date"
-                      clearable
-                      auto-apply
-                      dark
-                      formate="MM/dd/yyyy"
-                      close-on-auto-apply
-                    /></span>
-  
-                  <p
-                    v-if="validationRules(v$.employment_start_date, 'Date').length > 0"
-                    class="text-error"
-                  >
-                    {{ validationRules(v$.employment_start_date, ' تاریخ شروع')[0] }}
-                  </p>
-                </VCol>
-  
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <p class="mb-1">
-                    تاریخ ختم قرارداد
-                  </p>
-                  <span dir="ltr">
-                    <VueDatePicker
-                      v-model="formData.employment_end_date"
-                      :offset="-250"
-                      clearable
-                      auto-apply
-                      dark
-                      formate="MM/dd/yyyy"
-                      close-on-auto-apply
-                    /></span>
-  
-                  <p
-                    v-if="validationRules(v$.employment_end_date, 'Date').length > 0"
-                    class="text-error"
-                  >
-                    {{ validationRules(v$.employment_end_date, 'تاریخ ختم')[0] }}
-                  </p>
-                </VCol>
-              </VRow>
-              <VRow />
-            </VCardText>
-  
-            <!-- 👉 Action Buttons -->
-            <VCardText class="d-flex flex-wrap gap-4">
-              <VBtn
-                v-if="!isSubmited"
-                :loading="apiLoading"
-                @click="validateForm"
+  <VExpandTransition>
+    <div v-show="expand">
+      <VCard>
+        <VForm ref="formRef">
+          <VCardText>
+            <p class="text-base font-weight-medium mt-2">
+              معلومات شخصی
+            </p>
+            <VRow class="mb-3">
+              <VCol
+                cols="12"
+                md="6"
               >
-                ذخیره
-              </VBtn>
-  
-              <VBtn
-                color="secondary"
-                variant="tonal"
-                @click="closeDialog"
+                <VTextField
+                  v-model="formData.first_name"
+                  label="اسم "
+                  prepend-inner-icon="mdi-account"
+                  :rules="validationRules(v$.first_name, 'اسم')"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
               >
-                لغو
-              </VBtn>
-            </VCardText>
-          </VForm>
-        </VCard>
-      </div>
-    </VExpandTransition>
-  </template>
+                <VTextField
+                  v-model="formData.last_name"
+                  label="تخلص "
+                  prepend-inner-icon="mdi-account"
+                  :rules="validationRules(v$.last_name, 'تخلص')"
+                />
+              </VCol>
   
-  <script setup>
-  import { axios } from '@/plugins/axios-plugin'
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.job_title"
+                  label="عنوان وظیفه"
+                  prepend-inner-icon="mdi-work"
+                  :rules="validationRules(v$.job_title, 'عنوان وظیفه')"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.email"
+                  label="ایمیل آدرس"
+                  prepend-inner-icon="mdi-email"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.phone_number"
+                  dir="ltr"
+                  label="شماره تلفن"
+                  prepend-inner-icon="mdi-phone"
+                
+                  @input="convertToEnglishNumbers('phone_number')"
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.current_address"
+                  label="آدرس فعلی"
+                  prepend-inner-icon="mdi-home"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.permenent_address"
+                  label="آدرس دائمی"
+                  prepend-inner-icon="mdi-home"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.salary"
+                  dir="ltr"
+                  label="معاش"
+                  prepend-inner-icon="mdi-money"
+                  :rules="validationRules(v$.salary, 'معاش')"
+                  @input="convertToEnglishNumbers('salary')"
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <p class="mb-1">
+                  تاریخ شروع قرارداد
+                </p>
+                <span dir="ltr">
+                  <VueDatePicker
+                    v-model="formData.employment_start_date"
+                    :offset="-250"
+                    label="employment start date"
+                    clearable
+                    auto-apply
+                    dark
+                    formate="MM/dd/yyyy"
+                    close-on-auto-apply
+                  /></span>
+  
+                <p
+                  v-if="validationRules(v$.employment_start_date, 'Date').length > 0"
+                  class="text-error"
+                >
+                  {{ validationRules(v$.employment_start_date, ' تاریخ شروع')[0] }}
+                </p>
+              </VCol>
+  
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <p class="mb-1">
+                  تاریخ ختم قرارداد
+                </p>
+                <span dir="ltr">
+                  <VueDatePicker
+                    v-model="formData.employment_end_date"
+                    :offset="-250"
+                    clearable
+                    auto-apply
+                    dark
+                    formate="MM/dd/yyyy"
+                    close-on-auto-apply
+                  /></span>
+  
+                <p
+                  v-if="validationRules(v$.employment_end_date, 'Date').length > 0"
+                  class="text-error"
+                >
+                  {{ validationRules(v$.employment_end_date, 'تاریخ ختم')[0] }}
+                </p>
+              </VCol>
+            </VRow>
+            <VRow />
+          </VCardText>
+  
+          <!-- 👉 Action Buttons -->
+          <VCardText class="d-flex flex-wrap gap-4">
+            <VBtn
+              v-if="!isSubmited"
+              :loading="apiLoading"
+              @click="validateForm"
+            >
+              ذخیره
+            </VBtn>
+  
+            <VBtn
+              color="secondary"
+              variant="tonal"
+              @click="closeDialog"
+            >
+              لغو
+            </VBtn>
+          </VCardText>
+        </VForm>
+      </VCard>
+    </div>
+  </VExpandTransition>
+</template>
+  
+<script setup>
+import { axios } from '@/plugins/axios-plugin'
 import useRules from '@/plugins/vuelidate/vuelidateRules'
 import { useVuelidate } from '@vuelidate/core'
 import { minLength, numeric, required } from '@vuelidate/validators'
@@ -191,132 +189,129 @@ import { ref } from 'vue'
 import { toast } from 'vue3-toastify'
   
     
-  // =============================start props==============
-  const props = defineProps({
-    toggleExpand: { type: Function, default: () => {} },
-    fetchRecord: { type: Function, default: () => {} },
-  })
+// =============================start props==============
+const props = defineProps({
+  toggleExpand: { type: Function, default: () => {} },
+  fetchRecord: { type: Function, default: () => {} },
+})
   
-  // =======================> starts states <===============================
+// =======================> starts states <===============================
   
-  const expand = ref(false)
+const expand = ref(false)
   
-  const apiLoading = ref(false)
-  const isSubmited = ref(false)
+const apiLoading = ref(false)
+const isSubmited = ref(false)
   
-  const formRef = ref()
-  const formData = ref({
+const formRef = ref()
+const formData = ref({
   
-    first_name: '',
-    last_name: '',
-    phone_number: '',
-    email: '',
-    gender: 'male',
-    current_address: '',
-    permenent_address: '',
-    employment_start_date: new Date(),
-    employment_end_date: new Date(),
-    job_title: ' ',
-    salary: 0,
-  })
+  first_name: '',
+  last_name: '',
+  phone_number: '',
+  email: '',
+  gender: 'male',
+  current_address: '',
+  permenent_address: '',
+  employment_start_date: new Date(),
+  employment_end_date: new Date(),
+  job_title: ' ',
+  salary: 0,
+})
   
-  ///   |=============================> start validation <==============================|
-  const validationRules = useRules.validate
+///   |=============================> start validation <==============================|
+const validationRules = useRules.validate
   
-  const rules = {
-    first_name: { required, minLength: minLength(3) },
-    last_name: { required, minLength: minLength(3) },
-    phone_number: { required, minLength: minLength(10) },
-    current_address: { required, minLength: minLength(3) },
-    permenent_address: { required, minLength: minLength(3) },
-    employment_start_date: { required },
-    employment_end_date: { required },
-    job_title: { required, minLength: minLength(3) },
-    salary: { required, numeric },
+const rules = {
+  first_name: { required, minLength: minLength(3) },
+  last_name: { required, minLength: minLength(3) },
+  employment_start_date: { required },
+  employment_end_date: { required },
+  job_title: { required, minLength: minLength(3) },
+  salary: { required, numeric },
   
-  }
+}
   
-  const v$ = useVuelidate(rules, formData)
+const v$ = useVuelidate(rules, formData)
   
-  // |===================================> start Methods   <==================
-  const closeDialog = () => {
+// |===================================> start Methods   <==================
+const closeDialog = () => {
+  isSubmited.value = false
+  expand.value = false
+  v$.value.$reset()
+  resetForm()
+  
+}
+  
+async function submit() {
+  try {
+    apiLoading.value = true
+    const res = await axios.post('employees', formData.value)
+      
+    toast.success('کارمند به موفقیت اضافه شد!')
     isSubmited.value = false
     expand.value = false
-    v$.value.$reset()
-    resetForm()
   
+    props.fetchRecord()
+  } catch (error) {
+    console.error('error', error)
+    toast.error('خطا ای رخ داد!')
   }
+  apiLoading.value = false
+}
   
-  async function submit() {
-    try {
-      apiLoading.value = true
-      const res = await axios.post('employees', formData.value)
-      
-      toast.success('کارمند به موفقیت اضافه شد!')
-      isSubmited.value = false
-      expand.value = false
+function toggleDialog($param) {
+  expand.value = !expand.value
+}
   
-      props.fetchRecord()
-    } catch (error) {
-      console.error('error', error)
-      toast.error('خطا ای رخ داد!')
-    }
-    apiLoading.value = false
+const resetForm = () => {
+  formData.value = {
+    first_name: null,
+    last_name: null,
+    email: null,
+    gender: null,
+    current_address: null,
+    permenent_address: null,
+    employment_start_date: new Date(),
+    employment_end_date: new Date(),
+    job_title: null,
+    salary: null,
   }
-  
-  function toggleDialog($param) {
-    expand.value = !expand.value
-  }
-  
-  const resetForm = () => {
-    formData.value = {
-      first_name: null,
-      last_name: null,
-      email: null,
-      gender: null,
-      current_address: null,
-      permenent_address: null,
-      employment_start_date: new Date(),
-      employment_end_date: new Date(),
-      job_title: null,
-      salary: null,
-    }
-    v$.value.$reset()
-    formRef.value.resetValidation()
+  v$.value.$reset()
+  formRef.value.resetValidation()
     
-  }
+}
   
-  function convertToEnglishNumbers(model, item = null, index = null) {
+function convertToEnglishNumbers(model, item = null, index = null) {
   
-    var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
-    var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
-    for (let i = 0; i < 10; i++) {
-      if (item == null) {
-        formData.value[model] = formData.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
-      } else {
-        formData.value[model][index][item] = formData.value[model][index][item]
-          .replace(persianNumbers[i], i)
-          .replace(englishNumbers[i], i)
-      }
+  var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
+  var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
+  for (let i = 0; i < 10; i++) {
+    if (item == null) {
+      formData.value[model] = formData.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
+    } else {
+      formData.value[model][index][item] = formData.value[model][index][item]
+        .replace(persianNumbers[i], i)
+        .replace(englishNumbers[i], i)
     }
   }
+}
   
-  const validateForm = async () => {
-    formRef.value.validate()
-    v$.value.$touch()
-    if (v$.value.$invalid) {
-      toast.error('لطفأ فورم را دقیق خانه پری کنید!')
+const validateForm = async () => {
+  formRef.value.validate()
+  v$.value.$touch()
+  if (v$.value.$invalid) {
+    toast.error('لطفأ فورم را دقیق خانه پری کنید!')
       
-      return false
-    }
-    submit()
-    v$.value.$reset()
+    return false
   }
+  submit()
+  v$.value.$reset()
+}
   
-  defineExpose({
-    toggleDialog,
-  })
-  </script>
+defineExpose({
+  toggleDialog,
+})
+</script>
   
   <style>
   .dp__input {

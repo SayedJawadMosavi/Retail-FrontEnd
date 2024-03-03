@@ -14,7 +14,9 @@
           <VForm ref="formRef">
             <VRow>
               <VCol cols="12">
-                <p class="mb-0">شروع تاریخ</p>
+                <p class="mb-0">
+                  شروع تاریخ
+                </p>
 
                 <span style="direction: ltr">
                   <VueDatePicker
@@ -30,7 +32,9 @@
               </VCol>
 
               <VCol cols="12">
-                <p class="mb-0">ختم تاریخ</p>
+                <p class="mb-0">
+                  ختم تاریخ
+                </p>
                 <span style="direction: ltr">
                   <VueDatePicker
                     v-model="payload.end_date"
@@ -116,36 +120,18 @@
     </BreadCrumbs>
 
     <div
-      style="border: 1px solid rebeccapurple; padding: 5px; border-radius: 10px"
       v-if="totalInfo"
+      style="border: 1px solid rebeccapurple; padding: 5px; border-radius: 10px"
       class="d-flex align-center"
     >
       <VRow>
-        <!-- <VCol
-          cols="12"
-          md="4"
-        >
-          <div class="pe-3 text-primary me-5">
-            <span class="d-inline-block pe-1"> Total Amount :</span> {{ totalInfo.total_amount_d_usd?.toFixed(2) }}
-          </div>
-        </VCol> -->
-
-        <!-- <VCol
-          cols="12"
-          md="4"
-        >
-          <div class="pe-3 me-5 text-warning">
-            <span class="d-inline-block pe-1"> Balance USD : </span>
-            {{ totalInfo.total_amount_d_usd?.toFixed(2) - totalInfo.total_amount_w_usd?.toFixed(2) }}
-          </div>
-        </VCol> -->
         <VCol
           cols="12"
           md="4"
         >
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> مجموع آمد :</span>
-            {{ totalInfo.total_amount_income_usd?.toFixed(2) }}
+            {{ total_amount_income_usd ?? 0 }}
           </div>
         </VCol>
         <VCol
@@ -153,7 +139,7 @@
           md="4"
         >
           <div class="pe-3 text-error me-5">
-            <span class="d-inline-block pe-1"> مجموع رفت : </span> {{ totalInfo.total_expense_usd?.toFixed(2) }}
+            <span class="d-inline-block pe-1"> مجموع رفت : </span> {{ total_expense_usd ?? 0 }}
           </div>
         </VCol>
         <VCol
@@ -162,7 +148,7 @@
         >
           <div class="pe-3 me-5 text-warning">
             <span class="d-inline-block pe-1"> موجودی : </span>
-            {{ totalInfo.total_amount_income_usd?.toFixed(2) - totalInfo.total_expense_usd?.toFixed(2) }}
+            {{ balance ?? 0 }}
           </div>
         </VCol>
       </VRow>
@@ -179,8 +165,8 @@
       @table-change="onTableChange($event)"
     >
       <template
-        #id="{ item }"
         v-for="i in 1"
+        #id="{ item }"
         :key="i"
       >
         {{ i++ }}
@@ -189,14 +175,14 @@
         {{ item.user?.name }}
       </template>
       <template #type="{ item }">
-          <VChip
-            small
-            :color="item.type == 'deposit' ? 'info' : 'error'"
-            class="font-weight-medium"
-          >
-            {{ item.type == 'deposit' ? 'آمد' : 'رفت' }}
-          </VChip>
-        </template>
+        <VChip
+          small
+          :color="item.type == 'deposit' ? 'info' : 'error'"
+          class="font-weight-medium"
+        >
+          {{ item.type == 'deposit' ? 'آمد' : 'رفت' }}
+        </VChip>
+      </template>
       <template #amount="{ item }">
         <VChip
           small
@@ -218,14 +204,13 @@
         </p>
       </template>
       <template #created_at="{ item }">
-        {{moment(item.created_at, "YYYY-MM-DD").format("ll") }}
+        {{ moment(item.created_at, "YYYY-MM-DD").format("ll") }}
       </template>
     </DataTable>
   </div>
 </template>
 
 <script setup>
-
 import { onMounted, ref } from 'vue'
 import { axios } from '@/plugins/axios-plugin'
 import BreadCrumbs from '@/components/commons/BreadCrumbs.vue'
@@ -240,8 +225,9 @@ import { useVuelidate } from '@vuelidate/core'
 import moment from 'moment'
 const { tabs, headers, breadCrumbs, search } = usePageConfig()
 const total = ref(0)
-const st_balance = ref(0)
-const re_balance = ref(0)
+const total_amount_income_usd = ref(0)
+const total_expense_usd = ref(0)
+const balance = ref(0)
 const extraTotal = ref({})
 const searchOption = ref({})
 const apiLoading = ref(false)
@@ -292,8 +278,12 @@ const fetchRecord = async () => {
     total.value = data.total
     extraTotal.value = data.extraTotal
     totalInfo.value = data.extra
-    st_balance.value = data.extra.total_deposit - data.extra.total_withdraw
-    re_balance.value = data.extra.total_deposit_requested - data.extra.total_withdraw_requested
+    const total_income=parseFloat(data.extra.total_amount_income_usd)
+    const total_expense=parseFloat(data.extra.total_expense_usd)
+
+    total_amount_income_usd.value = total_income.toFixed(2)
+    total_expense_usd.value =total_expense.toFixed(2)
+    balance.value =total_income.toFixed(2)-total_expense.toFixed(2)
   } catch (error) {}
   apiLoading.value = false
 }

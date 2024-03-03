@@ -212,7 +212,8 @@ const apiLoading = ref(false)
 const roles = [
   { id: 'admin', name: 'ادمین' },
   { id: 'finance_manager', name: 'مدیر مالی' },
-  { id: 'bank_manager', name: 'مدیر صرافی' },
+  { id: 'secretary', name: 'منشی' },
+
 ]
 const flag = ref(false)
 const viewflag = ref(false)
@@ -246,85 +247,67 @@ const systems = [
     system_id: 'employees',
     system_name: 'کارمندان',
     actions: ['employee_view', 'employee_create', 'employee_delete', 'employee_restore', 'employee_force_delete'],
-    allowed_roles: ['admin'],
+    allowed_roles: ['admin','finance_manager','secretary'],
   },
   {
     system_id: 'salaries',
     system_name: 'معاشات',
     actions: ['salary_view', 'salary_create', 'salary_delete', 'salary_restore', 'salary_force_delete'],
-    allowed_roles: ['admin', 'finance_manager'],
+    allowed_roles: ['admin', 'finance_manager','secretary'],
   },
   {
     system_id: 'customer',
     system_name: 'مشتری',
     actions: ['customer_view', 'customer_create', 'customer_delete', 'customer_restore', 'customer_force_delete'],
-    allowed_roles: ['admin', 'finance_manager', 'editor'],
+    allowed_roles: ['admin', 'finance_manager','secretary'],
   },
   {
     system_id: 'income_expense',
     system_name: 'مصارف وآمد',
-    actions: [
-      'income_expense_view',
-      'income_expense_create',
-      'income_expense_delete',
-      'income_expense_restore',
-      'income_expense_force_delete',
-    ],
-    allowed_roles: ['admin', 'finance_manager', 'editor'],
+    actions: ['income_expense_view', 'income_expense_create', 'income_expense_delete', 'income_expense_restore', 'income_expense_force_delete'],
+    allowed_roles: ['admin', 'finance_manager','secretary'],
   },
   {
     system_id: 'product',
     system_name: ' محصولات',
     actions: ['product_view', 'product_create', 'product_delete', 'product_restore', 'product_force_delete'],
-    allowed_roles: ['admin', 'finance_manager', 'editor'],
+    allowed_roles: ['admin', 'finance_manager','secretary'],
   },
   {
     system_id: 'purchase',
     system_name: ' خرید',
     actions: ['purchase_view', 'purchase_create', 'purchase_delete', 'purchase_restore', 'purchase_force_delete'],
-    allowed_roles: ['admin', 'finance_manager', 'editor'],
+    allowed_roles: ['admin', 'finance_manager','secretary'],
   },
   {
     system_id: 'sell',
     system_name: ' فروش',
     actions: ['sell_view', 'sell_create', 'sell_delete', 'sell_restore', 'sell_force_delete'],
-    allowed_roles: ['admin', 'finance_manager', 'editor'],
+    allowed_roles: ['admin', 'finance_manager','secretary'],
   },
   {
     system_id: 'stock_product_transfer',
     system_name: ' انتقال محصول به گدام',
-    actions: [
-      'stock_product_transfer_view',
-      'stock_product_transfer_create',
-      'stock_product_transfer_delete',
-      'stock_product_transfer_restore',
-      'stock_product_transfer_force_delete',
-    ],
-    allowed_roles: ['admin', 'finance_manager', 'editor'],
+    actions: ['stock_product_transfer_view', 'stock_product_transfer_create', 'stock_product_transfer_delete', 'stock_product_transfer_restore', 'stock_product_transfer_force_delete'],
+    allowed_roles: ['admin', 'finance_manager','secretary'],
   },
   {
     system_id: 'stock_to_stock_transfer',
     system_name: ' انتقال گدام به گادم',
-    actions: [
-      'stock_to_stock_transfer_view',
-      'stock_to_stock_transfer_create',
-      'stock_to_stock_transfer_delete',
-      'stock_to_stock_transfer_restore',
-      'stock_product_transfer_force_delete',
-    ],
-    allowed_roles: ['admin', 'finance_manager', 'editor'],
+    actions: ['stock_to_stock_transfer_view', 'stock_to_stock_transfer_create', 'stock_to_stock_transfer_delete', 'stock_to_stock_transfer_restore', 'stock_product_transfer_force_delete'],
+    allowed_roles: ['admin', 'finance_manager','secretary'],
   },
   {
     system_id: 'stock',
     system_name: 'گدام ',
     actions: ['stock_view', 'stock_create', 'stock_delete', 'stock_restore', 'stock_force_delete'],
-    allowed_roles: ['admin', 'finance_manager'],
+    allowed_roles: ['admin', 'finance_manager','secretary'],
   },
   {
-    system_id: 'stock',
+    system_id: 'vendor',
     system_name: 'معامله داران ',
     actions: ['vendor_view', 'vendor_create', 'vendor_delete', 'vendor_restore', 'vendor_force_delete'],
-    allowed_roles: ['admin', 'finance_manager'],
+    allowed_roles: ['admin', 'finance_manager','secretary'],
   },
 ]
 const selectAll = all => {

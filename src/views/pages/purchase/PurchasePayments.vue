@@ -26,7 +26,7 @@
                   color="primary"
                   class="font-weight-medium"
                 >
-                  {{ purchaseInfo.total_price?.toFixed(2) ?? 0 }} $
+                  {{ purchaseInfo.total_price ?? 0 }} $
                 </VChip>
               </div>
   
@@ -43,7 +43,7 @@
                   color="success"
                   class="font-weight-medium"
                 >
-                  {{ purchaseInfo.payments_sum_amount?.toFixed(2) ?? 0 }} $
+                  {{ purchaseInfo.payments_sum_amount ?? 0 }} $
                 </VChip>
               </div>
   
@@ -326,6 +326,7 @@ const props = defineProps({
   
 const route = useRoute()
   
+const selectedType = ref({})
 const purchase_id = ref(route.params.purchase_id)
   
 const formRefs = ref()
@@ -346,6 +347,8 @@ const payload = ref({
   amount: null,
   purchase_id: purchase_id,
   vendor_id: props.purchaseInfo.vendor_id,
+  vendor_name: props.purchaseInfo.vendor.name,
+  container_name: props.purchaseInfo.container.name,
 })
   
 const remaining = computed(() => {
@@ -369,6 +372,8 @@ const resetForm = (type = 'items') => {
     amount: null,
     purchase_id: purchase_id,
     vendor_id: props.purchaseInfo.vendor_id,
+    vendor_name: props.purchaseInfo.vendor.name,
+    container_name: props.purchaseInfo.container.name,
   }
   v$.value.$reset()
   formRefs.value.resetValidation()
@@ -394,56 +399,57 @@ const editPayment = async (item, type = 'open') => {
     apiLoading2.value = false
   }
 }
-const deletePayment = async item => {
+const restoreRecord = async (item, type) => {
   selectedItem.value = item
-  confirmRef.value.showDialog('delete')
-}
-  
-const restorePayment = async item => {
-  selectedItem.value = item
+  selectedType.value = type
   confirmRef.value.showDialog('restore')
 }
-  
-const forceDelete = async item => {
+const deleteRecord = async (item, type) => {
   selectedItem.value = item
+  selectedType.value = type
+
+  confirmRef.value.showDialog('delete')
+}
+
+const forceDelete = async (item, type) => {
+  selectedItem.value = item
+  selectedType.value = type
+
   confirmRef.value.showDialog('forceDelete')
 }
 const onConfirm = async event => {
   if (event == 'delete') {
     try {
       apiLoading2.value = true
-      const { data } = await axios.delete(`delete/payments/` + selectedItem.value.id)
+      const { data } = await axios.delete(`delete_purchase/${selectedType.value}/${selectedItem.value.id}`)
       await props.updateChanges()
     } catch (error) {
       console.error('error', error)
     }
-    apiLoading2.value = false
   }
-  
+
   if (event == 'forceDelete') {
     try {
       apiLoading2.value = true
-      const { data } = await axios.delete(`force-delete/payments/` + selectedItem.value.id)
+      const { data } = await axios.delete(`force-delete_purchase/${selectedType.value}/${selectedItem.value.id}`)
       await props.updateChanges()
     } catch (error) {
       console.error('error', error)
     }
-    apiLoading2.value = false
   }
   if (event == 'restore') {
     try {
       restoreLoading.value = true
-      const { data } = await axios.post(`restore/payments/` + selectedItem.value.id)
+      const { data } = await axios.post(`restore_purchase/${selectedType.value}/${selectedItem.value.id}`)
       await props.updateChanges()
     } catch (error) {
       console.error('error', error)
     }
-    restoreLoading.value = false
   }
-  
+  restoreLoading.value = false
+  apiLoading2.value = false
   selectedItem.value = {}
 }
-  
 const validateForm = async () => {
   formRefs.value.validate()
   v$.value.$touch()

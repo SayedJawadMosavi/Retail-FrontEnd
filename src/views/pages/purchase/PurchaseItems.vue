@@ -4,7 +4,89 @@
       ref="confirmRef"
       @confirm="onConfirm"
     />
+    <VDialog
+      v-model="show"
+      transition="dialog-top-transition"
+      persistent
+      width="auto"
+    >
+      <VCard
+        width="auto"
+        title=" دریافت محصول"
+      >
+        <VCardText style="min-height: 300px">
+          <VForm ref="formRef">
+            <VRow>
+              <VCol cols="12">
+                <span style="direction: ltr">
+                  <VueDatePicker
+                    v-model="formData.created_at"
+                    clearable
+                    auto-apply
+                    dark
+                    close-on-auto-apply
+                    formate="MM/dd/yyyy"
+                    :offset="-130"
+                  />
+                </span>
+              </VCol>
 
+              <VCol cols="12">
+                <VTextField
+                  v-model="formData.exist"
+                  prepend-inner-icon="mdi-counter"
+                  readonly
+                  label="موجود"
+                  dir="ltr"
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
+              <VCol cols="12">
+                <VTextField
+                  v-model="formData.quantity"
+                  prepend-inner-icon="mdi-counter"
+                  :rules="validationRules($v3.quantity, 'مقدار')"
+                  label="مقدار"
+                  dir="ltr"
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="12"
+              >
+                <VTextarea
+                  v-model="formData.description"
+                  label=" توضیحات"
+                  prepend-inner-icon="mdi-info"
+                />
+              </VCol>
+            </VRow>
+          </VForm>
+        </VCardText>
+        <VCardActions class="justify-end">
+          <VBtn
+            color="secondary"
+            @click="show = false"
+          >
+            کنسل
+          </VBtn>
+
+          <VBtn
+            ripple
+            color="primary"
+            variant="tonal"
+            @click="getReport"
+          >
+            ذخیره
+            <VIcon
+              icon="mdi-export"
+              end
+            />
+          </VBtn>
+        </VCardActions>
+      </VCard>
+    </VDialog>
     <EditDialog
       ref="editRef"
       :order-info="purchaseInfo"
@@ -36,7 +118,7 @@
             <VRow class="mb-3">
               <VCol
                 cols="12"
-                md="4"
+                md="3"
               >
                 <span style="direction: ltr">
                   <VueDatePicker
@@ -56,12 +138,9 @@
                   {{ validationRules($v.created_at, 'تاریخ')[0] }}
                 </p>
               </VCol>
-            </VRow>
-
-            <VRow class="mb-3">
               <VCol
                 cols="12"
-                md="2"
+                md="3"
               >
                 <VAutocomplete
                   v-model="payload.product_id"
@@ -76,7 +155,7 @@
               </VCol>
               <VCol
                 cols="12"
-                md="2"
+                md="3"
               >
                 <VTextField
                   v-model="payload.rate"
@@ -91,7 +170,7 @@
               </VCol>
               <VCol
                 cols="12"
-                md="2"
+                md="3"
               >
                 <VTextField
                   v-model="payload.cost"
@@ -107,7 +186,7 @@
 
               <VCol
                 cols="12"
-                md="2"
+                md="3"
               >
                 <VTextField
                   v-model="payload.quantity"
@@ -120,10 +199,39 @@
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
+              <VCol
+                cols="12"
+                md="3"
+              >
+                <VTextField
+                  v-model="payload.carton_amount"
+                  prepend-inner-icon="mdi-counter"
+                  :rules="validationRules($v.carton_amount, 'مقدار به کارتن')"
+                  label="مقدار به کارتن"
+                  dir="ltr"
+                  @update:modelValue="getCartonAmount"
+                  @input="convertToEnglishNumbers('carton_amount')"
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="3"
+              >
+                <VTextField
+                  v-model="payload.carton"
+                  prepend-inner-icon="mdi-counter"
+                  :rules="validationRules($v.carton, 'تعداد کارتن')"
+                  label="تعداد کارتن"
+                  dir="ltr"
+                  @input="convertToEnglishNumbers('carton')"
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
 
               <VCol
                 cols="12"
-                md="2"
+                md="3"
               >
                 <VTextField
                   v-model="payload.expense"
@@ -139,7 +247,7 @@
 
               <VCol
                 cols="12"
-                md="2"
+                md="3"
               >
                 <VTextField
                   v-model="payload.total"
@@ -197,6 +305,15 @@
                 مقدار
               </th>
               <th scope="col">
+                دریافت
+              </th>
+              <th scope="col">
+                مقدار به کارتن
+              </th>
+              <th scope="col">
+                تعداد کارتن
+              </th>
+              <th scope="col">
                 مصرف
               </th>
               <th scope="col">
@@ -204,6 +321,9 @@
               </th>
               <th scope="col">
                 تاریخ
+              </th>
+              <th scope="col">
+                دریافت
               </th>
               <th
                 scope="col"
@@ -226,41 +346,95 @@
               <td>{{ item.rate }}</td>
               <td>{{ item.yen_cost }}</td>
               <td>{{ item.quantity }}</td>
+              <td>{{ item.received }}</td>
+              <td>{{ item.carton_amount }}</td>
+              <td>{{ item.carton }}</td>
               <td>{{ item.expense }}</td>
               <td>{{ item.total }}</td>
               <td>{{ moment(item.created_at, 'YYYY-MM-DD').format('ll') }}</td>
-
+              <td>
+                <VBtn
+                  v-if="item.received < item.quantity"
+                  variant="text"
+                  icon
+                  @click="openDialogs(item)"
+                >
+                  <VTooltip
+                    activator="parent"
+                    location="top"
+                  >
+                    ترلاسه شوی
+                  </VTooltip>
+                  <VIcon
+                    size="30"
+                    :class="item.received <= item.quantity ? 'primary' : 'info'"
+                    icon="mdi-send-check-outline"
+                  />
+                </VBtn>
+                <VBtn
+                  v-else
+                  variant="text"
+                  icon
+                >
+                  <VTooltip
+                    activator="parent"
+                    location="top"
+                  >
+                    رسید
+                  </VTooltip>
+                  <VIcon
+                    size="30"
+                    color="success"
+                    icon="mdi-check"
+                  />
+                </VBtn>
+              </td>
               <td class="text-center">
+                <VBtn
+                  variant="text"
+                  icon
+                  :loading="profileLoading && selectedId == item.id"
+                  @click="viewProfile(item)"
+                >
+                  <VIcon
+                    size="30"
+                    icon="mdi-eye-arrow-right"
+                  />
+                </VBtn>
                 <div v-if="item.deleted_at">
-                  <VBtn
+                  <!--
+                    <VBtn
                     variant="text"
                     icon
                     size="small"
                     color="info"
                     :loading="restoreLoading && selectedItem.id == item.id"
                     @click="restoreRecord(item, 'items')"
-                  >
+                    > 
+                  -->
+                  <!--
                     <VIcon
-                      start
-                      icon="mdi-restore"
-                      color="info"
+                    start
+                    icon="mdi-restore"
+                    color="info"
                     />
                     بازیابی
-                  </VBtn>
+                    </VBtn>
 
-                  <VBtn
+                    <VBtn
                     class="ms-2"
                     variant="text"
                     icon
                     size="small"
                     :loading="apiLoading2 && selectedItem == item"
                     @click="forceDelete(item, 'items')"
-                  >
+                    >
                     <VIcon
-                      icon="mdi-trash"
-                      color="error"
+                    icon="mdi-trash"
+                    color="error"
                     />
-                  </VBtn>
+                    </VBtn> 
+                  -->
                 </div>
 
                 <div v-else>
@@ -276,18 +450,20 @@
                     />
                   </VBtn>
 
-                  <VBtn
+                  <!--
+                    <VBtn
                     variant="text"
                     icon
                     size="small"
                     :loading="apiLoading2 && selectedItem == item"
                     @click="deleteRecord(item, 'items')"
-                  >
+                    >
                     <VIcon
-                      icon="mdi-trash"
-                      color="error"
+                    icon="mdi-trash"
+                    color="error"
                     />
-                  </VBtn>
+                    </VBtn> 
+                  -->
                 </div>
               </td>
             </tr>
@@ -391,6 +567,7 @@
               <th scope="col">
                 تاریخ
               </th>
+
               <th
                 scope="col"
                 class="text-center"
@@ -495,6 +672,7 @@ import { formateDate, scope } from '@/@core/utils/index'
 import ConfirmDialog from '@/components/commons/ConfirmDialog.vue'
 import EditDialog from './EditDialog.vue'
 import moment from 'moment'
+import router from '@/router'
 
 const props = defineProps({
   purchaseInfo: {
@@ -514,12 +692,15 @@ const purchase_id = ref(route.params.purchase_id)
 
 const formRef = ref()
 const expenseForm = ref()
+const profileLoading = ref(false)
+const selectedId = ref(null)
 
 const apiLoading = ref(false)
 const apiLoading2 = ref(false)
 const restoreLoading = ref(false)
 const confirmRef = ref()
 const editRef = ref()
+const show = ref(false)
 
 const selectedItem = ref({})
 const selectedType = ref(null)
@@ -533,6 +714,8 @@ const payload = ref({
   cost: 1,
   quantity: null,
   expense: null,
+  carton_amount: null,
+  carton: null,
   total: null,
   purchase_id: purchase_id.value,
 })
@@ -542,6 +725,8 @@ const expense = ref({
   product_id: null,
   price: null,
   purchase_id: purchase_id.value,
+  vendor_name: props.purchaseInfo.vendor.name,
+  container_name: props.purchaseInfo.container.name,
 })
 
 // ==================================== START VALIDATION =======================================
@@ -554,6 +739,8 @@ const rules = {
   cost: { required, minValue: minValue(1) },
   quantity: { required },
   expense: { required },
+  carton_amount: { required },
+  carton: { required },
   rate: { required },
 }
 
@@ -564,11 +751,31 @@ const rules = {
 //   cost: {},
 //   quantity: {},
 // }
-
+const formData = ref({
+  created_at: new Date(),
+  quantity: null,
+  product_id: null,
+  product_item_id: null,
+  description: null,
+})
 const expenseRule = {
   created_at: { required },
   name: { required, minLength: minLength(3) },
   price: { required, minValue: minValue(0) },
+}
+const rules2 = {
+  quantity: { required },
+}
+const openDialogs = item => {
+  console.log('items', item)
+  formData.value = {
+    created_at: new Date(),
+    quantity: null,
+    exist: item.quantity,
+    product_id: item.product_id,
+    product_item_id: item.id,
+  }
+  show.value = true
 }
 const Calculate = value => {
   const total_price = parseFloat(
@@ -586,12 +793,18 @@ const Calculate3 = value => {
   const total_price = parseFloat(((payload.value.cost / payload.value.rate) * 1 + 1 * payload.value.expense) * value)
   payload.value.total = total_price.toFixed(2)
 }
+const getCartonAmount = value => {
+  const total = parseFloat(payload.value.quantity / payload.value.carton_amount)
+  payload.value.carton = total.toFixed(2)
+}
 const Calculate4 = value => {
   const total_price = parseFloat(((payload.value.cost / payload.value.rate) * 1 + 1 * value) * payload.value.quantity)
   payload.value.total = total_price.toFixed(2)
 }
 const $v = new useVuelidate(rules, payload)
 const $v2 = new useVuelidate(expenseRule, expense)
+const $v3 = new useVuelidate(rules2, formData)
+
 const resetForm = (type = 'items') => {
   if (type == 'items') {
     payload.value = {
@@ -600,6 +813,8 @@ const resetForm = (type = 'items') => {
       total: null,
       cost: 1,
       quantity: null,
+      carton_amount: null,
+      carton: null,
       purchase_id: purchase_id.value,
       vendor_id: props.purchaseInfo.vendor_id,
     }
@@ -613,6 +828,8 @@ const resetForm = (type = 'items') => {
       price: null,
       purchase_id: purchase_id.value,
       vendor_id: props.purchaseInfo.vendor_id,
+      vendor_name: props.purchaseInfo.vendor.name,
+      container_name: props.purchaseInfo.container.name,
     }
     $v2.value.$reset()
     expenseForm.value.resetValidation()
@@ -639,6 +856,13 @@ const validateForm = async () => {
   // }
   submit()
 }
+const viewProfile = async item => {
+  profileLoading.value = true
+  selectedId.value = item.id
+
+  await router.replace('../view-received/' + item.id)
+  profileLoading.value = false
+}
 const validateExpenseForm = async () => {
   expenseForm.value.validate()
   $v2.value.$touch()
@@ -650,7 +874,20 @@ const validateExpenseForm = async () => {
   // }
   submitExpense()
 }
+const getReport = async () => {
+  if (formData.value.quantity == null || formData.value.created_at == null) {
+    toast.error('please fill the form correctly')
 
+    return false
+  }
+  try {
+    let { data } = await axios.post('receive_product', formData.value)
+    await props.updateChanges()
+    show.value = false
+  } catch (error) {
+    console.error('error', error)
+  }
+}
 async function submit() {
   try {
     apiLoading.value = true
@@ -725,7 +962,7 @@ const onConfirm = async event => {
   if (event == 'delete') {
     try {
       apiLoading2.value = true
-      const { data } = await axios.delete(`delete/${selectedType.value}/${selectedItem.value.id}`)
+      const { data } = await axios.delete(`delete_purchase/${selectedType.value}/${selectedItem.value.id}`)
       await props.updateChanges()
     } catch (error) {
       console.error('error', error)
@@ -735,7 +972,7 @@ const onConfirm = async event => {
   if (event == 'forceDelete') {
     try {
       apiLoading2.value = true
-      const { data } = await axios.delete(`force-delete/${selectedType.value}/${selectedItem.value.id}`)
+      const { data } = await axios.delete(`force-delete_purchase/${selectedType.value}/${selectedItem.value.id}`)
       await props.updateChanges()
     } catch (error) {
       console.error('error', error)
@@ -744,7 +981,7 @@ const onConfirm = async event => {
   if (event == 'restore') {
     try {
       restoreLoading.value = true
-      const { data } = await axios.post(`restore/${selectedType.value}/${selectedItem.value.id}`)
+      const { data } = await axios.post(`restore_purchase/${selectedType.value}/${selectedItem.value.id}`)
       await props.updateChanges()
     } catch (error) {
       console.error('error', error)

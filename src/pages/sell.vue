@@ -44,7 +44,7 @@
           color="success"
           class="font-weight-medium"
         >
-          {{ item?.payments_sum_amount?.toFixed(2) ?? 0 }} $
+          {{ item?.payments_sum_amount ?? 0 }} $
         </VChip>
       </template>
       <template #total_price="{ item }">
@@ -54,7 +54,7 @@
           color="primary"
           class="font-weight-medium"
         >
-          {{ item.total_price?.toFixed(2) ?? 0 }} $
+          {{ item?.total_price ?? 0 }} $
         </VChip>
       </template>
       <template #remainder="{ item }">
@@ -64,7 +64,7 @@
           color="error"
           class="font-weight-medium"
         >
-          {{ item.remainder?.toFixed(2) ?? 0 }} $
+          {{ item.remainder ?? 0 }} $
         </VChip>
       </template>
 

@@ -164,7 +164,7 @@
         >
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> مجموع آمد :</span>
-            {{ extra.total_amount_income_usd?.toFixed(2) }}
+            {{ total_amount_income_usd ?? 0 }}
           </div>
         </VCol>
         <VCol
@@ -172,7 +172,7 @@
           md="4"
         >
           <div class="pe-3 text-error me-5">
-            <span class="d-inline-block pe-1"> مجموع رفت : </span> {{ extra.total_expense_usd?.toFixed(2) }}
+            <span class="d-inline-block pe-1"> مجموع رفت : </span> {{ total_expense_usd ?? 0 }}
           </div>
         </VCol>
         <VCol
@@ -181,7 +181,7 @@
         >
           <div class="pe-3 me-5 text-warning">
             <span class="d-inline-block pe-1"> موجودی : </span>
-            {{ extra.total_amount_income_usd?.toFixed(2) - extra.total_expense_usd?.toFixed(2) }}
+            {{ balance ?? 0 }}
           </div>
         </VCol>
       </VRow>
@@ -281,7 +281,7 @@
           color="success"
           class="font-weight-medium"
         >
-          {{ item?.payments_sum_amount?.toFixed(2) ?? 0 }} $
+          {{ item?.payments_sum_amount ?? 0 }} $
         </VChip>
       </template>
       <template #total_price="{ item }">
@@ -291,7 +291,7 @@
           color="primary"
           class="font-weight-medium"
         >
-          {{ item.total_price?.toFixed(2) ?? 0 }} $
+          {{ item.total_price ?? 0 }} $
         </VChip>
       </template>
       <template #purchase_remainder="{ item }">
@@ -810,6 +810,9 @@ const printData = ref([])
 const printRefs = ref()
 const title = ref('')
 const total = ref(0)
+const total_amount_income_usd = ref(0)
+const total_expense_usd = ref(0)
+const balance = ref(0)
 const options = ref({ itemsPerPage: 20, page: 1, tab: 'reports' })
 const reports = ref([])
 const datatableRefs = ref()
@@ -891,15 +894,20 @@ const getReport = async () => {
     apiLoading.value = true
     printLoading.value = true
     let { data } = await axios.get('get_report',{  params: { ...options.value ,...payload.value }  })
+    show.value = false
     reports.value = data.data
 
     total.value = data.total
     extraTotal.value = data.extraTotal
 
     extra.value = data.extra
-    
+    const total_income=parseFloat(data.extra.total_amount_income_usd)
+    const total_expense=parseFloat(data.extra.total_expense_usd)
+
+    total_amount_income_usd.value = total_income.toFixed(2)
+    total_expense_usd.value =total_expense.toFixed(2)
+    balance.value =total_income.toFixed(2)-total_expense.toFixed(2)
  
-    show.value = false
 
 
   } catch (error) {

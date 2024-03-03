@@ -8,13 +8,17 @@
       min-height="500"
     >
       <VCardText class="pt-2 text-center">
-        <VImg :src="pnglogo" style="width: 100%; height: 200px;" class="" />
+        <VImg
+          :src="pnglogo"
+          style="width: 100%; height: 200px;"
+          class=""
+        />
 
         <h5
           class=" mb-1 px-4 mt-2"
           style="color: #9155FD;font-size: 18px;"
         >
-         Login to Retail managment system  
+          سیستم مدیریتی فروشات  
         </h5>
       </VCardText>
 
@@ -26,9 +30,9 @@
               <VTextField
                 v-model="form.name"
                 dir="ltr"
-                label="Name"
+                label="اسم"
                 type="name"
-                :rules="validationRules(v$.name, 'name')"
+                :rules="validationRules(v$.name, 'اسم')"
                 @keydown.enter="submit"
               />
             </VCol>
@@ -38,11 +42,11 @@
               <VTextField
                 v-model="form.password"
                 dir="ltr"
-                label="Password"
+                label="رمز عبور"
                 :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                :rules="validationRules(v$.password, 'رمزعبور')"
                 @click:append-inner="isPasswordVisible = !isPasswordVisible"
-                :rules="validationRules(v$.password, 'password')"
                 @keydown.enter="submit"
               />
 
@@ -51,9 +55,8 @@
                 block
                 :loading="loading"
                 @click="validateForm"
-                
               >
-               Sign in to system
+                ورود به سیستم
               </VBtn>
             </VCol>
           </VRow>
@@ -62,17 +65,17 @@
     </VCard>
 
  
-      <VImg
+    <VImg
       class="auth-footer-start-tree d-none d-md-block"
       :src="authV1Tree"
       :width="250"
-      />
+    />
 
-      <VImg
+    <VImg
       :src="authV1Tree2"
       class="auth-footer-end-tree d-none d-md-block"
       :width="350"
-      /> 
+    /> 
     
 
     <!-- bg img -->
@@ -113,14 +116,14 @@ const authThemeMask = computed(() => {
 })
 const validationRules = useRules.validate
   
-  const rules = {
+const rules = {
 
-    password: { required },
-    name: { required ,name},
+  password: { required },
+  name: { required ,name},
  
 
   
-  }
+}
   
 const v$ = useVuelidate(rules, form)
 const isPasswordVisible = ref(false)
@@ -132,16 +135,16 @@ const submit = async () => {
   loading.value = false
 }
 const validateForm = async () => {
-    formRef.value.validate()
-    v$.value.$touch()
-    if (v$.value.$invalid) {
-      toast.error('Please fill the form correctly')
+  formRef.value.validate()
+  v$.value.$touch()
+  if (v$.value.$invalid) {
+    toast.error('Please fill the form correctly')
       
-      return false
-    }
-    submit()
-    v$.value.$reset()
+    return false
   }
+  submit()
+  v$.value.$reset()
+}
 </script>
 
 <style lang="scss">

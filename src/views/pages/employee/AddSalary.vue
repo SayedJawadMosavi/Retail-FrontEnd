@@ -41,7 +41,9 @@
                 cols="12"
                 md="6"
               >
-                <p class="mb-1">تاریخ معاش</p>
+                <p class="mb-1">
+                  تاریخ معاش
+                </p>
                 <span style="direction: ltr">
                   <VueDatePicker
                     v-model="payload.created_at"
@@ -68,7 +70,9 @@
                 cols="12"
                 md="6"
               >
-                <p class="mb-1">سال وماه</p>
+                <p class="mb-1">
+                  سال وماه
+                </p>
                 <span style="direction: ltr">
                   <VueDatePicker
                     v-model="payload.year_month"
@@ -76,8 +80,7 @@
                     month-picker
                     :offset="-200"
                     auto-apply
-                  >
-                  </VueDatePicker>
+                  />
                 </span>
                 <p
                   v-if="validationRules($v.year_month, 'سال وماه').length > 0"
@@ -119,8 +122,8 @@
             </VRow>
             
             <VRow
-              class="mb-3"
               v-show="payload?.employee?.loan > 0"
+              class="mb-3"
             >
               <VCol
                 cols="12"
@@ -235,7 +238,7 @@ const employeeSalary = ref(0)
 const employees = ref([])
 
 const payload = ref({
-    employee_id: null,
+  employee_id: null,
   employee: null,
   created_at: new Date(),
   year_month: '',

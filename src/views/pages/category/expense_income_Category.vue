@@ -13,73 +13,16 @@
                 md="6"
               >
                 <VTextField
-                  v-model="formData.organization_name"
-                  label="اسم کمپنی "
-                  prepend-inner-icon="mdi-account"
-                  :rules="validationRules(v$.organization_name, 'اسم کمپنی')"
-                />
-              </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
                   v-model="formData.name"
-                  label="شخص ارتباطی "
-                  prepend-inner-icon="mdi-account"
-                  :rules="validationRules(v$.name, 'شخص ارتباطی')"
-                />
-              </VCol>
-
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="formData.email"
-                  label=" ایمیل آدرس"
-                  prepend-inner-icon="mdi-email"
-                />
-              </VCol>
-
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="formData.phone_number"
-                  dir="ltr"
-                  label="شماره تماس"
-                  prepend-inner-icon="mdi-phone"
-                  
-                  @input="convertToEnglishNumbers('phone_number')"
-                  @keypress="useRules.preventNonNumeric"
-                />
-              </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="formData.address"
-                  label="آدرس"
-                  prepend-inner-icon="mdi-map-marker"
-                />
-              </VCol>
-              <VCol
-                cols="12"
-                md="12"
-              >
-                <VTextarea
-                  v-model="formData.description"
-                  label=" توضیحات"
-                  prepend-inner-icon="mdi-info"
+                  label="اسم کتگوری "
+                  prepend-inner-icon="mdi-shopping-outline"
+                  :rules="validationRules(v$.name, 'اسم کتگوری')"
                 />
               </VCol>
             </VRow>
             <VRow />
           </VCardText>
-
+  
           <!-- 👉 Action Buttons -->
           <VCardText class="d-flex flex-wrap gap-4">
             <VBtn
@@ -93,7 +36,7 @@
               />
               ذخیره
             </VBtn>
-
+  
             <VBtn
               color="red"
               variant="tonal"
@@ -111,7 +54,7 @@
     </div>
   </VExpandTransition>
 </template>
-
+  
 <script setup>
 import { axios } from '@/plugins/axios-plugin'
 import useRules from '@/plugins/vuelidate/vuelidateRules'
@@ -119,41 +62,37 @@ import { useVuelidate } from '@vuelidate/core'
 import { minLength, required } from '@vuelidate/validators'
 import { ref } from 'vue'
 import { toast } from 'vue3-toastify'
-
+  
 // =============================start props==============
 const props = defineProps({
   toggleExpand: { type: Function, default: () => {} },
   fetchRecord: { type: Function, default: () => {} },
 })
-
+  
 // =======================> starts states <===============================
-
+  
 const expand = ref(false)
-
+const loadingCategory = ref(false)
+  
 const apiLoading = ref(false)
 const isSubmited = ref(false)
-
+const Categories = ref([])
 const formRef = ref()
 const formData = ref({
   name: '',
-  organization_name: '',
-  phone_number: '',
-  email: '',
-  address: '',
-  description: '',
+  company_name: '',
 })
-
+  
 ///   |=============================> start validation <==============================|
 const validationRules = useRules.validate
-
+  
 const rules = {
-  name: { required, minLength: minLength(3) },
-  organization_name: { required, minLength: minLength(3) },
+  name: { required, minLength: minLength(2) },
 
 }
-
+  
 const v$ = useVuelidate(rules, formData)
-
+  
 // |===================================> start Methods   <==================
 const closeDialog = () => {
   isSubmited.value = false
@@ -161,14 +100,23 @@ const closeDialog = () => {
   v$.value.$reset()
   resetForm()
 }
+async function getCategory() {
+  try {
+    loadingCategory.value = true
+    const { data } = await axios.get('category-list')
 
+    Categories.value = data
+  } catch (error) {
+    console.error('error', error)
+  }
+  loadingCategory.value = false
+}
 async function submit() {
   try {
     apiLoading.value = true
-    if (formData.value.id) await axios.put('vendor/id', formData.value)
-    else await axios.post('vendor', formData.value)
-
-   
+    if (formData.value.id) await axios.put('expense-income-category/id', formData.value)
+    else await axios.post('expense-income-category', formData.value)
+  
     isSubmited.value = false
     expand.value = false
     resetForm()
@@ -179,26 +127,24 @@ async function submit() {
   }
   apiLoading.value = false
 }
-
+  
 function toggleDialog(item = null) {
+  getCategory()
   if (item) {
     formData.value = JSON.parse(JSON.stringify(item))
+     
   }
   expand.value = true
 }
-
+  
 const resetForm = () => {
   formData.value = {
     name: null,
-    organization_name: null,
-    email: null,
-    address: null,
-    description: null,
   }
   v$.value.$reset()
   formRef.value.resetValidation()
 }
-
+  
 function convertToEnglishNumbers(model, item = null, index = null) {
   var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
   var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
@@ -212,49 +158,50 @@ function convertToEnglishNumbers(model, item = null, index = null) {
     }
   }
 }
-
+  
 const validateForm = async () => {
   formRef.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
     toast.error('لطفا فورم را دقیق خانه پری کنید!')
-
+  
     return false
   }
   submit()
   v$.value.$reset()
 }
-
+  
 defineExpose({
   toggleDialog,
 })
 </script>
-
-<style>
-.dp__input {
-  padding: 12px 4px 12px 40px !important;
-}
-
-.dp__theme_dark,
-.dp__theme_light {
-  --dp-background-color: rgb(var(--v-theme-surface));
-  --dp-text-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
-  --dp-hover-color: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
-  --dp-hover-text-color: gba(var(--v-theme-on-surface), 1);
-  --dp-hover-icon-color: var(--v-theme-on-surface);
-  --dp-primary-color: #40A579;
-  --dp-primary-text-color: #fff;
-  --dp-secondary-color: #8A8D93;
-  --dp-border-color: rgba(var(--v-border-color), var(--v-border-opacity));
-  --dp-menu-border-color: rgba(var(--v-border-color), var(--v-border-opacity));
-  --dp-border-color-hover: rgba(var(--v-border-color), var(--v-medium-emphasis-opacity)) --dp-border-radius:10px !important;
-  --dp-disabled-color: var(--v-disabled-opacity);
-  --dp-scroll-bar-background: var(--v-theme-on-surface);
-  --dp-scroll-bar-color: #484848;
-  --dp-success-color: #00701a;
-  --dp-success-color-disabled: #428f59;
-  --dp-icon-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
-  --dp-danger-color: #e53935;
-  --dp-highlight-color: rgba(0, 92, 178, 0.2);
-}
-</style>
+  
+  <style>
+  .dp__input {
+    padding: 12px 4px 12px 40px !important;
+  }
+  
+  .dp__theme_dark,
+  .dp__theme_light {
+    --dp-background-color: rgb(var(--v-theme-surface));
+    --dp-text-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+    --dp-hover-color: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
+    --dp-hover-text-color: gba(var(--v-theme-on-surface), 1);
+    --dp-hover-icon-color: var(--v-theme-on-surface);
+    --dp-primary-color: #40A579;
+    --dp-primary-text-color: #fff;
+    --dp-secondary-color: #8A8D93;
+    --dp-border-color: rgba(var(--v-border-color), var(--v-border-opacity));
+    --dp-menu-border-color: rgba(var(--v-border-color), var(--v-border-opacity));
+    --dp-border-color-hover: rgba(var(--v-border-color), var(--v-medium-emphasis-opacity)) --dp-border-radius:10px !important;
+    --dp-disabled-color: var(--v-disabled-opacity);
+    --dp-scroll-bar-background: var(--v-theme-on-surface);
+    --dp-scroll-bar-color: #484848;
+    --dp-success-color: #00701a;
+    --dp-success-color-disabled: #428f59;
+    --dp-icon-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+    --dp-danger-color: #e53935;
+    --dp-highlight-color: rgba(0, 92, 178, 0.2);
+  }
+  </style>
+  

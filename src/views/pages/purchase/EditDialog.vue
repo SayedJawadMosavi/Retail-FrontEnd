@@ -114,7 +114,7 @@
               cols="12"
               md="6"
             >
-              <v-autocomplete
+              <VAutocomplete
                 v-model="payload.product_id"
                 label="اسم محصول"
                 prepend-inner-icon="mdi-account"
@@ -123,19 +123,19 @@
                 return-object
                 :loading="loadingProduct"
                 :rules="validationRules($v.product_id, 'اسم محصول')"
-              ></v-autocomplete>
+              />
             </VCol>
             <VCol
               cols="12"
               md="6"
             >
               <VTextField
-                @update:modelValue="Calculate"
                 v-model="payload.rate"
                 prepend-inner-icon="mdi-counter"
                 :rules="validationRules($v.rate, 'نرخ تبادله')"
                 label="نرخ تبادله"
                 dir="ltr"
+                @update:modelValue="Calculate"
                 @input="convertToEnglishNumbers('rate')"
                 @keypress="useRules.preventNonNumeric"
               />
@@ -145,12 +145,12 @@
               md="6"
             >
               <VTextField
-                @update:modelValue="Calculate2"
                 v-model="payload.cost"
                 label="قیمت به ین"
                 dir="ltr"
                 prepend-inner-icon="mdi-counter"
                 :rules="validationRules($v.cost, 'قیمت به ین')"
+                @update:modelValue="Calculate2"
                 @input="convertToEnglishNumbers('cost')"
                 @keypress="useRules.preventNonNumeric"
               />
@@ -161,12 +161,12 @@
               md="6"
             >
               <VTextField
-                @update:modelValue="Calculate3"
                 v-model="payload.quantity"
                 prepend-inner-icon="mdi-counter"
                 :rules="validationRules($v.quantity, 'مقدار')"
                 label="مقدار"
                 dir="ltr"
+                @update:modelValue="Calculate3"
                 @input="convertToEnglishNumbers('quantity')"
                 @keypress="useRules.preventNonNumeric"
               />
@@ -176,12 +176,12 @@
               md="6"
             >
               <VTextField
-                @update:modelValue="Calculate4"
                 v-model="payload.expense"
                 prepend-inner-icon="mdi-counter"
                 :rules="validationRules($v.expense, 'مصرف')"
                 label="مصرف"
                 dir="ltr"
+                @update:modelValue="Calculate4"
                 @input="convertToEnglishNumbers('expense')"
                 @keypress="useRules.preventNonNumeric"
               />
@@ -261,33 +261,33 @@ const expenseRule = {
 
 const rules = {
   created_at: { required },
-    product_id: { required, minLength: minLength(2) },
-    total: { required },
-    cost: { required, minValue: minValue(1) },
-    quantity: { required },
-    expense: { required },
-    rate: { required },
+  product_id: { required, minLength: minLength(2) },
+  total: { required },
+  cost: { required, minValue: minValue(1) },
+  quantity: { required },
+  expense: { required },
+  rate: { required },
 }
 const Calculate = value => {
     
-    const total_price = parseFloat(((payload.value.cost / value) *1+1*payload.value.expense) * payload.value.quantity)
-    payload.value.total = total_price.toFixed(2)
-  }
-    const Calculate2 = value => {
+  const total_price = parseFloat(((payload.value.cost / value) *1+1*payload.value.expense) * payload.value.quantity)
+  payload.value.total = total_price.toFixed(2)
+}
+const Calculate2 = value => {
       
-    const total_price = parseFloat(((value / payload.value.rate) *1+1*payload.value.expense) * payload.value.quantity)
-    payload.value.total = total_price.toFixed(2)
-  }
-    const Calculate3 = value => {
+  const total_price = parseFloat(((value / payload.value.rate) *1+1*payload.value.expense) * payload.value.quantity)
+  payload.value.total = total_price.toFixed(2)
+}
+const Calculate3 = value => {
       
-    const total_price = parseFloat(((payload.value.cost /  payload.value.rate) *1+1*payload.value.expense) * value)
-    payload.value.total = total_price.toFixed(2)
-  }
-    const Calculate4 = value => {
+  const total_price = parseFloat(((payload.value.cost /  payload.value.rate) *1+1*payload.value.expense) * value)
+  payload.value.total = total_price.toFixed(2)
+}
+const Calculate4 = value => {
       
-    const total_price = parseFloat(((payload.value.cost /  payload.value.rate) *1+1*value) * payload.value.quantity)
-    payload.value.total = total_price.toFixed(2)
-  }
+  const total_price = parseFloat(((payload.value.cost /  payload.value.rate) *1+1*value) * payload.value.quantity)
+  payload.value.total = total_price.toFixed(2)
+}
 const $v = useVuelidate(rules, payload)
 const $v2 = useVuelidate(expenseRule, expense)
 
@@ -352,9 +352,9 @@ function openDialog(data, type) {
     payload.value = JSON.parse(JSON.stringify(data))
     console.log(data.product)
     payload.value.cost=data.yen_cost
-     axios.get('product-list').then(function (response) {
+    axios.get('product-list').then(function (response) {
 
-       products.value=response.data
+      products.value=response.data
     })
     payload.value.product_id = data.product.product_name
    

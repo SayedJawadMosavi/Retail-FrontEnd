@@ -24,13 +24,25 @@
       <template #default>
         <VBtn
           v-if="options.tab!='trash'"
-          class="font-weight-bold"
+          class="font-weight-bold ml-2"
           @click="TakeReport"
         >
           تهیه راپور
           <VIcon
             end
             icon="mdi-printer"
+          />
+        </VBtn>
+
+        <VBtn
+         
+          class="font-weight-bold bg-info"
+          to="expense_income_category"
+        >
+          کتگوری
+          <VIcon
+            end
+            icon="mdi-export"
           />
         </VBtn>
       </template>
@@ -53,6 +65,11 @@
       :extra-info="extraInfo"
       @table-change="onTableChange($event)"
     >
+      <template #category="{ item }">
+        <div style="white-space: nowrap">
+          {{ item.category.name }}
+        </div>
+      </template>
       <template #paid_amount="{ item }">
         <VChip
           small

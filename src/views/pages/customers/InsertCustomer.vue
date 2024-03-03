@@ -28,7 +28,7 @@
                   dir="ltr"
                   label="تذکره"
                   prepend-inner-icon="mdi-counter"
-                  :rules="validationRules(v$.tazkira_number, 'تذکره')"
+                
                   @input="convertToEnglishNumbers('tazkira_number')"
                   @keypress="useRules.preventNonNumeric"
                 />
@@ -64,7 +64,7 @@
                   dir="ltr"
                   label="شماره تماس"
                   prepend-inner-icon="mdi-phone"
-                  :rules="validationRules(v$.phone_number, 'شماره تماس')"
+             
                   @input="convertToEnglishNumbers('phone_number')"
                   @keypress="useRules.preventNonNumeric"
                 />
@@ -162,9 +162,9 @@ const validationRules = useRules.validate
 
 const rules = {
   first_name: { required, minLength: minLength(3) },
-  tazkira_number: { required },
+  
   last_name: { required, minLength: minLength(3) },
-  phone_number: { required, minLength: minLength(10) },
+ 
 }
 
 const v$ = useVuelidate(rules, formData)
@@ -232,7 +232,7 @@ const validateForm = async () => {
   formRef.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
-    toast.error('Please fill the form correctly')
+    toast.error(' مشکل در سرور وجود دارد !')
 
     return false
   }

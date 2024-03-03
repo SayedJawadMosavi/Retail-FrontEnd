@@ -1,195 +1,230 @@
 
 
 <template>
-    <VExpandTransition>
-      <div v-show="expand">
-        <VCard
-          :title="payload.id ? 'ویرایش رفت و آمد' : 'افزودن رفت و آمد'"
-          class="my-5"
-        >
-          <VForm ref="formRef">
-            <VCardText>
-              <VRow>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  
-                  <span style="direction: ltr">
-                    <VueDatePicker
-                      v-model="payload.created_at"
-                      clearable
-                      auto-apply
-                      dark
-                      close-on-auto-apply
-                      formate="MM/dd/yyyy"
-                      :offset="-120"
-                    />
-                  </span>
-                  <p
-                    v-if="validationRules($v.created_at, 'تاریخ').length > 0"
-                    class="text-error"
-                  >
-                    {{ validationRules($v.created_at, 'تاریخ')[0] }}
-                  </p>
-                </VCol>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VSelect
-                    v-model="payload.type"
-                    :items="types"
-                    label="نوع"
-                    :rules="validationRules($v.type, 'نوع')"
-                    append-inner-icon="mdi-invert-colors"
-                    item-title="name"
-                    item-value="id"
+  <VExpandTransition>
+    <div v-show="expand">
+      <VCard
+        :title="payload.id ? 'ویرایش رفت و آمد' : 'افزودن رفت و آمد'"
+        class="my-5"
+      >
+        <VForm ref="formRef">
+          <VCardText>
+            <VRow>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <span style="direction: ltr">
+                  <VueDatePicker
+                    v-model="payload.created_at"
+                    clearable
+                    auto-apply
+                    dark
+                    close-on-auto-apply
+                    formate="MM/dd/yyyy"
+                    :offset="-120"
                   />
-                </VCol>
-              </VRow>
+                </span>
+                <p
+                  v-if="validationRules($v.created_at, 'تاریخ').length > 0"
+                  class="text-error"
+                >
+                  {{ validationRules($v.created_at, 'تاریخ')[0] }}
+                </p>
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VSelect
+                  v-model="payload.type"
+                  :items="types"
+                  label="نوع"
+                  :rules="validationRules($v.type, 'نوع')"
+                  append-inner-icon="mdi-invert-colors"
+                  item-title="name"
+                  item-value="id"
+                />
+              </VCol>
+            </VRow>
+          </VCardText>
   
+          <!-- extra expense -->
+  
+          <VCardText>
+            <VRow>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="payload.name"
+                  label="اسم"
+                  append-inner-icon="mdi-note"
+                  :rules="validationRules($v.name, 'اسم')"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VAutocomplete
+                  v-model="payload.category_id"
+                  label="کتگوری"
              
-            </VCardText>
+                  prepend-inner-icon="mdi-account"
+                  :items="Categories"
+                  :item-title="ca => `${ca.name}`"
+                  return-object
+                  :loading="loadingCategory"
+                  :rules="validationRules($v.category_id, 'کتگوری')"
+                />
+              </VCol>
   
-            <!-- extra expense -->
-  
-            <VCardText>
-              <VRow>
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="payload.name"
-                    label="اسم"
-                    append-inner-icon="mdi-note"
-                    :rules="validationRules($v.name, 'اسم')"
-                  />
-                </VCol>
-  
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="payload.amount"
-                    label="مقدار پول"
-                    append-inner-icon="mdi-cash"
-                    :rules="validationRules($v.amount, 'مقدار پول')"
-                    dir="ltr"
-                    @input="convertToEnglishNumbers('amount')"
-                    @keypress="useRules.preventNonNumeric"
-                  />
-                </VCol>
-              </VRow>
-            </VCardText>
-            <!-- 👉 Action Buttons -->
-            <VCardText class="d-flex flex-wrap gap-4">
-              <VBtn
-                :loading="apiLoading"
-                @click="validateForm"
+              <VCol
+                cols="12"
+                md="6"
               >
-                ذخیره
-              </VBtn>
+                <VTextField
+                  v-model="payload.amount"
+                  label="مقدار پول"
+                  append-inner-icon="mdi-cash"
+                  :rules="validationRules($v.amount, 'مقدار پول')"
+                  dir="ltr"
+                  @input="convertToEnglishNumbers('amount')"
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
+            </VRow>
+          </VCardText>
+          <!-- 👉 Action Buttons -->
+          <VCardText class="d-flex flex-wrap gap-4">
+            <VBtn
+              :loading="apiLoading"
+              @click="validateForm"
+            >
+              ذخیره
+            </VBtn>
   
-              <VBtn
-                color="secondary"
-                variant="tonal"
-                @click="closeDialog"
-              >
-                بستن فورم
-              </VBtn>
-            </VCardText>
-          </VForm>
-        </VCard>
-      </div>
-    </VExpandTransition>
-  </template>
+            <VBtn
+              color="secondary"
+              variant="tonal"
+              @click="closeDialog"
+            >
+              بستن فورم
+            </VBtn>
+          </VCardText>
+        </VForm>
+      </VCard>
+    </div>
+  </VExpandTransition>
+</template>
   
   
   
   
-  <script setup>
-  import { axios } from '@/plugins/axios-plugin';
-import useRules from '@/plugins/vuelidate/vuelidateRules';
-import { useVuelidate } from '@vuelidate/core';
-import { minLength, minValue, numeric, required } from '@vuelidate/validators';
-import { toast } from 'vue3-toastify';
+<script setup>
+import { axios } from '@/plugins/axios-plugin'
+import useRules from '@/plugins/vuelidate/vuelidateRules'
+import { useVuelidate } from '@vuelidate/core'
+import { minLength, minValue, numeric, required } from '@vuelidate/validators'
+import { toast } from 'vue3-toastify'
   
-  // ==================================== START PROPS =======================================
+// ==================================== START PROPS =======================================
   
-  const props = defineProps({
-    fetchRecord: { type: Function, default: () => {} },
-  })
+const props = defineProps({
+  fetchRecord: { type: Function, default: () => {} },
+})
   
-  // ==================================== START Computed =======================================
+// ==================================== START Computed =======================================
   
-  // ==================================== START DATA =======================================
+// ==================================== START DATA =======================================
+const loadingCategory = ref(false)
+const Categories = ref([])
   
-  const apiLoading = ref(false)
-  const expand = ref(false)
-  const formRef = ref()
-  const types = ref([
-    { name: 'آمد', id: 'incoming' },
-    { name: 'رفت', id: 'outgoing' },
-  ])
-  const payload = ref({
+const apiLoading = ref(false)
+const expand = ref(false)
+const formRef = ref()
+const types = ref([
+  { name: 'آمد', id: 'incoming' },
+  { name: 'رفت', id: 'outgoing' },
+])
+const payload = ref({
+  created_at: new Date(),
+  name: null,
+  type: null,
+  category_id: '',
+
+  amount: 0,
+})
+  
+// ==================================== START VALIDATION =======================================
+const validationRules = useRules.validate
+  
+const rules = {
+  created_at: { required },
+  name: { required, minLength: minLength(3) },
+  type: { required },
+  category_id: { required},
+
+  amount: { required, numeric, minValue: minValue(1) },
+}
+  
+const $v = useVuelidate(rules, payload)
+  
+// ==================================== START METHODS =======================================
+  
+const resetForm = () => {
+  payload.value = {
     created_at: new Date(),
     name: null,
     type: null,
+    category_id: null,
     amount: 0,
-  })
-  
-  // ==================================== START VALIDATION =======================================
-  const validationRules = useRules.validate
-  
-  const rules = {
-    created_at: { required },
-    name: { required, minLength: minLength(3) },
-    type: { required },
-    amount: { required, numeric, minValue: minValue(1) },
   }
+  $v.value.$reset()
+  formRef.value.resetValidation()
+}
   
-  const $v = useVuelidate(rules, payload)
-  
-  // ==================================== START METHODS =======================================
-  
-  const resetForm = () => {
-    payload.value = {
-      created_at: new Date(),
-      name: null,
-      type: null,
-      amount: 0,
-    }
-    $v.value.$reset()
-    formRef.value.resetValidation()
+function openDialog(item = null) {
+  getCategory()
+
+  if (item) {
+    payload.value = JSON.parse(JSON.stringify(item))
+    payload.value.category_id = item.category.name
+
   }
+  expand.value = true
+}
   
-  function openDialog(item = null) {
-    if (item) {
-      payload.value = JSON.parse(JSON.stringify(item))
-    }
-    expand.value = true
+function closeDialog() {
+  expand.value = false
+  resetForm()
+}
+async function getCategory() {
+  try {
+    loadingCategory.value = true
+    const { data } = await axios.get('expense-income-category-list')
+
+    Categories.value = data
+  } catch (error) {
+    console.error('error', error)
   }
-  
-  function closeDialog() {
-    expand.value = false
-    resetForm()
+  loadingCategory.value = false
+}
+async function submit() {
+  try {
+    apiLoading.value = true
+    if (payload.value.id) await axios.put('income-outgoing/id', payload.value)
+    else await axios.post('income-outgoing', payload.value)
+    props.fetchRecord()
+    closeDialog()
+  } catch (error) {
+    console.error('error', error)
   }
-  async function submit() {
-    try {
-      apiLoading.value = true
-      if (payload.value.id) await axios.put('income-outgoing/id', payload.value)
-      else await axios.post('income-outgoing', payload.value)
-      props.fetchRecord()
-      closeDialog()
-    } catch (error) {
-      console.error('error', error)
-    }
-    apiLoading.value = false
-  }
-  const validateForm = async () => {
+  apiLoading.value = false
+}
+const validateForm = async () => {
   formRef.value.validate()
   $v.value.$touch()
   if ($v.value.$invalid) {
@@ -200,20 +235,20 @@ import { toast } from 'vue3-toastify';
   submit()
   $v.value.$reset()
 }
-  function convertToEnglishNumbers(model) {
-    var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
-    var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
-    for (let i = 0; i < 10; i++) {
-      payload.value[model] = payload.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
-    }
+function convertToEnglishNumbers(model) {
+  var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
+  var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
+  for (let i = 0; i < 10; i++) {
+    payload.value[model] = payload.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
   }
+}
   
-  // ==================================== START Expose =======================================
+// ==================================== START Expose =======================================
   
-  defineExpose({
-    openDialog,
-  })
-  </script>
+defineExpose({
+  openDialog,
+})
+</script>
   
   
   
