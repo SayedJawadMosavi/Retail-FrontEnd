@@ -5,7 +5,7 @@
         <VForm ref="formRef">
           <VCardText>
             <p class="text-base font-weight-medium mt-2">
-              معلومات شخصی
+              شخصی معلومات
             </p>
             <VRow class="mb-3">
               <VCol
@@ -14,9 +14,9 @@
               >
                 <VTextField
                   v-model="formData.first_name"
-                  label="اسم "
+                  label="نوم "
                   prepend-inner-icon="mdi-account"
-                  :rules="validationRules(v$.first_name, 'اسم')"
+                  :rules="validationRules(v$.first_name, 'نوم')"
                 />
               </VCol>
               <VCol
@@ -27,7 +27,6 @@
                   v-model="formData.last_name"
                   label="تخلص "
                   prepend-inner-icon="mdi-account"
-                  :rules="validationRules(v$.last_name, 'تخلص')"
                 />
               </VCol>
   
@@ -37,9 +36,8 @@
               >
                 <VTextField
                   v-model="formData.job_title"
-                  label="عنوان وظیفه"
+                  label="د وظیفي عنوان"
                   prepend-inner-icon="mdi-work"
-                  :rules="validationRules(v$.job_title, 'عنوان وظیفه')"
                 />
               </VCol>
               <VCol
@@ -48,7 +46,7 @@
               >
                 <VTextField
                   v-model="formData.email"
-                  label="ایمیل آدرس"
+                  label="ایمیل  "
                   prepend-inner-icon="mdi-email"
                 />
               </VCol>
@@ -59,7 +57,7 @@
                 <VTextField
                   v-model="formData.phone_number"
                   dir="ltr"
-                  label="شماره تلفن"
+                  label="تیلفون شمیره"
                   prepend-inner-icon="mdi-phone"
                 
                   @input="convertToEnglishNumbers('phone_number')"
@@ -72,7 +70,7 @@
               >
                 <VTextField
                   v-model="formData.current_address"
-                  label="آدرس فعلی"
+                  label="اوسنۍ پته"
                   prepend-inner-icon="mdi-home"
                 />
               </VCol>
@@ -82,7 +80,7 @@
               >
                 <VTextField
                   v-model="formData.permenent_address"
-                  label="آدرس دائمی"
+                  label="دایمی پټه"
                   prepend-inner-icon="mdi-home"
                 />
               </VCol>
@@ -105,7 +103,7 @@
                 md="6"
               >
                 <p class="mb-1">
-                  تاریخ شروع قرارداد
+                  د قرارداد شروع
                 </p>
                 <span dir="ltr">
                   <VueDatePicker
@@ -123,7 +121,7 @@
                   v-if="validationRules(v$.employment_start_date, 'Date').length > 0"
                   class="text-error"
                 >
-                  {{ validationRules(v$.employment_start_date, ' تاریخ شروع')[0] }}
+                  {{ validationRules(v$.employment_start_date, ' د پیل نیټه')[0] }}
                 </p>
               </VCol>
   
@@ -132,7 +130,7 @@
                 md="6"
               >
                 <p class="mb-1">
-                  تاریخ ختم قرارداد
+                  د قرارداد ختم
                 </p>
                 <span dir="ltr">
                   <VueDatePicker
@@ -149,7 +147,7 @@
                   v-if="validationRules(v$.employment_end_date, 'Date').length > 0"
                   class="text-error"
                 >
-                  {{ validationRules(v$.employment_end_date, 'تاریخ ختم')[0] }}
+                  {{ validationRules(v$.employment_end_date, 'د ختم نیټه')[0] }}
                 </p>
               </VCol>
             </VRow>
@@ -171,7 +169,7 @@
               variant="tonal"
               @click="closeDialog"
             >
-              لغو
+              لغوه کول
             </VBtn>
           </VCardText>
         </VForm>
@@ -223,10 +221,8 @@ const validationRules = useRules.validate
   
 const rules = {
   first_name: { required, minLength: minLength(3) },
-  last_name: { required, minLength: minLength(3) },
   employment_start_date: { required },
   employment_end_date: { required },
-  job_title: { required, minLength: minLength(3) },
   salary: { required, numeric },
   
 }
@@ -247,14 +243,14 @@ async function submit() {
     apiLoading.value = true
     const res = await axios.post('employees', formData.value)
       
-    toast.success('کارمند به موفقیت اضافه شد!')
+    toast.success('کارمند په بریالیتوب سره ثبت شو!')
     isSubmited.value = false
     expand.value = false
   
     props.fetchRecord()
   } catch (error) {
     console.error('error', error)
-    toast.error('خطا ای رخ داد!')
+    toast.error('سیسټم مشکل لری!')
   }
   apiLoading.value = false
 }
@@ -300,7 +296,7 @@ const validateForm = async () => {
   formRef.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
-    toast.error('لطفأ فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
       
     return false
   }

@@ -20,16 +20,20 @@
     </VCardText>
 
     <!-- Triangle Background -->
-    <VImg
+    <!--
+      <VImg
       :src="triangleBg"
       class="triangle-bg flip-in-ltr"
-    />
+      /> 
+    -->
 
     <!-- Trophy -->
-    <VImg
+    <!--
+      <VImg
       :src="trophy"
       class="trophy"
-    />
+      /> 
+    -->
   </VCard>
 </template>
 

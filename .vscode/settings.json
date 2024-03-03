@@ -89,5 +89,6 @@
             }
         ]
     },
-    "vue.features.codeActions.enable": false
+    "vue.features.codeActions.enable": false,
+    "vue3snippets.enable-compile-vue-file-on-did-save-code": true
 }

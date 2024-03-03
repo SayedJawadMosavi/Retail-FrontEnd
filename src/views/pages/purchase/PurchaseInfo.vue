@@ -1,14 +1,11 @@
 <template>
   <VRow>
     <VCol cols="12">
-      <VCard title="جزئیات محصول">
+      <VCard title="د محصول جزئیات ">
         <VCardText class="">
           <div class="d-flex align-center">
-            <p
-              class="text-base font-weight-medium mt-2"
-              style="min-width: 150px"
-            >
-              تاریخ ثبت
+            <p class="text-base font-weight-medium mt-2" style="min-width: 150px">
+              د ثبت نیټه
             </p>
             {{ formateDate(payload.purchase_date) }}
           </div>
@@ -17,45 +14,35 @@
 
         <VCardText>
           <!-- 👉 Form -->
-          <VForm
-            ref="formRef"
-            class="mt-6"
-          >
+          <VForm ref="formRef" class="mt-6">
             <VRow class="mb-3">
-              <VCol
-                cols="12"
-                md="4"
-              >
-                <v-autocomplete
+              <VCol cols="12" md="4">
+                <VAutocomplete
                   v-model="payload.container_id"
-                  label="کانتینر"
+                  label="کانټینر"
                   prepend-inner-icon="mdi-truck-fast"
                   :items="containers"
-                  :item-title="ca => `${ca.name}`"
+                  :item-title="(ca) => `${ca.name}`"
                   return-object
+                  readonly
                   :loading="loadingContainer"
-                  :rules="validationRules(v$.container_id, 'کانتینر')"
-                ></v-autocomplete>
+                  :rules="validationRules(v$.container_id, 'کانټینر')"
+                />
               </VCol>
-              <VCol
-                cols="12"
-                md="4"
-              >
-                <v-autocomplete
+              <VCol cols="12" md="4">
+                <VAutocomplete
                   v-model="payload.vendor_id"
-                  label="اسم معامله دار"
+                  label="د سوداګر نوم"
                   prepend-inner-icon="mdi-account"
                   :items="vendors"
-                  :item-title="ca => `${ca.name}`"
+                  :item-title="(ca) => `${ca.name}`"
                   return-object
+                  readonly
                   :loading="loadingVendor"
-                  :rules="validationRules(v$.vendor_id, 'اسم معامله دار')"
-                ></v-autocomplete>
+                  :rules="validationRules(v$.vendor_id, 'د سوداګر نوم')"
+                />
               </VCol>
-              <VCol
-                cols="12"
-                md="4"
-              >
+              <VCol cols="12" md="4">
                 <span style="direction: ltr">
                   <VueDatePicker
                     v-model.trim="payload.purchase_date"
@@ -70,18 +57,15 @@
                   v-if="validationRules(v$.purchase_date, 'Date').length > 0"
                   class="text-error"
                 >
-                  {{ validationRules(v$.purchase_date, 'تاریخ')[0] }}
+                  {{ validationRules(v$.purchase_date, "تاریخ")[0] }}
                 </p>
               </VCol>
             </VRow>
             <VRow class="mb-3">
-              <VCol
-                cols="12"
-                md="12"
-              >
+              <VCol cols="12" md="12">
                 <VTextarea
                   v-model="payload.description"
-                  label="توضیحات بیشتر"
+                  label="نور تفصیل"
                   prepend-inner-icon="mdi-info"
                 />
               </VCol>
@@ -91,20 +75,7 @@
         </VCardText>
 
         <VCardText class="d-flex flex-wrap gap-4">
-          <VBtn
-            :loading="apiLoading"
-            @click="validateForm"
-          >
-            ذخیره
-          </VBtn>
-
-          <VBtn
-            color="secondary"
-            variant="tonal"
-            @click="resetForm"
-          >
-            بازنشانی
-          </VBtn>
+          <VBtn :loading="apiLoading" @click="validateForm"> ذخیره </VBtn>
         </VCardText>
       </VCard>
     </VCol>
@@ -112,13 +83,13 @@
 </template>
 
 <script setup>
-import { required, numeric, minLength } from '@vuelidate/validators'
-import useRules from '@/plugins/vuelidate/vuelidateRules'
-import useVuelidate from '@vuelidate/core'
-import { ref, toRef } from 'vue'
-import { axios } from '@/plugins/axios-plugin'
-import { toast } from 'vue3-toastify'
-import { formateDate } from '@/@core/utils/index'
+import { required, numeric, minLength } from "@vuelidate/validators";
+import useRules from "@/plugins/vuelidate/vuelidateRules";
+import useVuelidate from "@vuelidate/core";
+import { ref, toRef } from "vue";
+import { axios } from "@/plugins/axios-plugin";
+import { toast } from "vue3-toastify";
+import { formateDate } from "@/@core/utils/index";
 
 const props = defineProps({
   purchaseInfo: {
@@ -133,32 +104,32 @@ const props = defineProps({
     type: Function,
     default: () => {},
   },
-})
-const formRef = ref()
-const apiLoading = ref(false)
-const loadingContainer = ref(false)
-const containers = ref([])
-const payload = toRef(props, 'purchaseInfo')
-const loadingVendor = ref(false)
-const vendors = ref([])
+});
+const formRef = ref();
+const apiLoading = ref(false);
+const loadingContainer = ref(false);
+const containers = ref([]);
+const payload = toRef(props, "purchaseInfo");
+const loadingVendor = ref(false);
+const vendors = ref([]);
 const resetForm = () => {
   const {
     vendor_id,
     container_id,
 
     rate,
-  } = props.resetData
-  payload.value.container_id = container_id
-  payload.value.vendor_id = vendor_id
-  payload.value.purchase_date = purchase_date
+  } = props.resetData;
+  payload.value.container_id = container_id;
+  payload.value.vendor_id = vendor_id;
+  payload.value.purchase_date = purchase_date;
 
-  payload.value.rate = rate
+  payload.value.rate = rate;
 
-  v$.value.$reset()
-}
+  v$.value.$reset();
+};
 
 // ==================================== START VALIDATION =======================================
-const validationRules = useRules.validate
+const validationRules = useRules.validate;
 
 const rules = {
   purchase_date: { required },
@@ -166,90 +137,92 @@ const rules = {
 
   container_id: { required },
   vendor_id: { required },
-}
+};
 
-const v$ = useVuelidate(rules, payload)
+const v$ = useVuelidate(rules, payload);
 
 const validateForm = async () => {
-  formRef.value.validate()
-  v$.value.$touch()
+  formRef.value.validate();
+  v$.value.$touch();
   if (v$.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!");
 
-    return false
+    return false;
   }
-  submit()
-}
+  submit();
+};
 
 async function submit() {
   try {
-    apiLoading.value = true
+    apiLoading.value = true;
 
-    const data = JSON.parse(JSON.stringify(payload.value))
-    delete data.items
-    delete data.created_by
-    delete data.updated_at
-    delete data.deleted_at
-    delete data.payments
-    delete data.extra_expense
-    await axios.put(`purchase/${payload.value.id}`, data)
-    await props.updateChanges()
+    const data = JSON.parse(JSON.stringify(payload.value));
+    delete data.items;
+    delete data.created_by;
+    delete data.updated_at;
+    delete data.deleted_at;
+    delete data.payments;
+    delete data.extra_expense;
+    await axios.put(`purchase/${payload.value.id}`, data);
+    await props.updateChanges();
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error);
   }
-  apiLoading.value = false
+  apiLoading.value = false;
 }
 async function getContainer() {
   try {
-    loadingContainer.value = true
-    const { data } = await axios.get('container-list')
+    loadingContainer.value = true;
+    const { data } = await axios.get("container-list");
 
-    containers.value = data
-    data.forEach(index => {
+    containers.value = data;
+    data.forEach((index) => {
       if (index.id == props.purchaseInfo.container_id) {
-        console.log('dfbdfbdf',index.name)
-        payload.value.container_id = index.name
+        console.log("dfbdfbdf", index.name);
+        payload.value.container_id = index.name;
       }
-    })
+    });
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error);
   }
-  loadingContainer.value = false
+  loadingContainer.value = false;
 }
 async function getVendor() {
   try {
-    loadingVendor.value = true
-    const { data } = await axios.get('vendor-list')
-    vendors.value = data
-    data.forEach(index => {
+    loadingVendor.value = true;
+    const { data } = await axios.get("vendor-list");
+    vendors.value = data;
+    data.forEach((index) => {
       if (index.id == props.purchaseInfo.vendor_id) {
-        console.log('dfbdfbdf',index.name)
-        payload.value.vendor_id = index.name
+        console.log("dfbdfbdf", index.name);
+        payload.value.vendor_id = index.name;
       }
-    })
+    });
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error);
   }
-  loadingVendor.value = false
+  loadingVendor.value = false;
 }
 function convertToEnglishNumbers(model, item = null, index = null) {
-  const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
-  const englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
+  const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g];
+  const englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g];
   for (let i = 0; i < 10; i++) {
     if (item == null) {
-      payload.value[model] = payload.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
+      payload.value[model] = payload.value[model]
+        .replace(persianNumbers[i], i)
+        .replace(englishNumbers[i], i);
     } else {
       payload.value[model][index][item] = payload.value[model][index][item]
         .replace(persianNumbers[i], i)
-        .replace(englishNumbers[i], i)
+        .replace(englishNumbers[i], i);
     }
   }
 }
 
 onMounted(() => {
-  getVendor()
-  getContainer()
-})
+  getVendor();
+  getContainer();
+});
 </script>
 
 <style>

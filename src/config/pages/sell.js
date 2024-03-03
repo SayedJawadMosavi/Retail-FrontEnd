@@ -1,16 +1,16 @@
 const tabs = [
-  { title: 'فروش محصولات', icon: 'mdi-shopping-outline', count: 0, key: 'sells' },
-  { title: 'حذف شده ها', icon: 'mdi-trash', count: 0, key: 'trash' },
+  { title: 'د محصولاتو خرڅل', icon: 'mdi-shopping-outline', count: 0, key: 'sells' },
+  { title: 'ړنګ شوی', icon: 'mdi-trash', count: 0, key: 'trash' },
 ]
 const breadCrumbs = [
   {
-    title: 'داشبورد',
+    title: 'فهرست',
     disabled: false,
     href: '/',
   },
   
   {
-    title: 'لیست فروش محصولات',
+    title: 'د محصولاتو خرڅ لست',
     disabled: true,
     href: 'sell',
   },
@@ -31,12 +31,12 @@ const search = [
   
 const headers = [
   {
-    title: '#آی دی',
+    title: '#بیل نمبر',
     key: 'id',
   },
    
   {
-    title: 'دیدن بیشتر',
+    title: 'نور کتل',
     key: 'view_profile',
   },
   {
@@ -45,33 +45,33 @@ const headers = [
   },
   
   {
-    title: 'اسم مشتری',
+    title: 'پیریدونکي نوم',
     key: 'customer_name',
   },
    
   
   {
-    title: 'مجموع قیمت',
-    key: 'total_price',
+    title: 'د قیمت مجموعه',
+    key: 'total_amount',
     width: '100px',
   },
   {
-    title: 'مقدار پرداخت شده',
-    key: 'paid_amount',
+    title: 'وصول شوی مقدار',
+    key: 'total_paid',
     width: '130px',
   },
   {
-    title: 'باقیمانده',
+    title: 'پاتې',
     key: 'remainder',
     width: '180px',
   },
    
   {
-    title: 'توضیحات',
+    title: 'تفصیل',
     key: 'description',
   },
   {
-    title: 'تاریخ ثبت',
+    title: 'د ثبت نیټه',
     key: 'sell_date',
   },
 ]

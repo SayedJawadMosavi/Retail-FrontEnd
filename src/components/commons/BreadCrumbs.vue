@@ -34,7 +34,7 @@
       <VSelect
         v-model="searchBy"
         :items="searchOptions"
-        label="نوع جستجو"
+        label="د لټون ډول"
         density="compact"
         class="me-1 search-by"
         item-title="name"
@@ -45,7 +45,7 @@
         density="compact"
         prepend-inner-icon="mdi-magnify"
         class="search"
-        placeholder="جستجو..."
+        placeholder="لټون..."
         clearable
         @click:clear="clearSearch"
         @input="onSearch"
@@ -65,7 +65,7 @@
         class="ms-2"
         @click="confirmRef.showDialog('delete')"
       >
-        حذف
+        ړنګول
       </VBtn>
       <VBtn
         v-if="selectedItems?.length > 0 && showForceDelete && activeTab == 'trash'"
@@ -75,7 +75,7 @@
         class="ms-2"
         @click="confirmRef.showDialog('forceDelete')"
       >
-        حذف
+        ړنګول
       </VBtn>
       <VBtn
         v-if="selectedItems?.length > 0 && showRestore && activeTab == 'trash'"
@@ -85,7 +85,7 @@
         class="ms-2"
         @click="confirmRef.showDialog('restore')"
       >
-        بازیابی
+      بیا رغونه
       </VBtn>
 
       <VBtn

@@ -6,14 +6,14 @@
       :selected-items="datatableRefs?.selectedItems"
       :items="breadCrumbs"
       :search-options="search"
-      page="لیست معامله داران"
+      page="د سوداګرو لست"
       icon="mdi-people"
-      create-text="معامله دار جدید"
-      edit-text="ویرایش معامله دار"
+      create-text="نوی سوداګر"
+      edit-text="د سوداګر ایدیت"
       :show-create="scope(['vendor_create'])"
-      :show-delete="scope(['vendor_delete'])"
-      :show-restore="scope(['vendor_restore'])"
-      :show-force-delete="scope(['vendor_force_delete'])"
+      :show-delete="scope(['not_vendor_delete'])"
+      :show-restore="scope(['not_vendor_restore'])"
+      :show-force-delete="scope(['not_vendor_force_delete'])"
       @on-force-delete="deleteRecord('force-delete')"
       @on-create="createVendor"
       @on-delete="deleteRecord"
@@ -49,7 +49,7 @@
             activator="parent"
             location="top"
           >
-            فعال کردن
+            فعال کول
           </VTooltip>
           <VIcon
             size="30"
@@ -67,7 +67,7 @@
             activator="parent"
             location="top"
           >
-            غیر فعال
+            غیرفعال
           </VTooltip>
           <VIcon
             size="30"
@@ -97,17 +97,17 @@
           color="success"
           class="font-weight-medium"
         >
-          {{ item?.payments_sum_amount?.toFixed(2) ?? 0 }} $
+          {{ item?.payments_sum_amount }} $
         </VChip>
       </template>
-      <template #total_price="{ item }">
+      <template #total_prices="{ item }">
         <VChip
           style="direction: ltr"
           small
           color="primary"
           class="font-weight-medium"
         >
-          {{ item.total_price?.toFixed(2) ?? 0 }} $
+          {{ item.total_price }} $
         </VChip>
       </template>
       <template #reminder="{ item }">
@@ -117,7 +117,7 @@
           color="error"
           class="font-weight-medium"
         >
-          {{ item.remainder?.toFixed(2) ?? 0 }} $
+          {{ item.remainder }} $
         </VChip>
       </template>
 
@@ -128,7 +128,7 @@
           color="warning"
           class="font-weight-medium"
         >
-          {{ item.extra_expense_sum_price?.toFixed(2) ?? 0 }} $
+          {{ item.extra_expense_sum_price }} $
         </VChip>
       </template>
 
@@ -155,19 +155,19 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
-import { axios } from '@/plugins/axios-plugin'
-import BreadCrumbs from '@/components/commons/BreadCrumbs.vue'
-import DataTable from '@/components/commons/DataTable.vue'
-import VendoPrint from '@/views/pages/vendors/vendorPrint.vue'
+import { onMounted, ref } from "vue"
+import { axios } from "@/plugins/axios-plugin"
+import BreadCrumbs from "@/components/commons/BreadCrumbs.vue"
+import DataTable from "@/components/commons/DataTable.vue"
+import VendoPrint from "@/views/pages/vendors/vendorPrint.vue"
 
-import InsertVendor from '@/views/pages/vendors/InsertVendor.vue'
+import InsertVendor from "@/views/pages/vendors/InsertVendor.vue"
 
-import usePageConfig from '@/config/pages/vendor'
-import router from '@/router'
-import { formateDate, scope } from '@/@core/utils/index'
+import usePageConfig from "@/config/pages/vendor"
+import router from "@/router"
+import { formateDate, scope } from "@/@core/utils/index"
 const CaloriesTemplate = defineComponent({
-  props: ['data'],
+  props: ["data"],
   template: `
           <div>
             {{ data }}
@@ -184,7 +184,7 @@ const expenseLoading = ref(false)
 const printData = ref([])
 const printRefs = ref()
 const total = ref(0)
-const options = ref({ itemsPerPage: 50, page: 1, tab: 'vendors' })
+const options = ref({ itemsPerPage: 20, page: 1, tab: "vendors" })
 const vendors = ref([])
 const datatableRefs = ref()
 const extraTotal = ref({})
@@ -204,7 +204,7 @@ const createVendor = () => {
 const viewExpense = async item => {
   expenseLoading.value = true
   selectedId.value = item.id
-  await router.replace('view-purchase-expense/' + item.id)
+  await router.replace("view-purchase-expense/" + item.id)
   expenseLoading.value = false
 }
 const sleep = ms => {
@@ -214,21 +214,23 @@ const print = async item => {
   try {
     selectedItemStatus.value = item
     printLoading.value = true
-    let { data } = await axios.get('vendor-purchase?id=' + item.id)
+    let { data } = await axios.get("vendor-purchase?id=" + item.id)
     printData.value = await data
     await sleep(1)
-    const printable = window.open('dcvdv', '_blank')
+    const printable = window.open("dcvdv", "_blank")
 
-    printable.document.write('<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>')
-    printable.document.write('</head><body>')
+    printable.document.write(
+      '<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>',
+    )
+    printable.document.write("</head><body>")
     printable.document.write(printRefs.value.$el.innerHTML)
-    printable.document.write('</body></html>')
+    printable.document.write("</body></html>")
     printable.document.close()
     printable.print()
     await sleep(1)
     printable.close()
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error)
   }
   printLoading.value = false
 }
@@ -241,7 +243,7 @@ const searchRecord = data => {
 const changeStatus = async item => {
   try {
     statusLoading.value = true
-    const { data } = await axios.post('vendor-status/' + item.status + '/' + item.id)
+    const { data } = await axios.post("vendor-status/" + item.status + "/" + item.id)
     fetchRecord()
   } catch (error) {
     console.error(error)
@@ -257,7 +259,7 @@ const fetchRecord = async () => {
   try {
     apiLoading.value = true
     datatableRefs.value.selectedItems = []
-    const res = await axios.get('vendor', { params: options.value })
+    const res = await axios.get("vendor", { params: options.value })
     vendors.value = res.data.data
 
     // let total_Afg = 0
@@ -286,11 +288,11 @@ const fetchRecord = async () => {
   apiLoading.value = false
 }
 
-const deleteRecord = async (type = 'delete') => {
+const deleteRecord = async (type = "delete") => {
   try {
     const ids = datatableRefs.value.selectedItems.map(row => row.id) ?? []
-    if (type == 'delete') await axios.delete('vendor/' + ids)
-    if (type == 'force-delete') await axios.delete('force-delete-vendor/' + ids)
+    if (type == "delete") await axios.delete("vendor/" + ids)
+    if (type == "force-delete") await axios.delete("force-delete-vendor/" + ids)
     datatableRefs.value.selectedItems = []
     fetchRecord()
   } catch (error) {}
@@ -298,7 +300,7 @@ const deleteRecord = async (type = 'delete') => {
 const restoreRecord = async () => {
   try {
     const ids = datatableRefs.value?.selectedItems?.map(row => row.id) ?? []
-    await axios.post('restore-vendor/' + ids)
+    await axios.post("restore-vendor/" + ids)
     datatableRefs.value.selectedItems = []
     fetchRecord()
   } catch (error) {

@@ -7,9 +7,9 @@
       :selected-items="datatableRefs?.selectedItems"
       :items="breadCrumbs"
       :search-options="search"
-      page="لیست رفت و آمد"
-      create-text="افزودن رفت و آمد"
-      edit-text="ویرایش رفت و آمد"
+      page="   د راکړی ورکړی راجستر او لست"
+      create-text="د راکړی ورکړی راجستر  "
+      edit-text="د راکړی ورکړی ایدیت  "
       icon="mdi-shopping-outline"
       :show-create="scope(['income_expense_create'])"
       :show-delete="scope(['income_expense_delete'])"
@@ -27,19 +27,18 @@
           class="font-weight-bold ml-2"
           @click="TakeReport"
         >
-          تهیه راپور
+          راپور ترتیبول
           <VIcon
             end
             icon="mdi-printer"
           />
         </VBtn>
-
         <VBtn
          
           class="font-weight-bold bg-info"
           to="expense_income_category"
         >
-          کتگوری
+          کټګوری
           <VIcon
             end
             icon="mdi-export"

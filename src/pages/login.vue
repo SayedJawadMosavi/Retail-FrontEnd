@@ -18,7 +18,7 @@
           class=" mb-1 px-4 mt-2"
           style="color: #9155FD;font-size: 18px;"
         >
-          سیستم مدیریتی فروشات  
+          د پرچون مدیریت سیسټم ته ننوتل 
         </h5>
       </VCardText>
 
@@ -30,9 +30,9 @@
               <VTextField
                 v-model="form.name"
                 dir="ltr"
-                label="اسم"
+                label="Name"
                 type="name"
-                :rules="validationRules(v$.name, 'اسم')"
+                :rules="validationRules(v$.name, 'name')"
                 @keydown.enter="submit"
               />
             </VCol>
@@ -42,10 +42,10 @@
               <VTextField
                 v-model="form.password"
                 dir="ltr"
-                label="رمز عبور"
+                label="Password"
                 :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                :rules="validationRules(v$.password, 'رمزعبور')"
+                :rules="validationRules(v$.password, 'password')"
                 @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 @keydown.enter="submit"
               />
@@ -56,7 +56,7 @@
                 :loading="loading"
                 @click="validateForm"
               >
-                ورود به سیستم
+                سیسټم ته ننوتل
               </VBtn>
             </VCol>
           </VRow>
@@ -138,7 +138,7 @@ const validateForm = async () => {
   formRef.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
-    toast.error('Please fill the form correctly')
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
       
     return false
   }

@@ -22,16 +22,16 @@ axios.interceptors.response.use(
   response => {
     const status =response.status
     if (status == 201) {
-      toast.success('معلومات موفقانه اضافه شد!')
+      toast.success('معلومات په بریالیتوب سره اضافه شول!')
     }
     else if (status == 202) {
-      toast.success('معلومات موفقانه ویرایش شد!')
+      toast.success('معلومات په بریالیتوب سره ایدیت شول!')
     }
     else if (status == 203) {
-      toast.success('معلومات موفقانه بازیابی شد!')
+      toast.success('معلومات په بریالیتوب سره ترلاسه شول!')
     }
     else if (status == 206) {
-      toast.success('معلومات موفقانه حذف شد!')
+      toast.success('معلومات په بریالیتوب سره حذف شول!')
     }
 
 
@@ -45,18 +45,21 @@ axios.interceptors.response.use(
       router.push('/login') // replace '/login' with the actual login page route
     }
     if (status === 402) {
-      toast.error('شما اجازه به این قسمت از سیستم را ندارید!')
+      toast.error('تاسو د سیسټم دې برخې ته اجازه نه لرئ!')
 
     }
     if (error?.code == 'ERR_NETWORK') {
       router.push('/network-error') 
     } 
     if (status == 500) {
-      toast.error(error?.response?.data??'خطا رخ داد')
+      toast.error(error?.response?.data??'تيروتنه رامینځ ته شوه')
+    }
+    if (status == 406) {
+      toast.error(error?.response?.data??'دنوم موجود ده')
     }
     if (status == 422) {
       const message = error?.response?.data?.message
-      toast.error(message??' مقدار بیشتر از موجود شده نمی تواند')
+      toast.error(message??' مقدار نشي کولی د هغه څه څخه ډیر وي چې شتون لري')
     }
     
     return Promise.reject(error)

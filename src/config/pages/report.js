@@ -1,6 +1,6 @@
 const tabs = [
-  { title: 'گزارش', icon: 'mdi-account-group-outline', count: 0 , key: 'reports'},
-  { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
+  { title: 'راپور', icon: 'mdi-account-group-outline', count: 0 , key: 'reports'},
+  { title: 'ړنګ شوی', icon:'mdi-trash',count:0, key: "trash"},
 ]
       
 const search=[
@@ -21,7 +21,7 @@ const search=[
 ]
 const breadCrumbs=[
   {
-    title: 'داشبورد',
+    title: 'فهرست',
     disabled: false,
     href: '/',
   },

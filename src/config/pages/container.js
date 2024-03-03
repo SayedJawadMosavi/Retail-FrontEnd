@@ -1,6 +1,6 @@
 const tabs = [
-  { title: 'کانتینر ها', icon: 'mdi-account-group-outline', count: 0 , key: 'containers'},
-  { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
+  { title: ' د کانټینر لست', icon: 'mdi-account-group-outline', count: 0 , key: 'containers'},
+  { title: '  ړنګ شوی', icon:'mdi-trash',count:0, key: "trash"},
 ]
   
 const search=[
@@ -9,28 +9,27 @@ const search=[
     id: 'all',
   },
   {
-    name: 'شماره ',
+    name: 'شمیره ',
     id: 'id',
   },
   
-   
 ]
 const breadCrumbs=[
   {
-    title: 'داشبورد',
+    title: 'فهرست',
     disabled: false,
     href: '/',
   },
       
   {
-    title: 'برگشت به خرید',
+    title: 'بیرته اخیستل ته',
     disabled: false,
     to: 'purchase',
   },
 ]
 const headers= [ 
   {
-    title: 'شماره',
+    title: 'شمیره',
     key: 'id',
   },
 
@@ -41,7 +40,7 @@ const headers= [
   
   
   {
-    title: 'اسم کانتیر',
+    title: 'د کانټینر نوم',
     key: 'name',
                
   },

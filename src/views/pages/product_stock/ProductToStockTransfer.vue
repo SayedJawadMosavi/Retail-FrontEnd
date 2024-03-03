@@ -10,7 +10,7 @@
             <VRow class="mb-3">
               <VCol
                 cols="12"
-                md="6"
+                md="4"
               >
                 <VAutocomplete
                   v-model="formData.product"
@@ -21,24 +21,41 @@
                   return-object
                   :loading="loadingProduct"
                   :rules="validationRules(v$.product, 'محصول')"
+                  @update:modelValue="getProductsId"
                 />
               </VCol>
               <VCol
                 cols="12"
-                md="6"
+                md="4"
               >
                 <VTextField
                   :model-value="formData?.product?.quantity"
                   dir="rtl"
                   prepend-inner-icon="mdi-counter"
+                  :class="formData?.product?.quantity > 0 ? 'text-success' : 'text-error'"
                   readonly
+                  label="  موجود"
                   @input="convertToEnglishNumbers('quantity_exist')"
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
               <VCol
                 cols="12"
-                md="6"
+                md="4"
+              >
+                <VTextField
+                  :model-value="formData?.product?.carton_amount"
+                  dir="rtl"
+                  :class="formData?.product?.carton_amount > 0 ? 'text-success' : 'text-error'"
+                  prepend-inner-icon="mdi-counter"
+                  readonly
+                  label="د کارتن موجود"
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="4"
               >
                 <VAutocomplete
                   v-model="formData.stock"
@@ -49,33 +66,37 @@
                   return-object
                   :loading="loadingStock"
                   :rules="validationRules(v$.stock, 'گدام')"
+                  @update:modelValue="getAlarm"
                 />
               </VCol>
-              
-
-             
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="4">
                 <VTextField
-                  v-model="formData.amount"
-                  dir="rtl"
-                  label="مقدار"
-                  prepend-inner-icon="mdi-code-equal"
-                  :rules="validationRules(v$.amount, 'مقدار')"
-                  @input="convertToEnglishNumbers('amount')"
+                  v-model="formData.carton_quantity"
+                  prepend-inner-icon="mdi-counter"
+                  label="د کارتن تعداد"
+                  :rules="validationRules(v$.product, 'د کارتن تعداد')"
+                  dir="ltr"
+                  @update:modelValue="CalculatQuantity"
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
-              
+
+              <VCol cols="4">
+                <VTextField
+                  v-model="formData.alarm_amount"
+                  prepend-inner-icon="mdi-counter"
+                  label="د گدام اندازه اخطاروی"
+                  dir="ltr"
+                  @keypress="useRules.preventNonNumeric"
+                />
+              </VCol>
               <VCol
                 cols="12"
                 md="12"
               >
                 <VTextarea
                   v-model="formData.description"
-                  label=" توضیحات"
+                  label=" تفصیل"
                   prepend-inner-icon="mdi-info"
                 />
               </VCol>
@@ -106,7 +127,7 @@
                 start
                 icon="mdi-cancel"
               />
-              کنسل
+              کینسل
             </VBtn>
           </VCardText>
         </VForm>
@@ -144,8 +165,12 @@ const formData = ref({
   product: '',
 
   quantity_exist: '',
+  product_id: '',
+  carton_amount: '',
+  carton_quantity: '',
   stock: '',
   amount: '',
+  alarm_amount: '',
   description: '',
 })
 
@@ -156,8 +181,9 @@ const rules = {
   product: { required },
   amount: { required },
 
-  stock: { required },
+  carton_quantity: { required },
 
+  stock: { required },
 }
 
 const v$ = useVuelidate(rules, formData)
@@ -203,7 +229,7 @@ async function submit() {
     props.fetchRecord()
   } catch (error) {
     console.error('error', error)
-    toast.error(' مشکل در سرور وجود دارد !')
+    toast.error(' مشکل په سرور کی موجود دي!')
   }
   apiLoading.value = false
 }
@@ -213,8 +239,7 @@ function toggleDialog(item = null) {
   getProducts()
   if (item) {
     formData.value = JSON.parse(JSON.stringify(item))
-    formData.value.amount=item.quantity
-  
+    formData.value.amount = item.quantity
   }
   expand.value = true
 }
@@ -224,6 +249,7 @@ const resetForm = () => {
     product: null,
     stock: null,
     amount: null,
+    alarm_amount: null,
 
     description: null,
   }
@@ -244,12 +270,49 @@ function convertToEnglishNumbers(model, item = null, index = null) {
     }
   }
 }
+const CalculatQuantity = value => {
+  const total_price = parseFloat(value * formData.value.carton_amount)
+  formData.value.amount = total_price.toFixed(2)
+}
+const getProductsId = value => {
+  try {
+    loadingProduct.value = true
 
+    axios.get('get-product-alarm/' + value.id).then(function (response) {
+      formData.value.product_id = value.id
+
+      formData.value.alarm_amount = response.data.product.alarm_amount
+
+      loadingProduct.value = false
+    })
+    axios.get('get-product-list/' + value.id).then(function (response) {
+      formData.value.carton_amount = response.data.carton_quantity
+   
+    })
+  } catch (error) {
+    console.error('error', error)
+  }
+}
+
+const getAlarm = value => {
+  try {
+    loadingProduct.value = true
+
+    axios.get('get-product-alarm-amount/' + value.id + '/' + formData.value.product_id).then(function (response) {
+      formData.value.alarm_amount = response.data.alarm_amount
+      formData.value.product_id = response.data.product_id
+
+      loadingProduct.value = false
+    })
+  } catch (error) {
+    console.error('error', error)
+  }
+}
 const validateForm = async () => {
   formRef.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
 
     return false
   }

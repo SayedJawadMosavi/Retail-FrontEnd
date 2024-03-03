@@ -14,9 +14,9 @@
               >
                 <VTextField
                   v-model="formData.name"
-                  label="اسم کانتینر "
+                  label="کانټینر نوم "
                   prepend-inner-icon="mdi-shopping-outline"
-                  :rules="validationRules(v$.name, 'اسم کانتینر')"
+                  :rules="validationRules(v$.name, 'کانټینر نوم')"
                 />
               </VCol>
               <VCol
@@ -25,9 +25,9 @@
               >
                 <VTextField
                   v-model="formData.expense"
-                  label="مقدار مصرف"
+                  label="د مصرف اندازه"
                   append-inner-icon="mdi-cash"
-                  :rules="validationRules(v$.expense, 'مقدار مصرف')"
+                  :rules="validationRules(v$.expense, 'د پیسو اندازه')"
                   dir="ltr"
                   @input="convertToEnglishNumbers('expense')"
                   @keypress="useRules.preventNonNumeric"
@@ -60,7 +60,7 @@
                 start
                 icon="mdi-cancel"
               />
-              کنسل
+              کینسل
             </VBtn>
           </VCardText>
         </VForm>
@@ -138,7 +138,7 @@ async function submit() {
     props.fetchRecord()
   } catch (error) {
     console.error('error', error)
-    toast.error(' مشکل در سرور وجود دارد !')
+    toast.error(' سیسټم مشکل لری !')
   }
   apiLoading.value = false
 }
@@ -179,7 +179,7 @@ const validateForm = async () => {
   formRef.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
   
     return false
   }

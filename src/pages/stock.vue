@@ -6,14 +6,14 @@
       :selected-items="datatableRefs?.selectedItems"
       :items="breadCrumbs"
       :search-options="search"
-      page="لیست گدام"
+      page="د ګدام لست"
       icon="mdi-people"
-      create-text="گدام جدید"
-      edit-text="ویرایش گدام "
+      create-text="نوی ګدام"
+      edit-text="د ګدام ایدیت "
       :show-create="scope(['stock_create'])"
-      :show-delete="scope(['stock_delete'])"
-      :show-restore="scope(['stock_restore'])"
-      :show-force-delete="scope(['stock_force_delete'])"
+      :show-delete="scope(['stock_not_delete'])"
+      :show-restore="scope(['stock_not_restore'])"
+      :show-force-delete="scope(['stock_not_force_delete'])"
       @on-force-delete="deleteRecord('force-delete')"
       @on-create="createProduct"
       @on-delete="deleteRecord"
@@ -36,14 +36,45 @@
       @table-change="onTableChange($event)"
     >
       <template #status="{ item }">
-        <VSwitch
-          :model-value="item.status"
-          inset
-          :true-value="1"
+        <VBtn
+          v-if="item.status == 0"
+          variant="text"
+          icon
           :loading="selectedItemStatus.id == item.id && statusLoading"
           @click="changeStatus(item)"
-        />
+        >
+          <VTooltip
+            activator="parent"
+            location="top"
+          >
+            فعال کردن
+          </VTooltip>
+          <VIcon
+            size="30"
+            :color="item.status == 0 ? 'error' : 'success'"
+            icon="mdi-close-thick"
+          />
+        </VBtn>
+        <VBtn
+          v-else
+          variant="text"
+          icon
+          @click="changeStatus(item)"
+        >
+          <VTooltip
+            activator="parent"
+            location="top"
+          >
+            غیر فعال
+          </VTooltip>
+          <VIcon
+            size="30"
+            color="success"
+            icon="mdi-check"
+          />
+        </VBtn>
       </template>
+   
       <template #print="{ item }">
         <VBtn
           variant="text"
@@ -115,7 +146,7 @@ const detailLoadingLoading = ref(false)
 const printData = ref([])
 const printRefs = ref()
 const total = ref(0)
-const options = ref({ itemsPerPage: 50, page: 1, tab: 'stocks' })
+const options = ref({ itemsPerPage: 20, page: 1, tab: 'stocks' })
 const products = ref([])
 const datatableRefs = ref()
 const extraTotal = ref({})
@@ -172,7 +203,8 @@ const changeStatus = async item => {
   try {
     selectedItemStatus.value = item
     statusLoading.value = true
-    const { data } = await axios.post('stock-status', item)
+    const { data } = await axios.post('stock-status/' + item.status + '/' + item.id)
+
     fetchRecord()
   } catch (error) {
     console.error(error)

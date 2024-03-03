@@ -4,77 +4,78 @@
       <VCard>
         <VForm ref="formRef">
           <VCardText>
-            <p class="text-base font-weight-medium mt-2">معلومات</p>
+            <p class="text-base font-weight-medium mt-2">
+              معلومات
+            </p>
             <VRow class="mb-3">
               <VCol
                 cols="12"
-                md="6"
+                md="3"
               >
-                <v-autocomplete
+                <VAutocomplete
                   v-model="formData.sender"
-                  @update:modelValue="Calculate"
-                  label="ازگدام"
+                  label="ګدام نه"
                   prepend-inner-icon="mdi-account"
                   :items="stocks"
                   :item-title="ca => `${ca.name}`"
                   return-object
                   :loading="loadingStock"
-                  :rules="validationRules(v$.sender, 'ازگدام')"
-                ></v-autocomplete>
+                  :rules="validationRules(v$.sender, 'ګدام نه')"
+                  @update:modelValue="Calculate"
+                />
               </VCol>
 
               <VCol
                 cols="12"
-                md="6"
+                md="3"
               >
-                <v-autocomplete
+                <VAutocomplete
                   v-model="formData.product"
                   label="محصول"
                   prepend-inner-icon="mdi-account"
                   :items="products"
-                  :item-title="ca => `${ca.product.product_name}  ${ca.quantity}`"
+                  :item-title="ca => `${ca.product.product_name}  ${ca.carton_quantity}`"
                   return-object
                   :loading="loadingProduct"
                   :rules="validationRules(v$.product, 'محصول')"
-                ></v-autocomplete>
+                  @update:modelValue="Calculate2"
+                />
               </VCol>
               <VCol
                 cols="12"
-                md="6"
+                md="3"
               >
-                <v-autocomplete
+                <VAutocomplete
                   v-model="formData.receiver"
-                  label="به گدام"
+                  label="  ګدام ته"
                   prepend-inner-icon="mdi-account"
                   :items="Tostocks"
                   :item-title="ca => `${ca.name}`"
                   return-object
                   :loading="loadingStock2"
-                  :rules="validationRules(v$.receiver, 'به گدام')"
-                ></v-autocomplete>
+                  :rules="validationRules(v$.receiver, ' ګدام ته')"
+                />
               </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="3">
                 <VTextField
-                  v-model="formData.amount"
-                  dir="rtl"
-                  label="مقدار"
-                  prepend-inner-icon="mdi-code-equal"
-                  :rules="validationRules(v$.amount, 'مقدار')"
-                  @input="convertToEnglishNumbers('amount')"
+                  v-model="formData.carton_quantity"
+                  prepend-inner-icon="mdi-counter"
+                 
+                  label="د کارتن تعداد"
+                  :rules="validationRules(v$.product, 'د کارتن تعداد')"
+                  dir="ltr"
+                  @update:modelValue="CalculatQuantity"
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
-
+              
               <VCol
                 cols="12"
                 md="12"
               >
                 <VTextarea
                   v-model="formData.description"
-                  label=" توضیحات"
+                  label=" تفصیل"
                   prepend-inner-icon="mdi-info"
                 />
               </VCol>
@@ -89,10 +90,10 @@
               :loading="apiLoading"
               @click="validateForm"
             >
-              <v-icon
+              <VIcon
                 start
                 icon="mdi-checkbox-marked-circle"
-              ></v-icon>
+              />
               ذخیره
             </VBtn>
 
@@ -101,11 +102,11 @@
               variant="tonal"
               @click="closeDialog"
             >
-              <v-icon
+              <VIcon
                 start
                 icon="mdi-cancel"
-              ></v-icon>
-              کنسل
+              />
+              کینسل
             </VBtn>
           </VCardText>
         </VForm>
@@ -148,6 +149,8 @@ const formData = ref({
   sender: '',
   receiver: '',
   amount: '',
+  carton_quantity: '',
+  carton_amount: '',
   description: '',
 })
 
@@ -157,6 +160,8 @@ const validationRules = useRules.validate
 const rules = {
   product: { required },
   amount: { required },
+  carton_amount: { required },
+  carton_quantity: { required },
 
   sender: { required },
   receiver: { required },
@@ -182,7 +187,10 @@ async function getStocks() {
   }
   loadingStock.value = false
 }
-
+const CalculatQuantity = value => {
+  const total_price = parseFloat(value * formData.value.carton_amount) 
+  formData.value.amount = total_price.toFixed(2)
+}
 const Calculate = value => {
   try {
     loadingStock.value = true
@@ -201,6 +209,20 @@ const Calculate = value => {
     console.error('error', error)
   }
 }
+const Calculate2 = value => {
+  try {
+   
+
+   
+    axios.get('get-product-stock-list/' + value.id).then(function (response) {
+      formData.value.carton_amount = response.data.carton_quantity
+   
+    })
+ 
+  } catch (error) {
+    console.error('error', error)
+  }
+}
 async function submit() {
   try {
     apiLoading.value = true
@@ -213,7 +235,7 @@ async function submit() {
     props.fetchRecord()
   } catch (error) {
     console.error('error', error)
-    toast.error(' مشکل در سرور وجود دارد !')
+    toast.error(' مشکل به سرور کښی موجود ده !')
   }
   apiLoading.value = false
 }
@@ -224,7 +246,8 @@ function toggleDialog(item = null) {
   if (item) {
     formData.value = JSON.parse(JSON.stringify(item))
     formData.value.amount = item.quantity
-    console.log('fdbdfbdf',item.product_stock.product.product_name)
+    console.log('fdbdfbdf', item.product_stock.product.product_name)
+
     // axios.get('product-list').then(function (response) {
     //   products.value = response.data
     // })
@@ -239,6 +262,8 @@ const resetForm = () => {
     sender: null,
     receiver: null,
     amount: null,
+    carton_amount: null,
+    carton_quantity: null,
 
     description: null,
   }
@@ -264,7 +289,7 @@ const validateForm = async () => {
   formRef.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
 
     return false
   }

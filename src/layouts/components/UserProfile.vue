@@ -62,8 +62,26 @@
 
             <VListItemTitle>پروفایل</VListItemTitle>
           </VListItem>
+          
 
           <!-- Divider -->
+          <VDivider class="my-2" />
+          <VListItem
+            style="cursor: pointer"
+            to="capital"
+          >
+            <template #prepend>
+              <VIcon
+                class="me-2"
+                icon="mdi-logout-variant"
+                size="22"
+              />
+            </template>
+
+            <VListItemTitle>
+              سرمایه
+            </VListItemTitle>
+          </VListItem>
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
@@ -76,7 +94,9 @@
               />
             </template>
 
-            <VListItemTitle @click="confirmRef.showDialog('logout')"> خروج </VListItemTitle>
+            <VListItemTitle @click="confirmRef.showDialog('logout')">
+              خروج
+            </VListItemTitle>
           </VListItem>
         </VList>
       </VMenu>
@@ -99,17 +119,17 @@ const store = useStoreAuth()
 const role = computed(() => {
   let val = ''
   switch (store.user?.role) {
-    case 'admin':
-      val = 'ادمین'
-      break
-    case 'finance_manager':
-      val = 'مدیر مالی'
-      break
-    case 'finance_manager':
-      val = 'مدیر مالی'
-      break
-    default:
-      break
+  case 'admin':
+    val = 'ادمین'
+    break
+  case 'finance_manager':
+    val = 'مدیر مالی'
+    break
+  case 'finance_manager':
+    val = 'مدیر مالی'
+    break
+  default:
+    break
   }
 
   return val

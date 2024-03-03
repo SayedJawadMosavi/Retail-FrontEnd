@@ -1,6 +1,6 @@
 const tabs = [
-  { title: 'مشتری', icon: 'mdi-account-group-outline', count: 0 , key: 'customers'},
-  { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
+  { title: 'پیرودنکی', icon: 'mdi-account-group-outline', count: 0 , key: 'customers'},
+  { title: 'ړنګ شوی', icon:'mdi-trash',count:0, key: "trash"},
 ]
     
 const search=[
@@ -21,46 +21,47 @@ const search=[
 ]
 const breadCrumbs=[
   {
-    title: 'داشبورد',
+    title: 'فهرست',
     disabled: false,
     href: '/',
   },
         
   {
-    title: 'مشتری',
+    title: 'پیرودنکی',
     disabled: true,
     href: 'customers',
   },
 ]
 const headers= [ 
   {
-    title: 'شماره',
+    title: 'شمیره',
     key: 'id',
   },
   
-  // {
-  //   title: 'View More',
-  //   key: 'profile',
-  // },
-   
   {
-    title: 'اسم',
+    title: 'تفصيلات وګورئ',
+    key: 'view_profile',
+  },
+  {
+    title: 'پرینت',
+    key: 'print',
+  },
+  {
+    title: 'نوم',
     key: 'first_name',
                  
   },
 
   {
     title: 'تخلص',
-    key: 'last_name',
-     
-                 
+    key: 'last_name',  
   },
   {
-    title: 'شماره تماس',
+    title: 'تیلفون شمیره',
     key: 'phone_number',
   },
   {
-    title: 'ایمیل',
+    title: 'بریښنالیک',
     key: 'email',
   },
   {
@@ -68,21 +69,21 @@ const headers= [
     key: 'address',
   },
   {
-    title: 'مجموع پول',
+    title: 'د پیسو مجموعه',
     key: 'total_price',
   },
    
   {
-    title: 'مجموع پرداخت شده',
+    title: 'ټول وصول شوي',
     key: 'paid_amount',
   },
   
   {
-    title: 'باقی مانده',
+    title: 'پاتې',
     key: 'reminder',
   },
   {
-    title: 'توضیحات',
+    title: 'تفصیل',
     key: 'description',
   },
   {
@@ -91,7 +92,6 @@ const headers= [
   },
     
 ]
-    
     
 export default function usePageConfig() {
   return {

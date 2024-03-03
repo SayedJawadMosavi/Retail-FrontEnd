@@ -8,7 +8,7 @@
               class="text-base font-weight-medium mt-2"
               style="min-width: 150px"
             >
-              تاریخ ثبت
+              د ثبت نیټه
             </p>
             {{ formateDate(payload.sell_date) }}
           </div>
@@ -28,13 +28,13 @@
               >
                 <VAutocomplete
                   v-model="payload.customer"
-                  label="اسم مشتری"
+                  label="پیریدونکي نوم"
                   prepend-inner-icon="mdi-account"
                   :items="customers"
                   :item-title="ca => `${ca.first_name}`"
                   return-object
                   :loading="loadingCustomer"
-                  :rules="validationRules(v$.customer, 'اسم مشتری')"
+                  :rules="validationRules(v$.customer, 'پیریدونکي نوم')"
                 />
               </VCol>
               <VCol
@@ -55,7 +55,7 @@
                   v-if="validationRules(v$.sell_date, 'Date').length > 0"
                   class="text-error"
                 >
-                  {{ validationRules(v$.sell_date, 'تاریخ')[0] }}
+                  {{ validationRules(v$.sell_date, 'نیټه')[0] }}
                 </p>
               </VCol>
             </VRow>
@@ -66,7 +66,7 @@
               >
                 <VTextarea
                   v-model="payload.description"
-                  label="توضیحات بیشتر"
+                  label="نور تفصیل"
                   prepend-inner-icon="mdi-info"
                 />
               </VCol>
@@ -88,7 +88,7 @@
             variant="tonal"
             @click="resetForm"
           >
-            بازنشانی
+            بیا تنظیمول
           </VBtn>
         </VCardText>
       </VCard>
@@ -159,7 +159,7 @@ const validateForm = async () => {
   formRef.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
 
     return false
   }

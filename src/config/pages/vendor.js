@@ -1,6 +1,6 @@
 const tabs = [
-  { title: 'معامله داران', icon: 'mdi-account-group-outline', count: 0 , key: 'vendors'},
-  { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
+  { title: 'سوداګر', icon: 'mdi-account-group-outline', count: 0 , key: 'vendors'},
+  { title: 'ړنګ شوی', icon:'mdi-trash',count:0, key: "trash"},
 ]
   
 const search=[
@@ -9,7 +9,7 @@ const search=[
     id: 'all',
   },
   {
-    name: 'شماره ',
+    name: 'شمیره ',
     id: 'id',
   },
   
@@ -17,76 +17,77 @@ const search=[
 ]
 const breadCrumbs=[
   {
-    title: 'داشبورد',
+    title: 'فهرست',
     disabled: false,
     href: '/',
   },
       
   {
-    title: 'معامله دار',
+    title: 'سوداګر',
     disabled: true,
     href: 'vendors',
   },
 ]
 const headers= [ 
   {
-    title: 'شماره',
+    title: 'شمیره',
     key: 'id',
   },
-  {
-    title: 'دیدن جزییات',
-    key: 'view_expense',
-  },
+
+  // {
+  //   title: 'تفصيلات وګورئ',
+  //   key: 'view_expense',
+  // },
   {
     title: 'پرنت',
     key: 'print',
   },
   {
-    title: 'اسم',
+    title: 'نوم',
     key: 'name',
    
                
   },
   
   {
-    title: 'اسم کمپنی',
+    title: 'د کمپني نوم',
     key: 'organization_name',
                
   },
   {
-    title: 'شماره تماس',
+    title: 'تیلفون شمیره',
     key: 'phone_number',
    
                
   },
   {
-    title: 'آدرس',
+    title: 'پته',
     key: 'address',
    
                
   },
   {
-    title: 'ایمیل آدرس',
+    title: 'ایمیل ',
     key: 'email',
   },
     
   {
-    title: 'مجموع مصارف اضای ',
+    title: 'ټول لګښتونه ',
     key: 'extra_expense_sum_price',
   },
  
   {
-    title: 'مجموع پول',
-    key: 'total_price',
+    title: 'د پیسو مجموعه',
+    key: 'total_prices',
   },
    
   {
-    title: 'مجموع پرداخت شده',
+    title: 'ټول وصول شوي',
     key: 'paid_amount',
   },
   
   {
-    title: 'باقی مانده',
+    title: 'پاتې',
     key: 'reminder',
   },
  
@@ -100,7 +101,7 @@ const headers= [
   //   key: 'end_date',
   // },
   {
-    title: 'توضیحات',
+    title: 'تفصیل',
     key: 'description',
   },
   {

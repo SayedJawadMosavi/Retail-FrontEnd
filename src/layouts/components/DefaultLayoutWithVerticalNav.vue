@@ -1,12 +1,12 @@
 <script setup>
-import DrawerContent from './DrawerContent.vue'
-import { VerticalNavLayout } from '@layouts'
+import DrawerContent from "./DrawerContent.vue"
+import { VerticalNavLayout } from "@layouts"
 
 // Components
-import Footer from '@/layouts/components/Footer.vue'
-import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
-import LangSwitcher from '@/layouts/components/LangSwitcher.vue'
-import UserProfile from '@/layouts/components/UserProfile.vue'
+import Footer from "@/layouts/components/Footer.vue"
+import NavbarThemeSwitcher from "@/layouts/components/NavbarThemeSwitcher.vue"
+import LangSwitcher from "@/layouts/components/LangSwitcher.vue"
+import UserProfile from "@/layouts/components/UserProfile.vue"
 </script>
 
 <template>
@@ -15,7 +15,7 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
     <template #navbar>
       <VSpacer />
 
-      <LangSwitcher />
+      <!-- <LangSwitcher /> -->
       <NavbarThemeSwitcher />
 
       <UserProfile />

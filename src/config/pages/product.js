@@ -1,6 +1,6 @@
 const tabs = [
   { title: 'محصولات', icon: 'mdi-account-group-outline', count: 0 , key: 'products'},
-  { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
+  { title: 'ړنګ شوی', icon:'mdi-trash',count:0, key: "trash"},
 ]
   
 const search=[
@@ -9,7 +9,7 @@ const search=[
     id: 'all',
   },
   {
-    name: 'شماره ',
+    name: 'شمیره ',
     id: 'id',
   },
   
@@ -17,7 +17,7 @@ const search=[
 ]
 const breadCrumbs=[
   {
-    title: 'داشبورد',
+    title: 'فهرست',
     disabled: false,
     href: '/',
   },
@@ -30,11 +30,11 @@ const breadCrumbs=[
 ]
 const headers= [ 
   {
-    title: 'شماره',
+    title: 'شمیره',
     key: 'id',
   },
   {
-    title: 'دیدن جزییات',
+    title: 'تفصيلات وګورئ',
     key: 'view_expense',
   },
 
@@ -43,14 +43,14 @@ const headers= [
   //   key: 'print',
   // },
   {
-    title: 'اسم محصول',
+    title: 'د محصول نوم',
     key: 'product_name',
    
                
   },
   
   {
-    title: 'اسم کتگوری',
+    title: 'د کتګورۍ نوم',
     key: 'category',
                
   },
@@ -67,8 +67,26 @@ const headers= [
                
   },
   {
-    title: 'مقدار',
+    title: 'اندازه',
     key: 'quantity',
+   
+               
+  },
+  {
+    title: ' د کارتن تعداد',
+    key: 'carton_amount',
+   
+               
+  },
+  {
+    title: ' د واحد نوم',
+    key: 'unit_name',
+   
+               
+  },
+  {
+    title: ' د کارتن اندازه',
+    key: 'carton_quantity',
    
                
   },
@@ -82,10 +100,7 @@ const headers= [
     title: 'سایز',
     key: 'size',
   },
-    
-
- 
-    
+  
   // {
   //   title: ' Start Date',
   //   key: 'start_date',
@@ -95,7 +110,7 @@ const headers= [
   //   key: 'end_date',
   // },
   {
-    title: 'توضیحات',
+    title: 'تفصیل',
     key: 'description',
   },
   {

@@ -4,34 +4,34 @@ export default {
   validate(variable, field) {
    
     if (variable.required && variable.required.$invalid)
-      return [`${field} ضروری میباشد!`]
+      return [`${field} دا ضروري ده!`]
     
     if (variable.minLength && variable.minLength.$invalid)
-      return [`${field} حد اقل ${variable.minLength?.$params?.min} حرف باشد!`]
+      return [`${field} حد اقل ${variable.minLength?.$params?.min} حرف وی!`]
     
     if (variable.maxLength && variable.maxLength.$invalid)
-      return [`${field} حد اکثر ${variable.maxLength?.$params?.max} حرف باشد!`]
+      return [`${field} حد اکثر ${variable.maxLength?.$params?.max} حرف وی!`]
     
     if (variable.numeric && variable.numeric.$invalid)
-      return [`${field} باید عدد باشد!`]
+      return [`${field} باید عدد وی!`]
 
     if (variable.minValue && variable.minValue.$invalid)
-      return [`${field} حد اقل ${variable.minValue.$params.min} باشد`]
+      return [`${field} حد اقل ${variable.minValue.$params.min} وی`]
       
     if (variable.maxValue && variable.maxValue.$invalid)
-      return [`${field} بزرگتر از ${variable.maxValue.$params.max} شده نمیتواند`]
+      return [`${field} لوی د ${variable.maxValue.$params.max} نشی کیدلای`]
       
     if (variable.email && variable.email.$invalid)
-      return ['ایمل نادرست است']
+      return ['ایمیل صحیح نده']
     
     if (variable.sameAsPassword && variable.sameAsPassword.$invalid) { 
       
-      return ['تاییدی پسورد باهم شباهت ندارد!']
+      return ['تایید شوی پاسورد سره فرق لری!']
 
     }
     
     if (variable.sameAsRef && variable.sameAsRef.$invalid)
-      return ['تاییدی پسورد باهم شباهت ندارد!']
+      return ['تایید شوی پاسورد سره فرق لری!']
     
     return []
   },
@@ -41,22 +41,22 @@ export default {
     for (let index = 0; index < variable.length; index++) {
 
       if(variable[index].$params.type=='required')
-        return [`${field} ضروری میباشد!`]
+        return [`${field} ضروری وی!`]
       
       if(variable[index].$params.type=='numeric')
-        return [`${field} باید عدد باشد!`]
+        return [`${field} باید عدد وی!`]
 
       if(variable[index].$params.type=='minValue')
-        return [`${field} حد اقل ${variable[index].$params.min} باشد`]
+        return [`${field} حد اقل ${variable[index].$params.min} وی`]
       
       if(variable[index].$params.type=='maxValue')
-        return [`نمیتواند بزرگتر  از ${variable[index].$params.max} ${field}`]
+        return [`نشی کیدلای لوی د ${variable[index].$params.max} ${field}`]
       
       if(variable[index].$params.type=='minLength')
-        return [`${field} حد اقل ${variable[index].$params.min} حرف باشد!`]
+        return [`${field} حد اقل ${variable[index].$params.min} حرف وی!`]
       
       if(variable[index].$params.type=='maxLength')
-        return [`${field} حد اکثر ${variable[index].$params.min} حرف باشد!`]
+        return [`${field} حد اکثر ${variable[index].$params.min} حرف وی!`]
         
      
       

@@ -3,11 +3,10 @@ const $t = i18n.global.t
 const vendor_menu= [
 
   {
-    title: 'ثبت ولست معامله داران ',
+    title: ' دعرضه کونکی راجستر او لست',
     to: 'vendor',
     icon: { icon: 'mdi-people' },
   },
- 
  
 ]
 export default  vendor_menu

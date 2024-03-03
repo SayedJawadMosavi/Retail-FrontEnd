@@ -1,184 +1,184 @@
 <template>
-    <VExpandTransition>
-      <div v-show="expand">
-        <VCard>
-          <VForm ref="formRef">
-            <VCardText>
-              <p class="text-base font-weight-medium mt-2">معلومات</p>
-              <VRow class="mb-3">
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.name"
-                    label="اسم گدام "
-                    prepend-inner-icon="mdi-shopping-outline"
-                    :rules="validationRules(v$.name, 'اسم گدام')"
-                  />
-                </VCol>
-  
-                <VCol
-                  cols="12"
-                  md="6"
-                >
-                  <VTextField
-                    v-model="formData.address"
-                    label="آدرس "
-                    prepend-inner-icon="mdi-account"
-                    :rules="validationRules(v$.address, 'آدرس')"
-                  />
-                </VCol>
-               
-                
-              </VRow>
-              <VRow />
-            </VCardText>
-  
-            <!-- 👉 Action Buttons -->
-            <VCardText class="d-flex flex-wrap gap-4">
-              <VBtn
-                v-if="!isSubmited"
-                :loading="apiLoading"
-                @click="validateForm"
+  <VExpandTransition>
+    <div v-show="expand">
+      <VCard>
+        <VForm ref="formRef">
+          <VCardText>
+            <p class="text-base font-weight-medium mt-2">
+              معلومات
+            </p>
+            <VRow class="mb-3">
+              <VCol
+                cols="12"
+                md="6"
               >
-                <v-icon
-                  start
-                  icon="mdi-checkbox-marked-circle"
-                ></v-icon>
-                ذخیره
-              </VBtn>
+                <VTextField
+                  v-model="formData.name"
+                  label="د ګدام نوم "
+                  prepend-inner-icon="mdi-shopping-outline"
+                  :rules="validationRules(v$.name, 'د ګدام نوم')"
+                />
+              </VCol>
   
-              <VBtn
-                color="red"
-                variant="tonal"
-                @click="closeDialog"
+              <VCol
+                cols="12"
+                md="6"
               >
-                <v-icon
-                  start
-                  icon="mdi-cancel"
-                ></v-icon>
-                کنسل
-              </VBtn>
-            </VCardText>
-          </VForm>
-        </VCard>
-      </div>
-    </VExpandTransition>
-  </template>
+                <VTextField
+                  v-model="formData.address"
+                  label="پټه "
+                  prepend-inner-icon="mdi-account"
+                  :rules="validationRules(v$.address, 'پټه')"
+                />
+              </VCol>
+            </VRow>
+            <VRow />
+          </VCardText>
   
-  <script setup>
-  import { axios } from '@/plugins/axios-plugin'
+          <!-- 👉 Action Buttons -->
+          <VCardText class="d-flex flex-wrap gap-4">
+            <VBtn
+              v-if="!isSubmited"
+              :loading="apiLoading"
+              @click="validateForm"
+            >
+              <VIcon
+                start
+                icon="mdi-checkbox-marked-circle"
+              />
+              ذخیره
+            </VBtn>
+  
+            <VBtn
+              color="red"
+              variant="tonal"
+              @click="closeDialog"
+            >
+              <VIcon
+                start
+                icon="mdi-cancel"
+              />
+              کینسل
+            </VBtn>
+          </VCardText>
+        </VForm>
+      </VCard>
+    </div>
+  </VExpandTransition>
+</template>
+  
+<script setup>
+import { axios } from '@/plugins/axios-plugin'
 import useRules from '@/plugins/vuelidate/vuelidateRules'
 import { useVuelidate } from '@vuelidate/core'
 import { minLength, required } from '@vuelidate/validators'
 import { ref } from 'vue'
 import { toast } from 'vue3-toastify'
   
-  // =============================start props==============
-  const props = defineProps({
-    toggleExpand: { type: Function, default: () => {} },
-    fetchRecord: { type: Function, default: () => {} },
-  })
+// =============================start props==============
+const props = defineProps({
+  toggleExpand: { type: Function, default: () => {} },
+  fetchRecord: { type: Function, default: () => {} },
+})
   
-  // =======================> starts states <===============================
+// =======================> starts states <===============================
   
-  const expand = ref(false)
+const expand = ref(false)
 const loadingCategory = ref(false)
   
-  const apiLoading = ref(false)
-  const isSubmited = ref(false)
-  const stocks = ref([])
-  const formRef = ref()
-  const formData = ref({
-    name: '',
-    address: '',
-  })
+const apiLoading = ref(false)
+const isSubmited = ref(false)
+const stocks = ref([])
+const formRef = ref()
+const formData = ref({
+  name: '',
+  address: '',
+})
   
-  ///   |=============================> start validation <==============================|
-  const validationRules = useRules.validate
+///   |=============================> start validation <==============================|
+const validationRules = useRules.validate
   
-  const rules = {
-    name: { required, minLength: minLength(1) },
-    address: { required, minLength: minLength(3) },
-  }
+const rules = {
+  name: { required, minLength: minLength(1) },
+  address: { required, minLength: minLength(3) },
+}
   
-  const v$ = useVuelidate(rules, formData)
+const v$ = useVuelidate(rules, formData)
   
-  // |===================================> start Methods   <==================
-  const closeDialog = () => {
+// |===================================> start Methods   <==================
+const closeDialog = () => {
+  isSubmited.value = false
+  expand.value = false
+  v$.value.$reset()
+  resetForm()
+}
+
+async function submit() {
+  try {
+    apiLoading.value = true
+    if (formData.value.id) await axios.put('stock/id', formData.value)
+    else await axios.post('stock', formData.value)
+  
     isSubmited.value = false
     expand.value = false
-    v$.value.$reset()
+  
+    props.fetchRecord()
     resetForm()
+  } catch (error) {
+    console.error('error', error)
+    toast.error(' مشکل په سرور کښی موجود دی!')
   }
+  apiLoading.value = false
+}
+  
+function toggleDialog(item = null) {
 
-  async function submit() {
-    try {
-      apiLoading.value = true
-      if (formData.value.id) await axios.put('stock/id', formData.value)
-      else await axios.post('stock', formData.value)
-  
-      isSubmited.value = false
-      expand.value = false
-  
-      props.fetchRecord()
-      resetForm()
-    } catch (error) {
-      console.error('error', error)
-      toast.error(' مشکل در سرور وجود دارد !')
-    }
-    apiLoading.value = false
-  }
-  
-  function toggleDialog(item = null) {
-
-    if (item) {
-      formData.value = JSON.parse(JSON.stringify(item))
+  if (item) {
+    formData.value = JSON.parse(JSON.stringify(item))
      
-    }
-    expand.value = true
   }
+  expand.value = true
+}
   
-  const resetForm = () => {
-    formData.value = {
-        name: null,
-        address: null,
-    }
-    v$.value.$reset()
-    formRef.value.resetValidation()
+const resetForm = () => {
+  formData.value = {
+    name: null,
+    address: null,
   }
+  v$.value.$reset()
+  formRef.value.resetValidation()
+}
   
-  function convertToEnglishNumbers(model, item = null, index = null) {
-    var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
-    var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
-    for (let i = 0; i < 10; i++) {
-      if (item == null) {
-        formData.value[model] = formData.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
-      } else {
-        formData.value[model][index][item] = formData.value[model][index][item]
-          .replace(persianNumbers[i], i)
-          .replace(englishNumbers[i], i)
-      }
+function convertToEnglishNumbers(model, item = null, index = null) {
+  var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
+  var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
+  for (let i = 0; i < 10; i++) {
+    if (item == null) {
+      formData.value[model] = formData.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
+    } else {
+      formData.value[model][index][item] = formData.value[model][index][item]
+        .replace(persianNumbers[i], i)
+        .replace(englishNumbers[i], i)
     }
   }
+}
   
-  const validateForm = async () => {
-    formRef.value.validate()
-    v$.value.$touch()
-    if (v$.value.$invalid) {
-      toast.error('لطفا فورم را دقیق خانه پری کنید!')
-  
-      return false
-    }
-    submit()
-    v$.value.$reset()
+const validateForm = async () => {
+  formRef.value.validate()
+  v$.value.$touch()
+  if (v$.value.$invalid) {
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
+    
+    return false
   }
+  submit()
+  v$.value.$reset()
+}
   
-  defineExpose({
-    toggleDialog,
-  })
-  </script>
+defineExpose({
+  toggleDialog,
+})
+</script>
   
   <style>
   .dp__input {

@@ -6,7 +6,7 @@
   >
     <VCard
       v-if="editType == 'item'"
-      title="ویرایش محصول"
+      title="د محصول ایدیت"
     >
       <VCardText>
         <!-- 👉 Form -->
@@ -34,7 +34,7 @@
                 v-if="validationRules($v.created_at, 'Date').length > 0"
                 class="text-error mb-0"
               >
-                {{ validationRules($v.created_at, 'تاریخ')[0] }}
+                {{ validationRules($v.created_at, 'نیټه')[0] }}
               </p>
             </VCol>
             <VCol
@@ -43,13 +43,13 @@
             >
               <VAutocomplete
                 v-model="payload.stock_id"
-                label="اسم گدام"
+                label="د ګدام نوم"
                 prepend-inner-icon="mdi-account"
                 :items="stocks"
                 :item-title="st => `${st.name}`"
                 return-object
                 :loading="loadingStock"
-                :rules="validationRules($v.stock_id, 'اسم گدام')"
+                :rules="validationRules($v.stock_id, 'د ګدام نوم')"
                 @update:modelValue="getProductStock"
               />
             </VCol>
@@ -59,16 +59,28 @@
             >
               <VAutocomplete
                 v-model="payload.product_id"
-                label="اسم محصول"
+                label="د محصول نوم"
                 prepend-inner-icon="mdi-account"
                 :items="products"
                 :item-title="pr => `${pr.product.product_name} ${pr.quantity}`"
                 return-object
                 :loading="loadingProduct"
-                :rules="validationRules($v.product_id, 'اسم محصول')"
+                :rules="validationRules($v.product_id, 'د محصول نوم')"
               />
             </VCol>
+           
+            
 
+            <VCol cols="6">
+              <VTextField
+                v-model="payload.carton_quantity"
+                prepend-inner-icon="mdi-counter"
+                label="د کارتن تعداد"
+                dir="ltr"
+                @update:modelValue="Calculate1"
+                @keypress="useRules.preventNonNumeric"
+              />
+            </VCol>
             <VCol
               cols="12"
               md="6"
@@ -90,26 +102,10 @@
               md="6"
             >
               <VTextField
-                v-model="payload.quantity"
-                prepend-inner-icon="mdi-counter"
-                :rules="validationRules($v.quantity, 'مقدار')"
-                label="مقدار"
-                dir="ltr"
-                @update:modelValue="Calculate3"
-                @input="convertToEnglishNumbers('quantity')"
-                @keypress="useRules.preventNonNumeric"
-              />
-            </VCol>
-
-            <VCol
-              cols="12"
-              md="6"
-            >
-              <VTextField
                 v-model="payload.total"
                 prepend-inner-icon="mdi-counter"
-                :rules="validationRules($v.total, 'مجموع ')"
-                label="مجموع "
+                :rules="validationRules($v.total, 'مجموعه ')"
+                label="مجموعه "
                 dir="ltr"
                 @input="convertToEnglishNumbers('total')"
                 @keypress="useRules.preventNonNumeric"
@@ -134,7 +130,7 @@
           variant="tonal"
           @click="closeDialog"
         >
-          لغو
+          لغوه کول
         </VBtn>
       </VCardText>
     </VCard>
@@ -178,16 +174,18 @@ const rules = {
   total: { required },
   cost: { required, minValue: minValue(1) },
   quantity: { required },
+  carton_amount: { required },
 }
 
 const Calculate2 = value => {
-  const total_price = parseFloat(value * payload.value.quantity)
+  const total_price = parseFloat(value  * payload.value.carton_quantity)
   payload.value.total = total_price.toFixed(2)
 }
-const Calculate3 = value => {
-  const total_price = parseFloat(payload.value.cost * value)
+const Calculate1 = value => {
+  const total_price = parseFloat(value  * payload.value.cost)
   payload.value.total = total_price.toFixed(2)
 }
+
 const $v = useVuelidate(rules, payload)
 
 function convertToEnglishNumbers(model, item = null, index = null) {
@@ -207,7 +205,7 @@ const validateForm = async () => {
   formRef.value.validate()
   $v.value.$touch()
   if ($v.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
 
     return false
   }
@@ -227,18 +225,20 @@ function openDialog(data, type) {
   editType.value = type
 
   payload.value = JSON.parse(JSON.stringify(data))
-  loadingStock.value = true
+  payload.value.carton_amount=data.carton_amount
 
-  axios.get('stock-list').then(function (response) {
-    stocks.value = response.data
-    loadingStock.value = false
-  })
+  // loadingStock.value = true
+
+  // axios.get('stock-list').then(function (response) {
+  //   stocks.value = response.data
+  //   loadingStock.value = false
+  // })
   payload.value.product_id = data.product_stock.product.product_name
 
   payload.value.stock_id = data.product_stock.stock.name
+  
 }
 const getProductStock = value => {
-  
   loadingProduct.value = true
   axios.get('product-list/' + value.id).then(response => {
     products.value = response.data

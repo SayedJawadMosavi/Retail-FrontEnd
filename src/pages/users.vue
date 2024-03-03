@@ -6,9 +6,9 @@
       :selected-items="datatableRefs?.selectedItems"
       :items="breadCrumbs"
       :search-options="search"
-      page="لیست کاربران"
-      create-text="افزودن کاربر"
-      edit-text="ویرایش کاربر"
+      page="د کاروونکو لست"
+      create-text="د کاروونکی زیاتول"
+      edit-text="د کاروونکی ایدیت"
       page-icon="mdi-accounts"
       :show-create="scope(['user_create'])"
       :show-print="scope(['user_create'])"
@@ -156,10 +156,10 @@ const getRole = item => {
     name = 'ادمین'
     color = 'primary'
   } else if (item.role == 'finance_manager') {
-    name = 'مدیر مالی'
+    name = 'مالی مدیر'
     color = 'info'
   } else {
-    name = 'مدیر صرافی'
+    name = 'د صرافی مدیر'
     color = 'warning'
   }
 

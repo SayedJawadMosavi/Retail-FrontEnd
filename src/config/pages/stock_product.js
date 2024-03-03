@@ -1,69 +1,82 @@
 const tabs = [
-    { title: 'لست گدام محصولات', icon: 'mdi-cash-plus', count: 0, key: 'product_stocks' },
+  { title: 'د ګدام د محصولاتو لست', icon: 'mdi-cash-plus', count: 0, key: 'product_stocks' },
+  { title: 'د ګدام د محصولاتواخطاروی لست', icon: 'mdi-cash-plus', count: 0, key: 'product_stocks_alarm' },
 
-    { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: 'trash'},
-  ]
+  { title: '  ړنګ شوی', icon:'mdi-trash',count:0, key: 'trash'},
+]
   
-  const breadCrumbs=[
-    {
-      title: 'داشبورد',
-      disabled: false,
-      href: '/',
-    },
+const breadCrumbs=[
+  {
+    title: 'فهرست',
+    disabled: false,
+    href: '/',
+  },
           
-    {
-      title: 'گدام محصولات',
-      disabled: true,
-      href: '',
-    },
-  ]
-  const search=[
-    {
-      name: 'عمومی',
-      id: 'all',
-    },
+  {
+    title: 'د ګدام محصولات',
+    disabled: true,
+    href: '',
+  },
+]
+const search=[
+  {
+    name: 'عمومی',
+    id: 'all',
+  },
   
    
       
   
-  ]
+]
   
   
-  const headers= [
-    {
-      title: '#آی دی',
-      key: 'id',
-    },
-    {
-      title: 'اسم محصول',
-      key: 'products_name',
-    },
-    {
-      title: 'اسم گدام',
-      key: 'stocks_name',
-    },
+const headers= [
+  {
+    title: '#آی دی',
+    key: 'id',
+  },
+  {
+    title: 'د محصول نوم',
+    key: 'products_name',
+  },
+  {
+    title: 'د ګدام نوم',
+    key: 'stocks_name',
+  },
  
-    {
-      title: 'مقدار',
-      key: 'quantity',
-      width: '140px',
+  {
+    title: 'اندازه',
+    key: 'quantity',
+    width: '140px',
     
-    },
+  },
+  {
+    title: ' د کارتن تعداد',
+    key: 'carton_quantity',
+   
+               
+  },
+  {
+    title: 'د گدام اندازه اخطاروی',
+    key: 'alarm_amount',
+   
+               
+  },
  
-    {
-      title: 'تاریخ',
-      key: 'created_at',
+  {
+    title: 'نیټه',
+    key: 'created_at',
   
-    },
+  },
       
-  ]
+]
   
-  export default function usePageConfig() {
-    return {
-      headers,
-      tabs,
-      breadCrumbs,
-      search,
-    }
+export default function usePageConfig() {
+  return {
+    headers,
+    tabs,
+    breadCrumbs,
+    search,
   }
+}
   

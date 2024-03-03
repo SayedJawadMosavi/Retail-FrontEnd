@@ -14,9 +14,9 @@
               >
                 <VTextField
                   v-model="formData.organization_name"
-                  label="اسم کمپنی "
+                  label="کمپنی نوم "
                   prepend-inner-icon="mdi-account"
-                  :rules="validationRules(v$.organization_name, 'اسم کمپنی')"
+                  :rules="validationRules(v$.organization_name, 'کمپنی نوم')"
                 />
               </VCol>
               <VCol
@@ -25,9 +25,9 @@
               >
                 <VTextField
                   v-model="formData.name"
-                  label="شخص ارتباطی "
+                  label="ارتباطی شخص "
                   prepend-inner-icon="mdi-account"
-                  :rules="validationRules(v$.name, 'شخص ارتباطی')"
+                  :rules="validationRules(v$.name, 'ارتباطی شخص')"
                 />
               </VCol>
 
@@ -37,7 +37,7 @@
               >
                 <VTextField
                   v-model="formData.email"
-                  label=" ایمیل آدرس"
+                  label=" ایمیل  "
                   prepend-inner-icon="mdi-email"
                 />
               </VCol>
@@ -49,7 +49,7 @@
                 <VTextField
                   v-model="formData.phone_number"
                   dir="ltr"
-                  label="شماره تماس"
+                  label="تیلفون شمیره"
                   prepend-inner-icon="mdi-phone"
                   
                   @input="convertToEnglishNumbers('phone_number')"
@@ -62,7 +62,7 @@
               >
                 <VTextField
                   v-model="formData.address"
-                  label="آدرس"
+                  label="پټه"
                   prepend-inner-icon="mdi-map-marker"
                 />
               </VCol>
@@ -72,7 +72,7 @@
               >
                 <VTextarea
                   v-model="formData.description"
-                  label=" توضیحات"
+                  label=" تفصیل"
                   prepend-inner-icon="mdi-info"
                 />
               </VCol>
@@ -103,7 +103,7 @@
                 start
                 icon="mdi-cancel"
               />
-              کنسل
+              کینسل
             </VBtn>
           </VCardText>
         </VForm>
@@ -175,7 +175,7 @@ async function submit() {
     props.fetchRecord()
   } catch (error) {
     console.error('error', error)
-    toast.error(' مشکل در سرور وجود دارد !')
+    toast.error(' مشکل په سرور کښی موجودی دي !')
   }
   apiLoading.value = false
 }
@@ -217,8 +217,8 @@ const validateForm = async () => {
   formRef.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
-
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
+    
     return false
   }
   submit()

@@ -7,44 +7,44 @@ const props = defineProps({
 })
 const statistics = [
   {
-    title: 'Users',
+    title: 'کارکونکی',
     stats: '12.5k',
     icon: 'mdi-account-outline',
     color: 'success',
   },
  
   {
-    title: 'Employees',
+    title: 'کارمندان',
     stats: '12.5k',
     icon: 'mdi-account-outline',
     color: 'primary',
   },
   {
-    title: 'vendors',
+    title: 'عرضه کونکی',
     stats: '1.54k',
     icon: 'mdi-account',
     color: 'warning',
   },
   {
-    title: 'purchases',
+    title: 'اخیستل',
     stats: '$88k',
     icon: 'mdi-currency-usd',
     color: 'info',
   },
   {
-    title: 'Sell',
+    title: 'خرڅ',
     stats: '$88k',
     icon: 'mdi-currency-usd',
     color: 'info',
   },
   {
-    title: 'Active Customer',
+    title: 'فعال مشتریان',
     stats: '$88k',
     icon: 'mdi-currency-usd',
     color: 'info',
   },
   {
-    title: 'De Active Customer',
+    title: ' غیرفعال مشتریان',
     stats: '$88k',
     icon: 'mdi-currency-usd',
     color: 'info',
@@ -63,7 +63,7 @@ const statistics = [
     <VCardText>
       <h6 class="text-sm mb-12">
         <!-- <span>48.5% افزایش 😎</span> -->
-        <span class="font-weight-regular"> تمام معاملات سیستم</span>
+        <span class="font-weight-regular"> د سیسټم ټولې معاملې</span>
       </h6>
 
       <VRow>

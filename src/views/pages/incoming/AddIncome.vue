@@ -1,10 +1,8 @@
-
-
 <template>
   <VExpandTransition>
     <div v-show="expand">
       <VCard
-        :title="payload.id ? 'ویرایش رفت و آمد' : 'افزودن رفت و آمد'"
+        :title="payload.id ? 'د عاید او مصرف ایدیت' : 'د عاید او مصرف زیاتول'"
         class="my-5"
       >
         <VForm ref="formRef">
@@ -26,10 +24,10 @@
                   />
                 </span>
                 <p
-                  v-if="validationRules($v.created_at, 'تاریخ').length > 0"
+                  v-if="validationRules($v.created_at, 'نیټه').length > 0"
                   class="text-error"
                 >
-                  {{ validationRules($v.created_at, 'تاریخ')[0] }}
+                  {{ validationRules($v.created_at, 'نیټه')[0] }}
                 </p>
               </VCol>
               <VCol
@@ -39,8 +37,8 @@
                 <VSelect
                   v-model="payload.type"
                   :items="types"
-                  label="نوع"
-                  :rules="validationRules($v.type, 'نوع')"
+                  label="ډول"
+                  :rules="validationRules($v.type, 'ډول')"
                   append-inner-icon="mdi-invert-colors"
                   item-title="name"
                   item-value="id"
@@ -48,9 +46,9 @@
               </VCol>
             </VRow>
           </VCardText>
-  
+
           <!-- extra expense -->
-  
+
           <VCardText>
             <VRow>
               <VCol
@@ -59,9 +57,9 @@
               >
                 <VTextField
                   v-model="payload.name"
-                  label="اسم"
+                  label="نوم"
                   append-inner-icon="mdi-note"
-                  :rules="validationRules($v.name, 'اسم')"
+                  :rules="validationRules($v.name, 'نوم')"
                 />
               </VCol>
               <VCol
@@ -71,7 +69,6 @@
                 <VAutocomplete
                   v-model="payload.category_id"
                   label="کتگوری"
-             
                   prepend-inner-icon="mdi-account"
                   :items="Categories"
                   :item-title="ca => `${ca.name}`"
@@ -80,16 +77,16 @@
                   :rules="validationRules($v.category_id, 'کتگوری')"
                 />
               </VCol>
-  
+
               <VCol
                 cols="12"
                 md="6"
               >
                 <VTextField
                   v-model="payload.amount"
-                  label="مقدار پول"
+                  label="د پیسو اندازه"
                   append-inner-icon="mdi-cash"
-                  :rules="validationRules($v.amount, 'مقدار پول')"
+                  :rules="validationRules($v.amount, 'د پیسو اندازه')"
                   dir="ltr"
                   @input="convertToEnglishNumbers('amount')"
                   @keypress="useRules.preventNonNumeric"
@@ -105,13 +102,13 @@
             >
               ذخیره
             </VBtn>
-  
+
             <VBtn
               color="secondary"
               variant="tonal"
               @click="closeDialog"
             >
-              بستن فورم
+              د فورم بندول
             </VBtn>
           </VCardText>
         </VForm>
@@ -119,35 +116,31 @@
     </div>
   </VExpandTransition>
 </template>
-  
-  
-  
-  
+
 <script setup>
 import { axios } from '@/plugins/axios-plugin'
 import useRules from '@/plugins/vuelidate/vuelidateRules'
 import { useVuelidate } from '@vuelidate/core'
 import { minLength, minValue, numeric, required } from '@vuelidate/validators'
 import { toast } from 'vue3-toastify'
-  
+
 // ==================================== START PROPS =======================================
-  
+
 const props = defineProps({
   fetchRecord: { type: Function, default: () => {} },
 })
-  
+
 // ==================================== START Computed =======================================
-  
+
 // ==================================== START DATA =======================================
 const loadingCategory = ref(false)
 const Categories = ref([])
-  
 const apiLoading = ref(false)
 const expand = ref(false)
 const formRef = ref()
 const types = ref([
-  { name: 'آمد', id: 'incoming' },
-  { name: 'رفت', id: 'outgoing' },
+  { name: 'عاید', id: 'incoming' },
+  { name: 'مصرف', id: 'outgoing' },
 ])
 const payload = ref({
   created_at: new Date(),
@@ -157,10 +150,10 @@ const payload = ref({
 
   amount: 0,
 })
-  
+
 // ==================================== START VALIDATION =======================================
 const validationRules = useRules.validate
-  
+
 const rules = {
   created_at: { required },
   name: { required, minLength: minLength(3) },
@@ -169,37 +162,22 @@ const rules = {
 
   amount: { required, numeric, minValue: minValue(1) },
 }
-  
+
 const $v = useVuelidate(rules, payload)
-  
+
 // ==================================== START METHODS =======================================
-  
+
 const resetForm = () => {
   payload.value = {
     created_at: new Date(),
     name: null,
     type: null,
     category_id: null,
+
     amount: 0,
   }
   $v.value.$reset()
   formRef.value.resetValidation()
-}
-  
-function openDialog(item = null) {
-  getCategory()
-
-  if (item) {
-    payload.value = JSON.parse(JSON.stringify(item))
-    payload.value.category_id = item.category.name
-
-  }
-  expand.value = true
-}
-  
-function closeDialog() {
-  expand.value = false
-  resetForm()
 }
 async function getCategory() {
   try {
@@ -211,6 +189,19 @@ async function getCategory() {
     console.error('error', error)
   }
   loadingCategory.value = false
+}
+function openDialog(item = null) {
+  getCategory()
+
+  if (item) {
+    payload.value = JSON.parse(JSON.stringify(item))
+  }
+  expand.value = true
+}
+
+function closeDialog() {
+  expand.value = false
+  resetForm()
 }
 async function submit() {
   try {
@@ -228,8 +219,8 @@ const validateForm = async () => {
   formRef.value.validate()
   $v.value.$touch()
   if ($v.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
-
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
+    
     return false
   }
   submit()
@@ -242,46 +233,39 @@ function convertToEnglishNumbers(model) {
     payload.value[model] = payload.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
   }
 }
-  
+
 // ==================================== START Expose =======================================
-  
+
 defineExpose({
   openDialog,
 })
 </script>
-  
-  
-  
-    <style>
-    .dp__input{
-    padding: 12px 4px 12px 40px !important;
-    }
-  
-    .dp__theme_dark ,.dp__theme_light  {
-    --dp-background-color:  rgb(var(--v-theme-surface));
-    --dp-text-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
-    --dp-hover-color: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
-    --dp-hover-text-color: gba(var(--v-theme-on-surface),1);
-    --dp-hover-icon-color: var(--v-theme-on-surface);
-    --dp-primary-color: #40A579;
-    --dp-primary-text-color:#fff;
-    --dp-secondary-color: #8A8D93;
-    --dp-border-color:rgba(var(--v-border-color), var(--v-border-opacity));
-    --dp-menu-border-color: rgba(var(--v-border-color), var(--v-border-opacity));
-    --dp-border-color-hover:rgba(var(--v-border-color),var(--v-medium-emphasis-opacity) )
-    --dp-border-radius:10px  !important;
-    --dp-disabled-color:var(--v-disabled-opacity);
-    --dp-scroll-bar-background: var(--v-theme-on-surface);
-    --dp-scroll-bar-color: #484848;
-    --dp-success-color: #00701a;
-    --dp-success-color-disabled: #428f59;
-    --dp-icon-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
-    --dp-danger-color: #e53935;
-    --dp-highlight-color: rgba(0, 92, 178, 0.2);
-    }
-    </style> 
-  
-  
-  
-  
-  
+
+<style>
+.dp__input{
+padding: 12px 4px 12px 40px !important;
+}
+
+.dp__theme_dark ,.dp__theme_light  {
+--dp-background-color:  rgb(var(--v-theme-surface));
+--dp-text-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+--dp-hover-color: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
+--dp-hover-text-color: gba(var(--v-theme-on-surface),1);
+--dp-hover-icon-color: var(--v-theme-on-surface);
+--dp-primary-color: #40A579;
+--dp-primary-text-color:#fff;
+--dp-secondary-color: #8A8D93;
+--dp-border-color:rgba(var(--v-border-color), var(--v-border-opacity));
+--dp-menu-border-color: rgba(var(--v-border-color), var(--v-border-opacity));
+--dp-border-color-hover:rgba(var(--v-border-color),var(--v-medium-emphasis-opacity) )
+--dp-border-radius:10px  !important;
+--dp-disabled-color:var(--v-disabled-opacity);
+--dp-scroll-bar-background: var(--v-theme-on-surface);
+--dp-scroll-bar-color: #484848;
+--dp-success-color: #00701a;
+--dp-success-color-disabled: #428f59;
+--dp-icon-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+--dp-danger-color: #e53935;
+--dp-highlight-color: rgba(0, 92, 178, 0.2);
+}
+</style>

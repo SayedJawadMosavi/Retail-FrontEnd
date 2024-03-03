@@ -20,7 +20,7 @@
         to="/"
         class="mt-10"
       >
-         باز گشت به صفحه اصلی
+         اصلی صفحی ته تګ
       </VBtn>
     </div>
 
@@ -60,8 +60,8 @@ const errorData = ref({
 })
 if (error.value == 'network-error') {
   errorData.value.error = 500
-  errorData.value.title = 'خطا در شبکه'
-  errorData.value.description = 'خطا در بارگیری دیتا رخ داد برای حل مشکل مطمعین شوید سرور فعال است '
+  errorData.value.title = 'د شبکې تيروتنه'
+  errorData.value.description = 'سیستم مشکل لری - د مشکل د حل لپاره څان مطمین کړی چه سیستم آن دی! '
 }
 </script>
 

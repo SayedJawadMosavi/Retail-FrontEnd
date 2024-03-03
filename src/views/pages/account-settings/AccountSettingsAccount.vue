@@ -28,7 +28,7 @@
                   v-model="payload.email"
                   label="ایمل"
                   append-inner-icon="mdi-email"
-                  :rules="validationRules($v.email, 'ایمل')"
+                  :rules="validationRules($v.email, 'ایمیل')"
                   dir="ltr"
                 />
               </VCol>
@@ -49,7 +49,7 @@
               variant="tonal"
               @click="closeDialog"
             >
-              بازنشانی
+              بیا تنظیمول
             </VBtn>
           </VCardText>
         </VForm>
@@ -57,7 +57,7 @@
     </VCol>
 
     <VCol cols="12">
-      <VCard title="تغیر دادن پسورد">
+      <VCard title="پاسورد بدلول">
         <VForm ref="passwordRef">
           <VCardText>
             <!-- 👉 Current Password -->
@@ -69,10 +69,10 @@
                 <!-- 👉 current password -->
                 <VTextField
                   v-model.trim="passwordPayload.current_password"
-                  :rules="validationRules($v2.current_password, 'پسورد فعلی')"
+                  :rules="validationRules($v2.current_password, 'اوسنی پاسورد')"
                   :type="isCurrentPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isCurrentPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                  label="پسورد فعلی"
+                  label="اوسنی پاسورد"
                   dir="ltr"
                   @click:append-inner="isCurrentPasswordVisible = !isCurrentPasswordVisible"
                 />
@@ -87,10 +87,10 @@
                 <!-- 👉 new password -->
                 <VTextField
                   v-model.trim="passwordPayload.newPassword"
-                  :rules="validationRules($v2.newPassword, 'پسورد جدید')"
+                  :rules="validationRules($v2.newPassword, 'نوی پاسورد')"
                   :type="isNewPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isNewPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                  label="پسورد جدید"
+                  label="نوی پاسورد"
                   dir="ltr"
                   @click:append-inner="isNewPasswordVisible = !isNewPasswordVisible"
                 />
@@ -107,10 +107,10 @@
                 <VTextField
                   v-model="passwordPayload.confirm_password"
                   dir="ltr"
-                  :rules="validationRules($v2.confirm_password, 'تایید پسورد جدید')"
+                  :rules="validationRules($v2.confirm_password, ' نوی پاسورد تاییدول' )"
                   :type="isConfirmPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isConfirmPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                  label="تایید پسورد جدید"
+                  label="نوی پاسورد تاییدول"
                   @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
                 />
               </VCol>
@@ -134,7 +134,7 @@
               variant="tonal"
               @click="resetForm('password')"
             >
-              بازنشانی
+              بیا تنظیمول
             </VBtn>
           </VCardText>
         </VForm>
@@ -246,7 +246,7 @@ const resetAvatar = () => {
 const validateForm = async () => {
   formRef.value.validate()
   if ($v.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
 
     return false
   }
@@ -276,7 +276,7 @@ async function submitPassword() {
   try {
     passwordRef.value.validate()
     if ($v2.value.$invalid) {
-      toast.error('لطفا فورم را دقیق خانه پری کنید!')
+      toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
 
       return false
     }

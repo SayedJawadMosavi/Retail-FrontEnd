@@ -1,7 +1,7 @@
 const customer_menu= [
    
   {
-    title: 'ثبت ولست مشتری',
+    title: 'د پیرودونکي راجستر او لست',
     to: 'customers',
     icon: { icon: 'mdi-account-group-outline' },
   },

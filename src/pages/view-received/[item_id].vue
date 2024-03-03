@@ -11,7 +11,7 @@
         start
         icon="mdi-undo-variant"
       />
-      بازگشت
+      بیرته راتلل
     </VBtn>
     <!-- 👉 Table -->
     <ConfirmDialog
@@ -21,7 +21,7 @@
 
     <VCard
     
-      title=" Detail List"
+      title=" ترلاسوی لست"
       style="min-height: 300px"
     >
       <VTable class="text-no-wrap">
@@ -31,17 +31,17 @@
               ID
             </th>
             <th scope="col">
-              اسم محصول
+              د محصول نوم
             </th>
             <th scope="col">
-              مقدار
+              اندازه
             </th>
 
             <th scope="col">
-              تاریخ
+              نیټه
             </th>
             <th scope="col">
-              توضیحات
+              تفصیل
             </th>
           </tr>
         </thead>

@@ -9,12 +9,12 @@ const activeTab = ref('account')
 // tabs
 const tabs = [
   {
-    title: 'حساب',
+    title: 'اکونت',
     icon: 'mdi-account-outline',
     tab: 'account',
   },
   {
-    title: 'صلاحیت ها',
+    title: 'صلاحتونه',
     icon: 'mdi-lock-open-outline',
     tab: 'security',
   },

@@ -3,7 +3,7 @@ const $t = i18n.global.t
 const stock_prduct_menu= [
 
   {
-    title: ' لست گدام محصولات  ',
+    title: ' د محصولاتو ګدام لست ',
     to: 'stock_product',
     icon: { icon: 'mdi-shopping-outline' },
   },

@@ -1,12 +1,12 @@
 const employee_menu =[ 
   // { heading: 'مدیریت کارمندان' },
   {
-    title: 'ثبت ولست کارمندان',
+    title: 'د کارمندانو راجستر او لست',
     to: 'employees',
     icon: { icon: 'mdi-account-group-outline' },
   },
   {
-    title: 'پرداخت ولست معاشات',
+    title: 'د معاش ورکول اولست',
     to: 'salaries',
     icon: { icon: 'mdi-cash-multiple' },
   },

@@ -3,7 +3,7 @@ const $t = i18n.global.t
 const product_menu= [
 
   {
-    title: '  ثبت ولست محصولات',
+    title: '  د محصول راجستر او لست',
     to: 'product',
     icon: { icon: 'mdi-shopping-outline' },
   },

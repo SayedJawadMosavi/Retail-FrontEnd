@@ -1,82 +1,82 @@
 const tabs = [
-    { title: '  روزنامچه', icon: 'mdi-cash-plus', count: 0, key: 'treasuryLog' },
-    { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: 'trash'},
-  ]
+  { title: '  روزنامچه', icon: 'mdi-cash-plus', count: 0, key: 'treasuryLog' },
+  { title: 'ړنګ شوی', icon:'mdi-trash',count:0, key: 'trash'},
+]
   
-  const breadCrumbs=[
-    {
-      title: 'داشبورد',
-      disabled: false,
-      href: '/',
-    },
+const breadCrumbs=[
+  {
+    title: 'فهرست',
+    disabled: false,
+    href: '/',
+  },
           
-    {
-      title: 'روزنامچه',
-      disabled: true,
-      href: '',
-    },
-  ]
-  const search=[
-    {
-      name: 'عمومی',
-      id: 'all',
-    },
-    {
-        name: ' آی دی ',
-        id: 'id',
-      },
+  {
+    title: 'روزنامچه',
+    disabled: true,
+    href: '',
+  },
+]
+const search=[
+  {
+    name: 'عمومی',
+    id: 'all',
+  },
+  {
+    name: ' آی دی ',
+    id: 'id',
+  },
    
       
   
-  ]
+]
   
   
-  const headers= [
-    {
-      title: 'آی دی#',
-      key: 'id',
-    },
-    {
-      title: 'اسم',
-      key: 'name',
-    },
+const headers= [
+  // {
+  //   title: 'آی دی#',
+  //   key: 'id',
+  // },
+  {
+    title: 'نوم',
+    key: 'name',
+  },
     
-    {
-      title: 'نوعیت',
-      key: 'type',
-      width:'160px',
+  {
+    title: 'ډول',
+    key: 'type',
+    width:'160px',
   
                
-    },
+  },
 
-    {
-      title: 'مقدار',
-      key: 'amount',
-      width: '140px',
+  {
+    title: 'اندازه',
+    key: 'amount',
+    width: '140px',
       
   
-    },
+  },
   
-    {
-      title: 'ثبت شده توسط',
-      key: "created_by",
-      width:'120px',
-    },
+  {
+    title: 'ثبت شوی په واسطه ',
+    key: "created_by",
+    width:'120px',
+  },
   
-    {
-      title: 'تاریخ',
-      key: 'created_at',
+  {
+    title: 'نیټه',
+    key: 'created_at',
   
-    },
+  },
       
-  ]
+]
   
-  export default function usePageConfig() {
-    return {
-      headers,
-      tabs,
-      breadCrumbs,
-      search,
-    }
+export default function usePageConfig() {
+  return {
+    headers,
+    tabs,
+    breadCrumbs,
+    search,
   }
+}
   

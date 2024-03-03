@@ -6,11 +6,10 @@
       :selected-items="datatableRefs?.selectedItems"
       :items="breadCrumbs"
       :search-options="search"
-      page="لیست کتگوری"
+      page="د کټګورۍ لست"
       icon="mdi-people"
-      create-text="کتگوری جدید"
-      edit-text="ویرایش کتگوری "
-      
+      create-text="نوی کټګوری"
+      edit-text="کټګوری ایدیت "
       @on-create="createCategory"
       @on-delete="deleteRecord"
       @on-restore="restoreRecord"
@@ -20,7 +19,7 @@
       ref="categoryRef"
       :fetch-record="fetchRecord"
     />
-  
+
     <DataTable
       ref="datatableRefs"
       v-model:total="total"
@@ -32,19 +31,48 @@
       @table-change="onTableChange($event)"
     >
       <template #status="{ item }">
-        <VSwitch
-          :model-value="item.status"
-          inset
-          :true-value="1"
+        <VBtn
+          v-if="item.status == 0"
+          variant="text"
+          icon
           :loading="selectedItemStatus.id == item.id && statusLoading"
           @click="changeStatus(item)"
-        />
+        >
+          <VTooltip
+            activator="parent"
+            location="top"
+          >
+            فعال کردن
+          </VTooltip>
+          <VIcon
+            size="30"
+            :color="item.status == 0 ? 'error' : 'success'"
+            icon="mdi-close-thick"
+          />
+        </VBtn>
+        <VBtn
+          v-else
+          variant="text"
+          icon
+          @click="changeStatus(item)"
+        >
+          <VTooltip
+            activator="parent"
+            location="top"
+          >
+            غیر فعال
+          </VTooltip>
+          <VIcon
+            size="30"
+            color="success"
+            icon="mdi-check"
+          />
+        </VBtn>
       </template>
       <template #print="{ item }">
         <VBtn
           variant="text"
           icon
-            
           class="font-weight-bold"
           :loading="printLoading && selectedItemStatus.id == item.id"
           @click="print(item)"
@@ -55,7 +83,7 @@
           />
         </VBtn>
       </template>
-  
+
       <template #view_expense="{ item }">
         <VBtn
           variant="text"
@@ -79,7 +107,7 @@
     -->
   </div>
 </template>
-  
+
 <script setup>
 import { onMounted, ref } from 'vue'
 import { axios } from '@/plugins/axios-plugin'
@@ -87,7 +115,7 @@ import BreadCrumbs from '@/components/commons/BreadCrumbs.vue'
 import DataTable from '@/components/commons/DataTable.vue'
 
 //   import VendoPrint from '@/views/pages/products/productPrint.vue'
-  
+
 import ProductCategory from '@/views/pages/products/productCategory.vue'
 
 import usePageConfig from '@/config/pages/product-category'
@@ -101,7 +129,7 @@ const CaloriesTemplate = defineComponent({
           </div>
         `,
 })
-  
+
 const { tabs, headers, breadCrumbs, search } = usePageConfig()
 const apiLoading = ref(false)
 const expand = ref(false)
@@ -111,7 +139,7 @@ const expenseLoading = ref(false)
 const printData = ref([])
 const printRefs = ref()
 const total = ref(0)
-const options = ref({ itemsPerPage: 50, page: 1, tab: 'products' })
+const options = ref({ itemsPerPage: 20, page: 1, tab: 'products' })
 const products = ref([])
 const datatableRefs = ref()
 const extraTotal = ref({})
@@ -127,7 +155,7 @@ const createCategory = () => {
     categoryRef.value.toggleDialog()
   }
 }
-  
+
 const viewExpense = async item => {
   expenseLoading.value = true
   selectedId.value = item.id
@@ -145,7 +173,7 @@ const print = async item => {
     printData.value = await data
     await sleep(1)
     const printable = window.open('dcvdv', '_blank')
-  
+
     printable.document.write('<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>')
     printable.document.write('</head><body>')
     printable.document.write(printRefs.value.$el.innerHTML)
@@ -164,11 +192,13 @@ const searchRecord = data => {
   options.value = { ...options.value, ...data }
   fetchRecord()
 }
+
 const changeStatus = async item => {
   try {
     selectedItemStatus.value = item
     statusLoading.value = true
-    const { data } = await axios.post('product-category-status', item)
+    const { data } = await axios.post('product-category-status/' + item.status + '/' + item.id)
+
     fetchRecord()
   } catch (error) {
     console.error(error)
@@ -179,20 +209,20 @@ const onTableChange = value => {
   options.value = value
   fetchRecord()
 }
-  
+
 const fetchRecord = async () => {
   try {
     apiLoading.value = true
     datatableRefs.value.selectedItems = []
     const res = await axios.get('product-category', { params: options.value })
     products.value = res.data.data
-      
+
     total.value = res.data.data.length
     extraTotal.value = res.data.extraTotal
   } catch (error) {}
   apiLoading.value = false
 }
-  
+
 const deleteRecord = async (type = 'delete') => {
   try {
     const ids = datatableRefs.value.selectedItems.map(row => row.id) ?? []
@@ -212,14 +242,13 @@ const restoreRecord = async () => {
     console.error(error)
   }
 }
-  
+
 onMounted(() => {
   fetchRecord()
 })
 </script>
-  
-  <route lang="yaml">
-  meta:
-    auth: true
-  </route>
-  
+
+<route lang="yaml">
+meta:
+  auth: true
+</route>

@@ -1,36 +1,38 @@
 const tabs = [
-  { title: 'کتگوری ها', icon: 'mdi-account-group-outline', count: 0 , key: 'categories'},
-  { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
+  { title: 'کټګورۍ', icon: 'mdi-account-group-outline', count: 0 , key: 'categories'},
+  { title: 'ړنګ شوی', icon:'mdi-trash',count:0, key: "trash"},
 ]
-    
+  
 const search=[
   {
     name: 'عمومی',
     id: 'all',
   },
   {
-    name: 'شماره ',
+    name: 'شمیره',
     id: 'id',
   },
-    
-     
+  
+   
 ]
 const breadCrumbs=[
   {
-    title: 'داشبورد',
+    title: 'فهرست',
     disabled: false,
     href: '/',
   },
         
   {
-    title: 'برگشت  ',
+    title: 'بېرته محصولاتو ته',
+
     disabled: false,
     to: 'incomings',
   },
 ]
 const headers= [ 
   {
-    title: 'شماره',
+    title: 'شمیره',
+
     key: 'id',
   },
   
@@ -41,7 +43,8 @@ const headers= [
     
     
   {
-    title: 'اسم کتگوری',
+    title: 'د کتګوری نوم',
+
     key: 'name',
                  
   },

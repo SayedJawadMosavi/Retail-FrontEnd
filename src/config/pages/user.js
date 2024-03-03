@@ -3,18 +3,18 @@ import i18n from '@/plugins/i18n'
 const $t = i18n.global.t
 
 const tabs = [
-  { title: 'کاربران', icon: 'mdi-accounts', count: 0 ,key:'users'},
-  { title: 'حذف شده ها', icon:'mdi-trash',count:0,key:'trash'},
+  { title: 'کارونکی', icon: 'mdi-accounts', count: 0 ,key:'users'},
+  { title: 'ړنګ شوی', icon:'mdi-trash',count:0,key:'trash'},
 ]
 const breadCrumbs=[
   {
-    title: 'داشبورد',
+    title: 'فهرست',
     disabled: false,
     href: '/',
   },
     
   {
-    title: 'لیست کاربران',
+    title: 'د کارونکی لست',
     disabled: true,
     href: 'users',
   },
@@ -45,16 +45,21 @@ const headers= [
  
  
   {
-    title: 'ایمل',
+    title: 'نوم',
+    key: 'name',
+  },
+ 
+  {
+    title: 'ایمیل',
     key: 'email',
   },
   {
-    title:'نقش',
+    title:'رول',
     key: 'role',
   },
  
   {
-    title: 'تاریخ ثبت',
+    title: 'د ثبت نیټه',
     key: 'created_at',
   },
     

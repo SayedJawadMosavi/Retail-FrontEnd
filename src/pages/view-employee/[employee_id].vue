@@ -25,7 +25,7 @@
           start
           icon="mdi-undo-variant"
         />
-        بازگشت
+        بیرته راتلل
       </VBtn>
       <VTabs
         v-model="activeTab"
@@ -104,12 +104,12 @@ import { useRoute } from 'vue-router'
     },
    
     {
-      title: 'پرداخت معاشات',
+      title: 'د معاشونو وصول',
       icon: 'mdi-cash-multiple',
       tab: 'payments',
     },
     {
-      title: 'قرضه',
+      title: 'قرض',
       icon: 'mdi-information-outline',
       tab: 'loan',
     },

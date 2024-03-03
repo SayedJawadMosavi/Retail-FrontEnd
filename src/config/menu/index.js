@@ -1,8 +1,10 @@
 
+import backup_menu from "./backup"
 import customer_menu from "./customer_menu"
 import employee_menu from "./employee_menu"
 import expense_income_menu from "./expense_income_menu"
 import product_menu from "./product_menu"
+import profit_lost from "./profit_lost_menu"
 import purchase_menu from "./purchase_menu"
 import report_menu from "./report_menu"
 import sell_menu from "./sell_menu"
@@ -28,6 +30,8 @@ const menus = [
   ...sell_menu,
   ...expense_income_menu,
   ...employee_menu,
+  ...backup_menu,
+  ...profit_lost,
   ...report_menu,
 
 ]

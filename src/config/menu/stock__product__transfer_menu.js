@@ -3,7 +3,7 @@ const $t = i18n.global.t
 const product_stock_menu= [
 
   {
-    title: ' انتقالات محصولات به گدام',
+    title: ' د محصولاتو انتقال ګدام ته',
     to: 'stock_product_transfer',
     icon: { icon: 'mdi-shopping-outline' },
   },

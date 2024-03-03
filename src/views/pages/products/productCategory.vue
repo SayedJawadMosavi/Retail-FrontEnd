@@ -14,9 +14,9 @@
               >
                 <VTextField
                   v-model="formData.name"
-                  label="اسم کتگوری "
+                  label="د کټګوری نوم "
                   prepend-inner-icon="mdi-shopping-outline"
-                  :rules="validationRules(v$.name, 'اسم کتگوری')"
+                  :rules="validationRules(v$.name, 'د کټګوری نوم')"
                 />
               </VCol>
             </VRow>
@@ -46,7 +46,7 @@
                 start
                 icon="mdi-cancel"
               />
-              کنسل
+              کینسل
             </VBtn>
           </VCardText>
         </VForm>
@@ -119,11 +119,11 @@ async function submit() {
   
     isSubmited.value = false
     expand.value = false
-    resetForm()
+  
     props.fetchRecord()
   } catch (error) {
     console.error('error', error)
-    toast.error(' مشکل در سرور وجود دارد !')
+    toast.error(' مشکل په سروری کښی وجود لري !')
   }
   apiLoading.value = false
 }
@@ -163,7 +163,7 @@ const validateForm = async () => {
   formRef.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
   
     return false
   }

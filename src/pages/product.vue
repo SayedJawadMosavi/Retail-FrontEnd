@@ -6,13 +6,13 @@
       :selected-items="datatableRefs?.selectedItems"
       :items="breadCrumbs"
       :search-options="search"
-      page="لیست محصولات"
+      page="د محصولاتو لست"
       icon="mdi-people"
-      create-text="محصول  جدید"
-      edit-text="ویرایش محصولات "
+      create-text="نوی محصول"
+      edit-text="د محصول ایدیت "
       :show-create="scope(['product_create'])"
-      :show-delete="scope(['product_delete'])"
-      :show-restore="scope(['product_restore'])"
+      :show-delete="scope(['not_product_delete'])"
+      :show-restore="scope(['notproduct_restore'])"
       :show-force-delete="scope(['product_force_delete'])"
       @on-force-delete="deleteRecord('force-delete')"
       @on-create="createProduct"
@@ -22,7 +22,6 @@
     >
       <template #default>
         <VBtn
-         
           class="font-weight-bold bg-info"
           to="product_category"
         >
@@ -38,15 +37,15 @@
       ref="productRef"
       :fetch-record="fetchRecord"
     />
-  
+
     <DataTable
       ref="datatableRefs"
       v-model:total="total"
       v-model:loading="apiLoading"
       v-model:extra-total="extraTotal"
+      v-model:items="tableRecords"
       :tabs="tabs"
       :headers="headers"
-      :items="products"
       @table-change="onTableChange($event)"
     >
       <template #category="{ item }">
@@ -58,10 +57,10 @@
         <VChip
           style="direction: ltr"
           small
-          :color="item.quantity>0 ?'success' :'error'"
+          :color="item.quantity > 0 ? 'success' : 'error'"
           class="font-weight-medium"
         >
-          {{ item.quantity }} 
+          {{ item.quantity }}
         </VChip>
       </template>
       <template #status="{ item }">
@@ -76,7 +75,7 @@
             activator="parent"
             location="top"
           >
-            فعال کردن
+            فعال کول
           </VTooltip>
           <VIcon
             size="30"
@@ -94,7 +93,7 @@
             activator="parent"
             location="top"
           >
-            غیر فعال
+            غیرفعال
           </VTooltip>
           <VIcon
             size="30"
@@ -107,7 +106,6 @@
         <VBtn
           variant="text"
           icon
-            
           class="font-weight-bold"
           :loading="printLoading && selectedItemStatus.id == item.id"
           @click="print(item)"
@@ -118,7 +116,7 @@
           />
         </VBtn>
       </template>
-  
+
       <template #view_expense="{ item }">
         <VBtn
           variant="text"
@@ -142,29 +140,29 @@
     -->
   </div>
 </template>
-  
+
 <script setup>
-import { onMounted, ref } from 'vue'
-import { axios } from '@/plugins/axios-plugin'
-import BreadCrumbs from '@/components/commons/BreadCrumbs.vue'
-import DataTable from '@/components/commons/DataTable.vue'
+import { onMounted, ref } from "vue"
+import { axios } from "@/plugins/axios-plugin"
+import BreadCrumbs from "@/components/commons/BreadCrumbs.vue"
+import DataTable from "@/components/commons/DataTable.vue"
 
 //   import VendoPrint from '@/views/pages/products/productPrint.vue'
-  
-import InsertProduct from '@/views/pages/products/insertProduct.vue'
 
-import usePageConfig from '@/config/pages/product'
-import router from '@/router'
-import { formateDate, scope } from '@/@core/utils/index'
+import InsertProduct from "@/views/pages/products/insertProduct.vue"
+
+import usePageConfig from "@/config/pages/product"
+import router from "@/router"
+import { formateDate, scope } from "@/@core/utils/index"
 const CaloriesTemplate = defineComponent({
-  props: ['data'],
+  props: ["data"],
   template: `
           <div>
             {{ data }}
           </div>
         `,
 })
-  
+
 const { tabs, headers, breadCrumbs, search } = usePageConfig()
 const apiLoading = ref(false)
 const expand = ref(false)
@@ -174,8 +172,9 @@ const detailLoading = ref(false)
 const printData = ref([])
 const printRefs = ref()
 const total = ref(0)
-const options = ref({ itemsPerPage: 50, page: 1, tab: 'products' })
-const products = ref([])
+const options = ref({ page: 1, itemPerPage: 20, tab: "products" })
+
+const tableRecords = ref([])
 const datatableRefs = ref()
 const extraTotal = ref({})
 const productRef = ref()
@@ -190,11 +189,11 @@ const createProduct = () => {
     productRef.value.toggleDialog()
   }
 }
-  
+
 const viewDetails = async item => {
   detailLoading.value = true
   selectedId.value = item.id
-  await router.replace('view-product-detail/' + item.id)
+  await router.replace("view-product-detail/" + item.id)
   detailLoading.value = false
 }
 const sleep = ms => {
@@ -204,21 +203,23 @@ const print = async item => {
   try {
     selectedItemStatus.value = item
     printLoading.value = true
-    let { data } = await axios.get('product-purchase?id=' + item.id)
+    let { data } = await axios.get("product-purchase?id=" + item.id)
     printData.value = await data
     await sleep(1)
-    const printable = window.open('dcvdv', '_blank')
-  
-    printable.document.write('<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>')
-    printable.document.write('</head><body>')
+    const printable = window.open("dcvdv", "_blank")
+
+    printable.document.write(
+      '<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>',
+    )
+    printable.document.write("</head><body>")
     printable.document.write(printRefs.value.$el.innerHTML)
-    printable.document.write('</body></html>')
+    printable.document.write("</body></html>")
     printable.document.close()
     printable.print()
     await sleep(1)
     printable.close()
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error)
   }
   printLoading.value = false
 }
@@ -231,7 +232,7 @@ const searchRecord = data => {
 const changeStatus = async item => {
   try {
     statusLoading.value = true
-    const { data } = await axios.post('product-status/' + item.status + '/' + item.id)
+    const { data } = await axios.post("product-status/" + item.status + "/" + item.id)
     fetchRecord()
   } catch (error) {
     console.error(error)
@@ -242,45 +243,25 @@ const onTableChange = value => {
   options.value = value
   fetchRecord()
 }
-  
+
 const fetchRecord = async () => {
   try {
     apiLoading.value = true
     datatableRefs.value.selectedItems = []
-    const res = await axios.get('product', { params: options.value })
-    products.value = res.data.data
+    const { data } = await axios.get("product", { params: options.value })
+    tableRecords.value = data.data
 
-    // let total_Afg = 0
-    // let total_usd = 0
-    // res.data.data.forEach(row => {
-    //   row.items.forEach(element => {
-    //     total_Afg=0;
-          
-    //     if (row.id == element.product_id) {
-    //       console.log('eklkkk', element)
-    //       if (element.currency == 'Afg') {
-    //         console.log('my id', element.cost)
-  
-    //         total_Afg += parseFloat(element.cost ?? 0)
-    //       } else {
-    //         total_usd += parseFloat(element.cost ?? 0)
-    //       }
-    //     }
-    //   })
-    // })
-    // console.log('usd', total_usd)
-    // console.log('Afg', total_Afg)
-    total.value = res.data.data.length
-    extraTotal.value = res.data.extraTotal
+    total.value = data.total
+    extraTotal.value = data.extraTotal
   } catch (error) {}
   apiLoading.value = false
 }
-  
-const deleteRecord = async (type = 'delete') => {
+
+const deleteRecord = async (type = "delete") => {
   try {
     const ids = datatableRefs.value.selectedItems.map(row => row.id) ?? []
-    if (type == 'delete') await axios.delete('product/' + ids)
-    if (type == 'force-delete') await axios.delete('force-delete-product/' + ids)
+    if (type == "delete") await axios.delete("product/" + ids)
+    if (type == "force-delete") await axios.delete("force-delete-product/" + ids)
     datatableRefs.value.selectedItems = []
     fetchRecord()
   } catch (error) {}
@@ -288,21 +269,20 @@ const deleteRecord = async (type = 'delete') => {
 const restoreRecord = async () => {
   try {
     const ids = datatableRefs.value?.selectedItems?.map(row => row.id) ?? []
-    await axios.post('restore-product/' + ids)
+    await axios.post("restore-product/" + ids)
     datatableRefs.value.selectedItems = []
     fetchRecord()
   } catch (error) {
     console.error(error)
   }
 }
-  
+
 onMounted(() => {
   fetchRecord()
 })
 </script>
-  
-  <route lang="yaml">
-  meta:
-    auth: true
-  </route>
-  
+
+<route lang="yaml">
+meta:
+  auth: true
+</route>

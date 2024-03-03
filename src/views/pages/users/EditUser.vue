@@ -1,50 +1,38 @@
 <template>
   <VExpandTransition>
     <div v-show="expand">
-      <VCard
-        title="ویرایش کاربر"
-        class="my-5"
-      >
+      <VCard title="د کاروونکو ایدیت" class="my-5">
         <VForm ref="formRef">
           <VCardText>
             <VRow class="mb-3">
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model.trim="payload.name"
-                  label="نام کاربر"
+                  label="کاروونکی نوم"
                   prepend-inner-icon="mdi-account"
-                  :rules="validationRules($v.name, 'نام کاربر')"
+                  :rules="validationRules($v.name, 'کاروونکی نوم')"
                   :autocomplete="false"
                 />
               </VCol>
             </VRow>
             <VRow class="mb-3">
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model.trim="payload.email"
                   :autocomplete="false"
-                  label="ایمل"
+                  label="ایمیل"
                   append-inner-icon="mdi-email"
-                  :rules="validationRules($v.email, 'ایمل')"
+                  :rules="validationRules($v.email, 'ایمیل')"
                   dir="ltr"
                 />
               </VCol>
             </VRow>
             <VRow class="mb-3">
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VSelect
                   v-model="payload.role"
                   :items="roles"
-                  label="نقش"
+                  label="رول"
                   append-inner-icon="mdi-shield-sun-outline"
                   class="search-by"
                   item-title="name"
@@ -54,66 +42,57 @@
             </VRow>
             <VRow>
               <VCol cols="12">
-                <p class="text-base font-weight-medium mt-2">
-                  صلاحیت ها:
-                </p>
-                <p class="font-weight-medium">
-                  تعیین کنید که کاربر کدام صلاحیت ها را داشته باشد.
-                </p>
+                <p class="text-base font-weight-medium mt-2">صلاحیت ها:</p>
+                <p class="font-weight-medium">د کاروونکی د صلاحیتونو تعین کول</p>
                 <VCheckbox
                   v-model="flag"
-                  label="انتخاب همه"
+                  label="د ټولو انتخاب"
                   @click="selectAll(payload.permissions.length)"
                 />
                 <VTable class="text-no-wrap">
                   <thead>
                     <tr>
-                      <th scope="col">
-                        دسترسی به سیستم
-                      </th>
+                      <th scope="col">سیسټم ته لاسرسی</th>
 
                       <th scope="col">
                         <VCheckbox
                           v-model="viewflag"
-                          label=" دیدن معلومات"
+                          label=" د معلوماتو کتل"
                           @click="selectView('view')"
                         />
                       </th>
                       <th scope="col">
                         <VCheckbox
                           v-model="createEditflag"
-                          label="  ایجاد و ویرایش معلومات"
+                          label="  معلومات جوړول او سمول"
                           @click="selectView('create_edit')"
                         />
                       </th>
                       <th scope="col">
                         <VCheckbox
                           v-model="Deleteflag"
-                          label="   حذف معلومات"
+                          label="   د معلوماتو پاکول"
                           @click="selectView('delete_info')"
                         />
                       </th>
                       <th scope="col">
                         <VCheckbox
                           v-model="Restoreflag"
-                          label="    بازیابی معلومات "
+                          label="    د معلوماتو بیا رغونه "
                           @click="selectView('restore_info')"
                         />
                       </th>
                       <th scope="col">
                         <VCheckbox
                           v-model="forceDeleteflag"
-                          label="   حذف دايمی"
+                          label="   دايمي ړنګول"
                           @click="selectView('force_delete_info')"
                         />
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <template
-                      v-for="(per, index) in systems"
-                      :key="index"
-                    >
+                    <template v-for="(per, index) in systems" :key="index">
                       <tr v-if="per.allowed_roles.includes(payload.role)">
                         <td>
                           {{ per.system_name }}
@@ -158,19 +137,10 @@
 
           <!-- 👉 Action Buttons -->
           <VCardText class="d-flex flex-wrap gap-4">
-            <VBtn
-              :loading="apiLoading"
-              @click="validateForm"
-            >
-              ویرایش
-            </VBtn>
+            <VBtn :loading="apiLoading" @click="validateForm"> ایدیت </VBtn>
 
-            <VBtn
-              color="secondary"
-              variant="tonal"
-              @click="closeDialog"
-            >
-              بستن فورم
+            <VBtn color="secondary" variant="tonal" @click="closeDialog">
+              د فورم بندول
             </VBtn>
           </VCardText>
         </VForm>
@@ -180,9 +150,9 @@
 </template>
 
 <script setup>
-import { axios } from '@/plugins/axios-plugin'
-import { computed, ref } from 'vue'
-import { useVuelidate } from '@vuelidate/core'
+import { axios } from "@/plugins/axios-plugin";
+import { computed, ref } from "vue";
+import { useVuelidate } from "@vuelidate/core";
 import {
   required,
   numeric,
@@ -193,189 +163,265 @@ import {
   email,
   helpers,
   sameAs,
-} from '@vuelidate/validators'
-import useRules from '@/plugins/vuelidate/vuelidateRules'
-import { toast } from 'vue3-toastify'
+} from "@vuelidate/validators";
+import useRules from "@/plugins/vuelidate/vuelidateRules";
+import { toast } from "vue3-toastify";
 
 // ==================================== START PROPS =======================================
 
 const props = defineProps({
   toggleExpand: { type: Function, default: () => {} },
   fetchRecord: { type: Function, default: () => {} },
-})
+});
 
-const emit = defineEmits(['closeForm'])
+const emit = defineEmits(["closeForm"]);
 
 // ==================================== START DATA =======================================
 
-const apiLoading = ref(false)
+const apiLoading = ref(false);
 const roles = [
-  { id: 'admin', name: 'ادمین' },
-  { id: 'finance_manager', name: 'مدیر مالی' },
-  { id: 'secretary', name: 'منشی' },
-
-]
-const flag = ref(false)
-const viewflag = ref(false)
-const createEditflag = ref(false)
-const Deleteflag = ref(false)
-const Restoreflag = ref(false)
-const forceDeleteflag = ref(false)
+  { id: "admin", name: "ادمین" },
+  { id: "finance_manager", name: "مالی مدیر" },
+  { id: "secretary", name: "منشی" },
+];
+const flag = ref(false);
+const viewflag = ref(false);
+const createEditflag = ref(false);
+const Deleteflag = ref(false);
+const Restoreflag = ref(false);
+const forceDeleteflag = ref(false);
 const payload = ref({
   id: null,
   name: null,
   email: null,
   role: null,
   permissions: [],
-})
-const expand = ref(false)
-const formRef = ref()
+});
+const expand = ref(false);
+const formRef = ref();
 const systems = [
   {
-    system_id: 'users',
-    system_name: 'کاربران',
-    actions: ['user_view', 'user_create', 'user_delete', 'user_restore', 'user_force_delete'],
-    allowed_roles: ['admin'],
+    system_id: "users",
+    system_name: "کاروونکی",
+    actions: [
+      "user_view",
+      "user_create",
+      "user_delete",
+      "user_restore",
+      "user_force_delete",
+    ],
+    allowed_roles: ["admin"],
   },
   {
-    system_id: 'Dashboard',
-    system_name: 'داشبورد',
-    actions: ['dashboard_view'],
-    allowed_roles: ['admin'],
+    system_id: "Dashboard",
+    system_name: "فهرست",
+    actions: ["dashboard_view"],
+    allowed_roles: ["admin"],
   },
   {
-    system_id: 'employees',
-    system_name: 'کارمندان',
-    actions: ['employee_view', 'employee_create', 'employee_delete', 'employee_restore', 'employee_force_delete'],
-    allowed_roles: ['admin','finance_manager','secretary'],
+    system_id: "employees",
+    system_name: "کارکوونکی",
+    actions: [
+      "employee_view",
+      "employee_create",
+      "employee_delete",
+      "employee_restore",
+      "employee_force_delete",
+    ],
+    allowed_roles: ["admin", "finance_manager", "secretary"],
   },
   {
-    system_id: 'salaries',
-    system_name: 'معاشات',
-    actions: ['salary_view', 'salary_create', 'salary_delete', 'salary_restore', 'salary_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','secretary'],
+    system_id: "salaries",
+    system_name: "معاشات",
+    actions: [
+      "salary_view",
+      "salary_create",
+      "salary_delete",
+      "salary_restore",
+      "salary_force_delete",
+    ],
+    allowed_roles: ["admin", "finance_manager", "secretary"],
   },
   {
-    system_id: 'customer',
-    system_name: 'مشتری',
-    actions: ['customer_view', 'customer_create', 'customer_delete', 'customer_restore', 'customer_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','secretary'],
+    system_id: "customer",
+    system_name: "پیرودونکي",
+    actions: [
+      "customer_view",
+      "customer_create",
+      "customer_delete",
+      "customer_restore",
+      "customer_force_delete",
+    ],
+    allowed_roles: ["admin", "finance_manager", "secretary"],
   },
   {
-    system_id: 'income_expense',
-    system_name: 'مصارف وآمد',
-    actions: ['income_expense_view', 'income_expense_create', 'income_expense_delete', 'income_expense_restore', 'income_expense_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','secretary'],
+    system_id: "income_expense",
+    system_name: "عاید او مصرف",
+    actions: [
+      "income_expense_view",
+      "income_expense_create",
+      "income_expense_delete",
+      "income_expense_restore",
+      "income_expense_force_delete",
+    ],
+    allowed_roles: ["admin", "finance_manager", "secretary"],
   },
   {
-    system_id: 'product',
-    system_name: ' محصولات',
-    actions: ['product_view', 'product_create', 'product_delete', 'product_restore', 'product_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','secretary'],
+    system_id: "product",
+    system_name: " محصولات",
+    actions: [
+      "product_view",
+      "product_create",
+      "product_delete",
+      "product_restore",
+      "product_force_delete",
+    ],
+    allowed_roles: ["admin", "finance_manager", "secretary"],
   },
   {
-    system_id: 'purchase',
-    system_name: ' خرید',
-    actions: ['purchase_view', 'purchase_create', 'purchase_delete', 'purchase_restore', 'purchase_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','secretary'],
+    system_id: "purchase",
+    system_name: "اخیستل",
+    actions: [
+      "purchase_view",
+      "purchase_create",
+      "purchase_delete",
+      "purchase_restore",
+      "purchase_force_delete",
+    ],
+    allowed_roles: ["admin", "finance_manager", "secretary"],
   },
   {
-    system_id: 'sell',
-    system_name: ' فروش',
-    actions: ['sell_view', 'sell_create', 'sell_delete', 'sell_restore', 'sell_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','secretary'],
+    system_id: "sell",
+    system_name: "خرڅ",
+    actions: [
+      "sell_view",
+      "sell_create",
+      "sell_delete",
+      "sell_restore",
+      "sell_force_delete",
+    ],
+    allowed_roles: ["admin", "finance_manager", "secretary"],
   },
   {
-    system_id: 'stock_product_transfer',
-    system_name: ' انتقال محصول به گدام',
-    actions: ['stock_product_transfer_view', 'stock_product_transfer_create', 'stock_product_transfer_delete', 'stock_product_transfer_restore', 'stock_product_transfer_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','secretary'],
+    system_id: "stock_product_transfer",
+    system_name: " د محصول انتقال ګدام ته",
+    actions: [
+      "stock_product_transfer_view",
+      "stock_product_transfer_create",
+      "stock_product_transfer_delete",
+      "stock_product_transfer_restore",
+      "stock_product_transfer_force_delete",
+    ],
+    allowed_roles: ["admin", "finance_manager", "secretary"],
   },
   {
-    system_id: 'stock_to_stock_transfer',
-    system_name: ' انتقال گدام به گادم',
-    actions: ['stock_to_stock_transfer_view', 'stock_to_stock_transfer_create', 'stock_to_stock_transfer_delete', 'stock_to_stock_transfer_restore', 'stock_product_transfer_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','secretary'],
+    system_id: "stock_to_stock_transfer",
+    system_name: " ګدام نه ګدام ته انتقال",
+    actions: [
+      "stock_to_stock_transfer_view",
+      "stock_to_stock_transfer_create",
+      "stock_to_stock_transfer_delete",
+      "stock_to_stock_transfer_restore",
+      "stock_product_transfer_force_delete",
+    ],
+    allowed_roles: ["admin", "finance_manager", "secretary"],
   },
   {
-    system_id: 'stock',
-    system_name: 'گدام ',
-    actions: ['stock_view', 'stock_create', 'stock_delete', 'stock_restore', 'stock_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','secretary'],
+    system_id: "stock",
+    system_name: "گدام ",
+    actions: [
+      "stock_view",
+      "stock_create",
+      "stock_delete",
+      "stock_restore",
+      "stock_force_delete",
+    ],
+    allowed_roles: ["admin", "finance_manager", "secretary"],
   },
   {
-    system_id: 'vendor',
-    system_name: 'معامله داران ',
-    actions: ['vendor_view', 'vendor_create', 'vendor_delete', 'vendor_restore', 'vendor_force_delete'],
-    allowed_roles: ['admin', 'finance_manager','secretary'],
+    system_id: "vendor",
+    system_name: "سوداګر ",
+    actions: [
+      "vendor_view",
+      "vendor_create",
+      "vendor_delete",
+      "vendor_restore",
+      "vendor_force_delete",
+    ],
+    allowed_roles: ["admin", "finance_manager", "secretary"],
   },
-]
-const selectAll = all => {
-  systems.forEach(element => {
-    if (flag.value==false) {
-      element.actions.forEach(index => {
-        payload.value.permissions.push(index)
-      })
-      
-    }else{
-      flag.value==false
-      viewflag.value==""
-      payload.value.permissions =[]
-      
+];
+const selectAll = (all) => {
+  systems.forEach((element) => {
+    if (flag.value == false) {
+      element.actions.forEach((index) => {
+        payload.value.permissions.push(index);
+      });
+    } else {
+      flag.value == false;
+      viewflag.value == "";
+      payload.value.permissions = [];
     }
-    
-  })
-}
-const selectView = all => {
-  systems.forEach(element => {
-    if (all=="view") {
-      if (viewflag.value==false) {
-        payload.value.permissions.push(element.actions[0])
-      }else{
-        payload.value.permissions.splice(payload.value.permissions.indexOf(element.actions[0]), 1)
+  });
+};
+const selectView = (all) => {
+  systems.forEach((element) => {
+    if (all == "view") {
+      if (viewflag.value == false) {
+        payload.value.permissions.push(element.actions[0]);
+      } else {
+        payload.value.permissions.splice(
+          payload.value.permissions.indexOf(element.actions[0]),
+          1
+        );
       }
-      
-    }else if(all=="create_edit"){
-      if (createEditflag.value==false) {
-        payload.value.permissions.push(element.actions[1])
-      }else{
-        payload.value.permissions.splice(payload.value.permissions.indexOf(element.actions[1]), 1)
+    } else if (all == "create_edit") {
+      if (createEditflag.value == false) {
+        payload.value.permissions.push(element.actions[1]);
+      } else {
+        payload.value.permissions.splice(
+          payload.value.permissions.indexOf(element.actions[1]),
+          1
+        );
+      }
+    } else if (all == "delete_info") {
+      if (Deleteflag.value == false) {
+        payload.value.permissions.push(element.actions[2]);
+      } else {
+        payload.value.permissions.splice(
+          payload.value.permissions.indexOf(element.actions[2]),
+          1
+        );
+      }
+    } else if (all == "restore_info") {
+      if (Restoreflag.value == false) {
+        payload.value.permissions.push(element.actions[3]);
+      } else {
+        payload.value.permissions.splice(
+          payload.value.permissions.indexOf(element.actions[3]),
+          1
+        );
+      }
+    } else if (all == "force_delete_info") {
+      if (forceDeleteflag.value == false) {
+        payload.value.permissions.push(element.actions[4]);
+      } else {
+        payload.value.permissions.splice(
+          payload.value.permissions.indexOf(element.actions[4]),
+          1
+        );
       }
     }
-    else if(all=="delete_info"){
-      if (Deleteflag.value==false) {
-        payload.value.permissions.push(element.actions[2])
-      }else{
-        payload.value.permissions.splice(payload.value.permissions.indexOf(element.actions[2]), 1)
-      }
-    }
-    else if(all=="restore_info"){
-      if (Restoreflag.value==false) {
-        payload.value.permissions.push(element.actions[3])
-      }else{
-        payload.value.permissions.splice(payload.value.permissions.indexOf(element.actions[3]), 1)
-      }
-    }
-    else if(all=="force_delete_info"){
-      if (forceDeleteflag.value==false) {
-        payload.value.permissions.push(element.actions[4])
-      }else{
-        payload.value.permissions.splice(payload.value.permissions.indexOf(element.actions[4]), 1)
-  
-      }
-    }
- 
 
     //  payload.value.permissions =[];
-
-  })
-}
+  });
+};
 
 // ==================================== START VALIDATION =======================================
-const validationRules = useRules.validate
+const validationRules = useRules.validate;
 const samePassword = computed(() => {
-  return payload.value.password
-})
+  return payload.value.password;
+});
 
 const rules = {
   id: { required },
@@ -383,13 +429,13 @@ const rules = {
   email: { required, email },
   role: { required },
   permissions: { required },
-}
+};
 
-const $v = useVuelidate(rules, payload)
+const $v = useVuelidate(rules, payload);
 
 // ==================================== START METHODS =======================================
 
-const downloadForm = () => {}
+const downloadForm = () => {};
 const resetForm = () => {
   payload.value = {
     id: null,
@@ -399,56 +445,56 @@ const resetForm = () => {
     confirm_password: null,
     role: null,
     permissions: [],
-  }
-  $v.value.$reset()
-  formRef.value.resetValidation()
-}
+  };
+  $v.value.$reset();
+  formRef.value.resetValidation();
+};
 
 function openDialog(item) {
-  payload.value.id = structuredClone(item.id)
-  payload.value.name = structuredClone(item.name)
-  payload.value.email = structuredClone(item.email)
-  payload.value.role = structuredClone(item.role)
-  payload.value.permissions = JSON.parse(JSON.stringify(item.permissions))
-  expand.value = true
+  payload.value.id = structuredClone(item.id);
+  payload.value.name = structuredClone(item.name);
+  payload.value.email = structuredClone(item.email);
+  payload.value.role = structuredClone(item.role);
+  payload.value.permissions = JSON.parse(JSON.stringify(item.permissions));
+  expand.value = true;
 }
 
 function closeDialog() {
-  expand.value = false
-  resetForm()
+  expand.value = false;
+  resetForm();
 }
 
 async function submit() {
   try {
-    apiLoading.value = true
-    const res = await axios.put('edit-users', payload.value)
-    closeDialog()
-    props.fetchRecord()
+    apiLoading.value = true;
+    const res = await axios.put("edit-users", payload.value);
+    closeDialog();
+    props.fetchRecord();
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error);
   }
-  apiLoading.value = false
+  apiLoading.value = false;
 }
 
 const validateForm = async () => {
-  formRef.value.validate()
+  formRef.value.validate();
   if ($v.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!");
 
-    return false
+    return false;
   }
-  submit()
-}
+  submit();
+};
 
 watch(payload.value.role, async () => {
-  payload.value.permissions = []
-})
+  payload.value.permissions = [];
+});
 
 // ==================================== START Expose =======================================
 
 defineExpose({
   openDialog,
-})
+});
 </script>
 
 <style>

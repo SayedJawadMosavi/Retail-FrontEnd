@@ -1,161 +1,161 @@
 <template>
-    <VCol cols="12">
-      <!-- 👉 Table -->
-      <ConfirmDialog
-        ref="confirmRef"
-        @confirm="onConfirm"
-      />
-      <VCard
-        title="لیست پرداخت معاشات"
-        style="min-height: 300px"
-      >
-        <VTable class="text-no-wrap">
-          <thead>
-            <tr>
-              <th scope="col">
-                #آی دی
-              </th>
-              <th scope="col">
-                مقدار معاش
-              </th>
-              <th scope="col">
-             تعداد حاضر
-              </th>
-              <th scope="col">
-              تعداد غیرحاضر
-              </th>
-              <th scope="col">
-             قابل پرداخت
-              </th>
-              <th scope="col">
-                مقدار پرداخت
-              </th>
-              <th scope="col">
-                باقیمانده
-              </th>
-              <th scope="col">
-                تاریخ معاش
-              </th>
-              <th
-                scope="col"
-                class="text-center"
-              >
-                عملیات
-              </th>
-            </tr>
-          </thead>
-  
-          <tbody>
-            <tr
-              v-for="(item, index) in props.employeeInfo.payments"
-              :key="index"
+  <VCol cols="12">
+    <!-- 👉 Table -->
+    <ConfirmDialog
+      ref="confirmRef"
+      @confirm="onConfirm"
+    />
+    <VCard
+      title="د معاشونو لست"
+      style="min-height: 300px"
+    >
+      <VTable class="text-no-wrap">
+        <thead>
+          <tr>
+            <th scope="col">
+              #آی دی
+            </th>
+            <th scope="col">
+              د معاش اندازه
+            </th>
+            <th scope="col">
+              د حاضرو تعداد
+            </th>
+            <th scope="col">
+              د غیرحاضرو تعداد
+            </th>
+            <th scope="col">
+              د ورکړې وړ
+            </th>
+            <th scope="col">
+              د وصولو اندازه
+            </th>
+            <th scope="col">
+              پاتي
+            </th>
+            <th scope="col">
+              د معاش نیټه
+            </th>
+            <th
+              scope="col"
+              class="text-center"
             >
-              <td>
-                {{ item.id }}
-              </td>
+              عملیات
+            </th>
+          </tr>
+        </thead>
   
-              <td>{{ employeeInfo.salary }}</td>
-              <td>{{ item.present }}</td>
-              <td>{{ item.absent }}</td>
-              <td>{{ item.salary }}</td>
-              <td>{{ item.paid }}</td>
-              <td>{{ item.salary - item.paid}}</td>
-              <td>{{item.year_month }}</td>
-              <td>{{ formateDate(item.created_at) }}</td>
-              <td>{{ item.description }}</td>
-              <td class="text-center">
+        <tbody>
+          <tr
+            v-for="(item, index) in props.employeeInfo.payments"
+            :key="index"
+          >
+            <td>
+              {{ item.id }}
+            </td>
+  
+            <td>{{ employeeInfo.salary }}</td>
+            <td>{{ item.present }}</td>
+            <td>{{ item.absent }}</td>
+            <td>{{ item.salary }}</td>
+            <td>{{ item.paid }}</td>
+            <td>{{ item.salary - item.paid }}</td>
+            <td>{{ item.year_month }}</td>
+            <td>{{ formateDate(item.created_at) }}</td>
+            <td>{{ item.description }}</td>
+            <td class="text-center">
+              <VBtn
+                v-if="item.deleted_at && scope(['employee_restore'])"
+                variant="text"
+                icon
+                size="small"
+                color="info"
+                :loading="restoreLoading && selectedItem.id == item.id"
+                @click="restorePayment(item)"
+              >
+                <VIcon
+                  start
+                  icon="mdi-restore"
+                  color="info"
+                />
+                بیا رغونه
+              </VBtn>
+              <div v-else>
                 <VBtn
-                  v-if="item.deleted_at && scope(['employee_restore'])"
+                  v-if="scope(['employee_force_delete'])"
                   variant="text"
                   icon
                   size="small"
-                  color="info"
-                  :loading="restoreLoading && selectedItem.id == item.id"
-                  @click="restorePayment(item)"
+                  :loading="apiLoading2 && selectedItem.id == item.id"
+                  @click="deletePayment(item)"
                 >
                   <VIcon
-                    start
-                    icon="mdi-restore"
-                    color="info"
+                    icon="mdi-trash"
+                    color="error"
                   />
-                  بازیابی
                 </VBtn>
-                <div v-else>
-                  <VBtn
-                    v-if="scope(['employee_force_delete'])"
-                    variant="text"
-                    icon
-                    size="small"
-                    :loading="apiLoading2 && selectedItem.id == item.id"
-                    @click="deletePayment(item)"
-                  >
-                    <VIcon
-                      icon="mdi-trash"
-                      color="error"
-                    />
-                  </VBtn>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </VTable>
-      </VCard>
-    </VCol>
-  </template>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </VTable>
+    </VCard>
+  </VCol>
+</template>
   
-  <script setup>
-  import { formateDate, scope } from '@/@core/utils/index';
-import ConfirmDialog from '@/components/commons/ConfirmDialog.vue';
-import { axios } from '@/plugins/axios-plugin';
+<script setup>
+import { formateDate, scope } from '@/@core/utils/index'
+import ConfirmDialog from '@/components/commons/ConfirmDialog.vue'
+import { axios } from '@/plugins/axios-plugin'
   
-  const props = defineProps({
-    employeeInfo: {
-      type: Object,
-      default: () => {},
-    },
-    updateChanges: {
-      type: Function,
-      default: () => {},
-    },
-  })
-  const confirmRef = ref()
-  const apiLoading2 = ref(false)
-  const restoreLoading = ref(false)
+const props = defineProps({
+  employeeInfo: {
+    type: Object,
+    default: () => {},
+  },
+  updateChanges: {
+    type: Function,
+    default: () => {},
+  },
+})
+const confirmRef = ref()
+const apiLoading2 = ref(false)
+const restoreLoading = ref(false)
   
-  const selectedItem = ref({})
-  const deletePayment = async item => {
-    selectedItem.value = item
-    confirmRef.value.showDialog('delete')
-  }
+const selectedItem = ref({})
+const deletePayment = async item => {
+  selectedItem.value = item
+  confirmRef.value.showDialog('delete')
+}
   
-  const restorePayment = async item => {
-    selectedItem.value = item
-    confirmRef.value.showDialog('restore')
-  }
+const restorePayment = async item => {
+  selectedItem.value = item
+  confirmRef.value.showDialog('restore')
+}
   
-  const onConfirm = async event => {
-    if (event == 'delete') {
-      try {
-        apiLoading2.value = true
-        const { data } = await axios.delete(`salary-payments/` + selectedItem.value.id)
-        await props.updateChanges()
-      } catch (error) {
-        console.error('error', error)
-      }
-      apiLoading2.value = false
+const onConfirm = async event => {
+  if (event == 'delete') {
+    try {
+      apiLoading2.value = true
+      const { data } = await axios.delete(`salary-payments/` + selectedItem.value.id)
+      await props.updateChanges()
+    } catch (error) {
+      console.error('error', error)
     }
-    if (event == 'restore') {
-      try {
-        restoreLoading.value = true
-        await axios.post(`restore/salary-payments/` + selectedItem.value.id)
-        await props.updateChanges()
-      } catch (error) {
-        console.error('error', error)
-      }
-      restoreLoading.value = false
-    }
+    apiLoading2.value = false
   }
-  </script>
+  if (event == 'restore') {
+    try {
+      restoreLoading.value = true
+      await axios.post(`restore/salary-payments/` + selectedItem.value.id)
+      await props.updateChanges()
+    } catch (error) {
+      console.error('error', error)
+    }
+    restoreLoading.value = false
+  }
+}
+</script>
   
   
   <style>

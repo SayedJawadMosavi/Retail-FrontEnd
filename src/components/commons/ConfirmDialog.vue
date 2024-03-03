@@ -21,7 +21,7 @@
           color="secondary"
           @click="confirm(false)"
         >
-          نخیر
+          نه
         </VBtn>
         <VBtn
           ripple
@@ -29,7 +29,7 @@
           variant="tonal"
           @click="confirm(true)"
         >
-          بلی
+          هو
         </VBtn>
       </VCardActions>
     </VCard>
@@ -40,7 +40,7 @@
 import { ref } from 'vue'
 
 const emit = defineEmits(['confirm'])
-const title = ref('آیا میخواهید حذف کنید؟')
+const title = ref('ایا تاسو غواړئ حذف کړئ؟؟')
 const show = ref(false)
 const type = ref('delete')
 const icon = ref('mdi-alert')
@@ -54,19 +54,19 @@ const confirm = res => {
 const showDialog = (val = 'delete') => {
   if (val == 'restore') {
     icon.value = 'mdi-restore'
-    title.value = 'آیا میخواهید بازیابی کنید؟'
+    title.value = 'ایا تاسو غواړئ بیرته راګرځئ؟؟'
   }
   if (val == 'logout') {
     icon.value = 'mdi-logout-variant'
-    title.value = 'آیا میخواهید خارج شوید؟'
+    title.value = 'ایا ته غواړې چې وتلې شې؟؟'
   }
   if (val == 'forceDelete') {
     icon.value = 'mdi-trash'
-    title.value = ' این عملیه قابل بازگشت نیست و تمام معلومات مربوط آن حذف میشود! '
+    title.value = ' دا عملیات نشي بدلیدلی او ټول اړوند معلومات به حذف شي! '
   }
   if (val == 'delete') {
     icon.value = 'mdi-trash'
-    title.value = 'آیا میخواهید حذف کنید؟'
+    title.value = 'ایا تاسو غواړئ حذف کړئ؟'
   }
   type.value = val
   show.value = true

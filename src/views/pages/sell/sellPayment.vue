@@ -7,7 +7,7 @@
     <VCol cols="12">
       <!-- SECTION: create extra expense -->
   
-      <VCard title="افزودن  پرداختی">
+      <VCard title="وصول ذخیره">
         <VRow>
           <VCol cols="12">
             <VCardText>
@@ -18,7 +18,7 @@
                   class="text-base font-weight-medium mt-2"
                   style="min-width: 150px"
                 >
-                  مجموع قیمت
+                  د قیمت مجموعه
                 </p>
                 <VChip
                   style="direction: ltr"
@@ -26,7 +26,7 @@
                   color="primary"
                   class="font-weight-medium"
                 >
-                  {{ sellInfo.total_price ?? 0 }} $
+                  {{ sellInfo.total_amount ?? 0 }} $
                 </VChip>
               </div>
   
@@ -35,7 +35,7 @@
                   class="text-base font-weight-medium mt-2"
                   style="min-width: 150px"
                 >
-                  مجموع پرداختی
+                  د وصول مجموعه
                 </p>
                 <VChip
                   style="direction: ltr"
@@ -43,7 +43,7 @@
                   color="success"
                   class="font-weight-medium"
                 >
-                  {{ sellInfo.payments_sum_amount ?? 0 }} $
+                  {{ sellInfo.total_paid ?? 0 }} $
                 </VChip>
               </div>
   
@@ -52,7 +52,7 @@
                   class="text-base font-weight-medium mt-2"
                   style="min-width: 150px"
                 >
-                  مجموع باقیمانده
+                  د پاتي مجموعه
                 </p>
                 <VChip
                   style="direction: ltr"
@@ -60,14 +60,14 @@
                   color="error"
                   class="font-weight-medium"
                 >
-                  {{ sellInfo.remainder?.toFixed(2) ?? 0 }} $
+                  {{ remainder?.toFixed(2) ?? 0 }} $
                 </VChip>
               </div>
             </VCardText>
             <VDivider />
           </VCol>
           <VCol
-            v-show="sellInfo.remainder > 0"
+            v-show="remainder > 0"
             cols="12"
             md="5"
             order-md="0"
@@ -92,7 +92,7 @@
                       v-if="validationRules(v$.created_at, 'Date').length > 0"
                       class="text-error mb-0"
                     >
-                      {{ validationRules(v$.created_at, 'تاریخ')[0] }}
+                      {{ validationRules(v$.created_at, 'نیټه')[0] }}
                     </p>
                   </VCol>
   
@@ -100,9 +100,9 @@
                     <VTextField
                       v-model="payload.amount"
                       dir="ltr"
-                      :rules="validationRules(v$.amount, 'مقدار پرداختی')"
+                      :rules="validationRules(v$.amount, 'د وصول اندازه')"
                       prepend-inner-icon="mdi-cash"
-                      label="مقدار پراختی"
+                      label="مقدار وصول"
                       @input="convertToEnglishNumbers('amount')"
                       @keypress="useRules.preventNonNumeric"
                     />
@@ -115,7 +115,7 @@
                       :loading="apiLoading"
                       @click="validateForm"
                     >
-                      افزودن
+                      ذخیره
                     </VBtn>
                   </VCol>
                 </VRow>
@@ -130,7 +130,7 @@
     <VCol cols="12">
       <!-- 👉 Table -->
       <VCard
-        title="لیست پرداختی"
+        title="د وصول لست"
         style="min-height: 300px"
       >
         <VTable class="text-no-wrap">
@@ -140,13 +140,13 @@
                 #آی دی
               </th>
               <th scope="col">
-                مقدار پرداختی
+                د وصول اندازه
               </th>
               <th scope="col">
-                تاریخ پرداخت
+                نیټه
               </th>
               <th scope="col">
-                توضیحات
+                تفصیل
               </th>
               <th scope="col">
                 عملیات
@@ -332,7 +332,9 @@ const formRefs = ref()
 const editData = ref({
   id: null,
   amount: 0,
+  sell_id: sell_id.value,
 })
+const remainder = ref(0)
   
 const apiLoading = ref(false)
 const apiLoading2 = ref(false)
@@ -350,9 +352,12 @@ const payload = ref({
 })
   
 const remaining = computed(() => {
-  return props.sellInfo?.remainder
+  return props.sellInfo?.total_amount-props.sellInfo.total_paid
 })
-  
+onMounted(() => {
+  remainder.value= props.sellInfo?.total_amount-props.sellInfo.total_paid
+})
+
 // ==================================== START VALIDATION =======================================
 const validationRules = useRules.validate
   
@@ -451,8 +456,8 @@ const validateForm = async () => {
   formRefs.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
-  
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
+    
     return false
   }
   submit()
@@ -464,8 +469,10 @@ async function submit() {
   
     const { data } = await axios.post(`sell-payment`, payload.value)
     await props.updateChanges()
+    remainder.value= props.sellInfo?.total_amount-props.sellInfo.total_paid
   
     resetForm()
+    
   } catch (error) {
     console.error('error', error)
   }

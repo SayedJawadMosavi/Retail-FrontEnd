@@ -19,9 +19,9 @@
             <VRow>
               <VCol cols="12">
                 <p class="mb-0">
-                  شروع تاریخ
+                  شروع نیټه
                 </p>
-  
+
                 <span style="direction: ltr">
                   <VueDatePicker
                     v-model="formdata.start_date"
@@ -34,10 +34,10 @@
                   />
                 </span>
               </VCol>
-  
+
               <VCol cols="12">
                 <p class="mb-0">
-                  ختم تاریخ
+                  ختم نیټه
                 </p>
                 <span style="direction: ltr">
                   <VueDatePicker
@@ -57,18 +57,18 @@
         <VCardActions class="justify-end">
           <VBtn
             color="secondary"
-            @click="show=false"
+            @click="show = false"
           >
-            کنسل
+            کینسل
           </VBtn>
-            
+
           <VBtn
             ripple
             color="primary"
             variant="tonal"
             @click="getReport"
           >
-            تهیه راپور
+            راپور ترتیبول
             <VIcon
               icon="mdi-export"
               end
@@ -82,7 +82,6 @@
         v-model:start-date="formdata.start_date"
         v-model:end-date="formdata.end_date"
         v-model:contract-id="formdata.contract_id"
-  
         :flag="flag"
         :title="title"
         :total="total"
@@ -95,9 +94,9 @@
       :update-changes="updateChanges"
     />
     <VCol cols="12">
-      <VCard title="قرضه جدید">
+      <VCard title="نوی قرضه">
         <VDivider />
-  
+
         <VCardText>
           <!-- 👉 Form -->
           <VForm
@@ -121,22 +120,24 @@
                   />
                 </span>
                 <p
-                  v-if="validationRules($v.created_at, 'تاریخ').length > 0"
+                  v-if="validationRules($v.created_at, 'نیټه').length > 0"
                   class="text-error mb-0"
                 >
-                  {{ validationRules($v.created_at, 'تاریخ')[0] }}
+                  {{ validationRules($v.created_at, 'نیټه')[0] }}
                 </p>
               </VCol>
               <VCol
                 cols="12"
                 md="4"
               >
-                <VCombobox
+                <VSelect
                   v-model="payload.type"
-                  :rules="validationRules($v.type, 'نوعیت')"
-                  label="نوعیت"
+                  :rules="validationRules($v.type, 'ډول')"
+                  label="ډول"
                   prepend-inner-icon="mdi-palette-swatch"
-                  :items="itemTypes"
+                  :items="Types"
+                  item-title="name"
+                  item-value="id"
                 />
               </VCol>
               <VCol
@@ -145,10 +146,10 @@
               >
                 <VTextField
                   v-model="payload.amount"
-                  label="مقدار"
+                  label="اندازه"
                   dir="ltr"
                   prepend-inner-icon="mdi-amounter"
-                  :rules="validationRules($v.amount, 'مقدار')"
+                  :rules="validationRules($v.amount, 'اندازه')"
                   @input="convertToEnglishNumbers('amount')"
                   @keypress="useRules.preventNonNumeric"
                 />
@@ -157,7 +158,7 @@
             <VRow />
           </VForm>
         </VCardText>
-  
+
         <VCardText class="d-flex flex-wrap gap-4">
           <VBtn @click="validateForm">
             <VIcon
@@ -166,7 +167,7 @@
             />
             ذخیره
           </VBtn>
-  
+
           <VBtn
             color="red"
             variant="tonal"
@@ -176,13 +177,13 @@
               start
               icon="mdi-cancel"
             />
-            کنسل
+            کینسل
           </VBtn>
         </VCardText>
       </VCard>
       <VBtn
         class="font-weight-bold bg-info mt-4"
-        style="float: right;"
+        style="float: right"
         @click="openDialogs"
       >
         راپور
@@ -191,16 +192,16 @@
           icon="mdi-export"
         />
       </VBtn>
-  
+
       <template #loan="{ item }">
         {{ item.loan }}
       </template>
     </VCol>
-  
+
     <VCol cols="12">
       <!-- 👉 Table -->
       <VCard
-        title="لیست جزییات"
+        title="لست جزییات"
         style="min-height: 300px"
       >
         <thead>
@@ -209,19 +210,19 @@
               scope="col"
               class="pr-4"
             >
-              جمله قرض کارمند   :
+              د کارکوونکی ټول قرض :
             </th>
             <td>
               <VChip
                 style="direction: ltr"
                 small
-                :color="`${props.employeeInfo.loan >0 ? 'error' : 'success'}`"
+                :color="`${props.employeeInfo.loan > 0 ? 'error' : 'success'}`"
                 class="font-weight-medium"
               >
                 {{ Math.abs(props.employeeInfo.loan) }}
                 <VIcon
                   size="30"
-                  :icon="`${props.employeeInfo.loan >0 ? 'mdi-arrow-down' : 'mdi-arrow-up'}`"
+                  :icon="`${props.employeeInfo.loan > 0 ? 'mdi-arrow-down' : 'mdi-arrow-up'}`"
                 />
               </VChip>
             </td>
@@ -231,17 +232,17 @@
           <thead>
             <tr>
               <th scope="col">
-                #شماره
+                #شمیره
               </th>
               <th scope="col">
-                نوعیت
+                ډول
               </th>
               <th scope="col">
-                مقدار
+                اندازه
               </th>
-  
+
               <th scope="col">
-                تاریخ ثبت
+                د ثبت نیټه
               </th>
               <th
                 scope="col"
@@ -264,20 +265,20 @@
                 <VChip
                   style="direction: ltr"
                   small
-                  :color="`${item.type=='withdraw' ? 'error' : 'success'}`"
+                  :color="`${item.type == 'withdraw' ? 'error' : 'success'}`"
                   class="font-weight-medium"
                 >
-                  {{ item.type }}
+                  {{ item.type =='withdraw' ? 'بنام' :'جمع' }}
                   <VIcon
                     size="30"
-                    :icon="`${item.type=='withdraw' ? 'mdi-arrow-down' : 'mdi-arrow-up'}`"
+                    :icon="`${item.type == 'withdraw' ? 'mdi-arrow-down' : 'mdi-arrow-up'}`"
                   />
                 </VChip>
               </td>
               <td>{{ item.amount }}</td>
-  
+
               <td>{{ formateDate(item.created_at) }}</td>
-  
+
               <td class="text-center">
                 <div v-if="item.deleted_at">
                   <VBtn
@@ -293,9 +294,9 @@
                       icon="mdi-restore"
                       color="info"
                     />
-                    بازگشت
+                    بیرته تګ
                   </VBtn>
-  
+
                   <VBtn
                     class="ms-2"
                     variant="text"
@@ -310,7 +311,7 @@
                     />
                   </VBtn>
                 </div>
-  
+
                 <div v-else>
                   <VBtn
                     variant="text"
@@ -323,7 +324,7 @@
                       color="primary"
                     />
                   </VBtn>
-  
+
                   <VBtn
                     variant="text"
                     icon
@@ -345,7 +346,7 @@
     </VCol>
   </VRow>
 </template>
-  
+
 <script setup>
 import { required, numeric, minLength, minValue } from '@vuelidate/validators'
 import useRules from '@/plugins/vuelidate/vuelidateRules'
@@ -363,24 +364,24 @@ const props = defineProps({
     type: Object,
     default: () => {},
   },
-  
+
   updateChanges: {
     type: Function,
     default: () => {},
   },
 })
-  
+
 const sleep = ms => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
-  
+
 const route = useRoute()
-  
+
 const employee_id = ref(route.params.employee_id)
-  
+
 const formRef = ref()
 const loadingPackage = ref(false)
-  
+
 const apiLoading = ref(false)
 const apiLoading2 = ref(false)
 const restoreLoading = ref(false)
@@ -396,7 +397,7 @@ const printRefs = ref()
 const headers = ref([])
 const printType = ref()
 const printLoading = ref(false)
-  
+
 const show = ref(false)
 const title = ref('')
 const flag = ref('')
@@ -405,7 +406,6 @@ const formdata = ref({
   start_date: new Date(),
   end_date: new Date(),
   employee_id: employee_id.value,
-   
 })
 const payload = ref({
   created_at: new Date(),
@@ -414,8 +414,11 @@ const payload = ref({
   employee_id: employee_id.value,
   employee_name: props.employeeInfo.first_name,
 })
-  
-let itemTypes = ['deposit', 'withdraw']
+
+const Types = ref([
+  { name: 'جمع', id: 'deposit' },
+  { name: 'بنام', id: 'withdraw' },
+])
 const loan_payment_header = [
   {
     title: 'ID',
@@ -423,34 +426,34 @@ const loan_payment_header = [
     width: '80px',
   },
   {
-    title: ' اسم کارمند',
+    title: ' د کارکوونکی نوم',
     key: 'employee_name',
   },
   {
-    title: 'نوعیت',
+    title: 'ډول',
     key: 'type',
   },
-  
+
   {
-    title: '  مقدار',
+    title: '  اندازه',
     key: 'amount',
   },
-  
+
   {
-    title: 'تاریخ',
+    title: 'نیټه',
     key: 'created_at',
   },
 ]
 
 // ==================================== START VALIDATION =======================================
 const validationRules = useRules.validate
-  
+
 const rules = {
   created_at: { required },
   type: { required },
   amount: { required, minValue: minValue(1) },
 }
-  
+
 const $v = new useVuelidate(rules, payload)
 const resetForm = (type = 'items') => {
   if (type == 'items') {
@@ -460,9 +463,8 @@ const resetForm = (type = 'items') => {
       amount: 0,
       employee_id: employee_id.value,
       employee_name: props.employeeInfo.first_name,
-
     }
-  
+
     $v.value.$reset()
     formRef.value.resetValidation()
   }
@@ -480,10 +482,10 @@ async function getPackage() {
 const validateForm = async () => {
   formRef.value.validate()
   $v.value.$touch()
-  
+
   submit()
 }
-  
+
 async function submit() {
   try {
     apiLoading.value = true
@@ -495,14 +497,14 @@ async function submit() {
   }
   apiLoading.value = false
 }
-  
+
 function convertToEnglishNumbers(model, item = null, index = null) {
   const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
   const englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
   for (let i = 0; i < 10; i++) {
     if (model == 'expense.price') {
       expense.value.price = expense.value.price.replace(persianNumbers[i], i).replace(englishNumbers[i], i)
-  
+
       return
     }
     if (item == null) {
@@ -514,28 +516,28 @@ function convertToEnglishNumbers(model, item = null, index = null) {
     }
   }
 }
-  
+
 const restoreRecord = async (item, type) => {
   selectedItem.value = item
   selectedType.value = type
   confirmRef.value.showDialog('restore')
 }
-  
+
 const editForm = async (item, type = 'epense') => {
   editRef.value.openDialog(item, type)
 }
-  
+
 const deleteRecord = async (item, type) => {
   selectedItem.value = item
   selectedType.value = type
-  
+
   confirmRef.value.showDialog('delete')
 }
-  
+
 const forceDelete = async (item, type) => {
   selectedItem.value = item
   selectedType.value = type
-  
+
   confirmRef.value.showDialog('forceDelete')
 }
 const openDialogs = type => {
@@ -543,31 +545,30 @@ const openDialogs = type => {
   payload.value = {
     start_date: new Date(),
     end_date: new Date(),
-    
   }
   show.value = true
 }
 const getReport = async () => {
   if (formdata.value.start_date == null || formdata.value.end_date == null) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
 
     return false
   }
   try {
-    console.log("pppp",printType.value)
+    console.log('pppp', printType.value)
     if (printType.value == 'loan_payment') {
       headers.value = loan_payment_header
-      title.value = 'راپور قرضه  '+ props.employeeInfo.first_name
+      title.value = 'د قرض راپور  ' + props.employeeInfo.first_name
       total.value = props.employeeInfo.loan
-      flag.value = "loan"
+      flag.value = 'loan'
     }
-  
+
     printLoading.value = true
-    let { data } = await axios.get('reports', {  params: { type:printType.value, ...formdata.value }  })
+    let { data } = await axios.get('reports', { params: { type: printType.value, ...formdata.value } })
     printData.value = data
     await sleep(1)
     const printable = window.open('', '_blank')
-  
+
     printable.document.write('<html style="direction:ltr"><head><style>@page { size: A4 landscape }</style>')
     printable.document.write('</head><body>')
     printable.document.write(printRefs.value.$el.innerHTML)
@@ -575,9 +576,8 @@ const getReport = async () => {
     printable.document.close()
     printable.print()
     await sleep(1)
-  
+
     printable.close()
-  
   } catch (error) {
     console.error('error', error)
   }
@@ -593,7 +593,7 @@ const onConfirm = async event => {
       console.error('error', error)
     }
   }
-  
+
   if (event == 'forceDelete') {
     try {
       apiLoading2.value = true
@@ -620,33 +620,32 @@ onMounted(() => {
   getPackage()
 })
 </script>
-  
-  <style>
-  .dp__input{
-  padding: 12px 4px 12px 40px !important;
-  }
-  
-  .dp__theme_dark ,.dp__theme_light  {
-  --dp-background-color:  rgb(var(--v-theme-surface));
-  --dp-text-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
-  --dp-hover-color: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
-  --dp-hover-text-color: gba(var(--v-theme-on-surface),1);
-  --dp-hover-icon-color: var(--v-theme-on-surface);
-  --dp-primary-color: #40A579;
-  --dp-primary-text-color:#fff;
-  --dp-secondary-color: #8A8D93;
-  --dp-border-color:rgba(var(--v-border-color), var(--v-border-opacity));
-  --dp-menu-border-color: rgba(var(--v-border-color), var(--v-border-opacity));
-  --dp-border-color-hover:rgba(var(--v-border-color),var(--v-medium-emphasis-opacity) )
-  --dp-border-radius:10px  !important;
-  --dp-disabled-color:var(--v-disabled-opacity);
-  --dp-scroll-bar-background: var(--v-theme-on-surface);
-  --dp-scroll-bar-color: #484848;
-  --dp-success-color: #00701a;
-  --dp-success-color-disabled: #428f59;
-  --dp-icon-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
-  --dp-danger-color: #e53935;
-  --dp-highlight-color: rgba(0, 92, 178, 0.2);
-  }
-  </style>
-  
+
+<style>
+.dp__input{
+padding: 12px 4px 12px 40px !important;
+}
+
+.dp__theme_dark ,.dp__theme_light  {
+--dp-background-color:  rgb(var(--v-theme-surface));
+--dp-text-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+--dp-hover-color: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
+--dp-hover-text-color: gba(var(--v-theme-on-surface),1);
+--dp-hover-icon-color: var(--v-theme-on-surface);
+--dp-primary-color: #40A579;
+--dp-primary-text-color:#fff;
+--dp-secondary-color: #8A8D93;
+--dp-border-color:rgba(var(--v-border-color), var(--v-border-opacity));
+--dp-menu-border-color: rgba(var(--v-border-color), var(--v-border-opacity));
+--dp-border-color-hover:rgba(var(--v-border-color),var(--v-medium-emphasis-opacity) )
+--dp-border-radius:10px  !important;
+--dp-disabled-color:var(--v-disabled-opacity);
+--dp-scroll-bar-background: var(--v-theme-on-surface);
+--dp-scroll-bar-color: #484848;
+--dp-success-color: #00701a;
+--dp-success-color-disabled: #428f59;
+--dp-icon-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+--dp-danger-color: #e53935;
+--dp-highlight-color: rgba(0, 92, 178, 0.2);
+}
+</style>

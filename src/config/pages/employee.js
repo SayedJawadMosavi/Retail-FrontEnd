@@ -1,6 +1,6 @@
 const tabs = [
-  { title: 'کارمندان', icon: 'mdi-account-group-outline', count: 0 , key: 'employees'},
-  { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: "trash"},
+  { title: 'کارکوونکی', icon: 'mdi-account-group-outline', count: 0 , key: 'employees'},
+  { title: 'ړنګ شوی', icon:'mdi-trash',count:0, key: "trash"},
 ]
   
 const search=[
@@ -9,7 +9,7 @@ const search=[
     id: 'all',
   },
   {
-    name: 'کارمند شماره ',
+    name: 'د کارکوونکی شمیره',
     id: 'id',
   },
     
@@ -17,28 +17,28 @@ const search=[
 ]
 const breadCrumbs=[
   {
-    title: 'داشبورد',
+    title: 'فهرست',
     disabled: false,
     href: '/',
   },
       
   {
-    title: 'کارمندان',
+    title: 'کارکوونکی',
     disabled: true,
     href: 'employess',
   },
 ]
 const headers= [ 
   {
-    title: 'شماره',
+    title: 'شمیره',
     key: 'id',
   },
   {
-    title: 'دیدن بیشتر',
+    title: 'نور کتل',
     key: 'profile',
   },
   {
-    title: 'اسم',
+    title: 'نوم',
     key: 'first_name',
                
   },
@@ -49,36 +49,36 @@ const headers= [
                
   },
   {
-    title: 'ایمیل',
+    title: 'بریښنالیک',
     key: 'email',
   },
   {
-    title: 'عنوان وظیفه',
+    title: 'د وظیفی اعلان',
     key: 'job_title',
     width: '100px',
   },
   
   {
-    title: 'شماره تلفن',
+    title: 'تیلفون شمیره',
     key: 'phone_number',
   },
   {
-    title: 'آدرس فعلی',
+    title: 'اوسنۍ پته',
     key: 'current_address',
     width: '180px',
   },
   {
-    title: 'آدرس دائمی',
+    title: 'دایمی پته',
     key: 'permenent_address',
     width: '180px',
   },
   {
-    title: 'تاریخ شروع ',
+    title: 'پیل نېټه ',
     key: 'employment_start_date',
     width: "130px",
   },
   {
-    title: 'تاریخ ختم ',
+    title: 'د پای نیټه ',
     key: 'employment_end_date',
     width: "130px",
    

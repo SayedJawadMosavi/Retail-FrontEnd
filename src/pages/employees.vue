@@ -8,14 +8,14 @@
     >
       <VCard
         width="auto"
-        title="تهیه راپور"
+        title="راپور ترتیبول"
       >
         <VCardText style="min-height: 300px">
           <VForm ref="formRef">
             <VRow>
               <VCol cols="12">
                 <p class="mb-0">
-                  شروع تاریخ
+                  پیل نیټه
                 </p>
 
                 <span style="direction: ltr">
@@ -30,16 +30,16 @@
                   />
                 </span>
                 <p
-                  v-if="validationRules(v$.start_date, 'تاریخ').length > 0"
+                  v-if="validationRules(v$.start_date, 'نیټه').length > 0"
                   class="text-error"
                 >
-                  {{ validationRules(v$.start_date, 'تاریخ شروع')[0] }}
+                  {{ validationRules(v$.start_date, 'پیل نیټه')[0] }}
                 </p>
               </VCol>
 
               <VCol cols="12">
                 <p class="mb-0">
-                  ختم تاریخ
+                  ختم ڼیته
                 </p>
                 <span style="direction: ltr">
                   <VueDatePicker
@@ -53,10 +53,10 @@
                   />
                 </span>
                 <p
-                  v-if="validationRules(v$.end_date, 'تاریخ').length > 0"
+                  v-if="validationRules(v$.end_date, 'نیټه').length > 0"
                   class="text-error"
                 >
-                  {{ validationRules(v$.end_date, 'ختم تاریخ')[0] }}
+                  {{ validationRules(v$.end_date, 'ختم نیټه')[0] }}
                 </p>
               </VCol>
             </VRow>
@@ -67,7 +67,7 @@
             color="secondary"
             @click="closeReset"
           >
-            کنسل
+            کینسل
           </VBtn>
           <VBtn
             ripple
@@ -113,9 +113,9 @@
       :selected-items="datatableRefs?.selectedItems"
       :items="breadCrumbs"
       :search-options="search"
-      page="لیست کارمندان"
+      page="د کارکوونکی لست"
       icon="mdi-people"
-      create-text="اضافه کردن کارمند"
+      create-text="د کارکوونکی اضافه کول"
       :show-create="scope(['employee_create'])"
       :show-delete="scope(['employee_delete'])"
       :show-restore="scope(['employee_restore'])"
@@ -133,7 +133,7 @@
           class="font-weight-bold bg-warning"
           @click="TakeReport"
         >
-          تهیه راپور
+          راپور ترتیبول
           <VIcon
             end
             icon="mdi-printer"
@@ -144,7 +144,7 @@
           class="font-weight-bold bg-success"
           @click="ExportExcel"
         >
-          به اکسل
+          په اکسل
           <VIcon
             end
             icon="mdi-export"
@@ -220,11 +220,11 @@ const CaloriesTemplate = defineComponent({
 })
 const Employee_header = [
   {
-    title: 'شماره',
+    title: 'شمیره',
     key: 'id',
   },
   {
-    title: 'اسم',
+    title: 'نوم',
     key: 'first_name',
                
   },
@@ -239,27 +239,27 @@ const Employee_header = [
     key: 'email',
   },
   {
-    title: 'عنوان وظیفه',
+    title: 'و وظیفی عنوان',
     key: 'job_title',
     width: '100px',
   },
   
   {
-    title: 'شماره تلفن',
+    title: 'تیلفون شمیره',
     key: 'phone_number',
   },
   {
-    title: 'آدرس فعلی',
+    title: 'اوسنۍ پته',
     key: 'current_address',
     width: '180px',
   },
   {
-    title: 'آدرس دائمی',
+    title: 'دایمی پته',
     key: 'permenent_address',
     width: '180px',
   },
   {
-    title: 'تاریخ شروع ',
+    title: 'پیل نیټه ',
     key: 'created_at',
     width: "130px",
   },
@@ -346,7 +346,7 @@ const ExportExcel = async () => {
 }
 const getReport = async () => {
   if (payload.value.start_date == null || payload.value.end_date == null) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړۍ فورم صحیح ډک کړئ')
 
     return false
   }
@@ -364,7 +364,7 @@ const getReport = async () => {
 }
 const print = async () => {
   if (payload.value.start_date == null || payload.value.end_date == null) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړۍ فورم صحیح ډک کړئ')
 
     return false
   }

@@ -32,6 +32,7 @@ const rtl = computed(() => {
 
 const language = computed(() => {
   console.log('tessss',store.language)
+  
   return store.language
 
 })
@@ -42,3 +43,9 @@ watch([rtl, language], ([newRtl, newLanguage]) => {
   localStorage.setItem('language', newLanguage)
 })
 </script>
+
+<style lang="scss">
+.nav-item-title{
+  font-size: 13px;
+}
+</style>

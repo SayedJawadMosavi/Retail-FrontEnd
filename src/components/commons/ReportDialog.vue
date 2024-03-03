@@ -1,26 +1,11 @@
 <template>
-  <VDialog
-    v-model="show"
-    transition="dialog-top-transition"
-    persistent
-    width="auto"
-  >
-    <VCard
-      width="400"
-    
-      title="تهیه راپور"
-    >
-      <VCardText
-        style="min-height: 300px;"
-      >
+  <VDialog v-model="show" transition="dialog-top-transition" persistent width="auto">
+    <VCard width="400" title="راپور ترتیبول">
+      <VCardText style="min-height: 300px">
         <VForm ref="formRef">
           <VRow>
-            <VCol
-              cols="12"
-            >
-              <p class="mb-0">
-                شروع تاریخ
-              </p>
+            <VCol cols="12">
+              <p class="mb-0">پیل نېټه</p>
               <span style="direction: ltr">
                 <VueDatePicker
                   v-model="payload.start_date"
@@ -36,18 +21,13 @@
                 v-if="validationRules($v.start_date, 'Date').length > 0"
                 class="text-error mb-0"
               >
-                {{ validationRules($v.start_date, 'Date')[0] }}
+                {{ validationRules($v.start_date, "Date")[0] }}
               </p>
             </VCol>
 
-            <VCol
-              cols="12"
-            >
-              <p class="mb-0">
-                ختم تاریخ
-              </p>
+            <VCol cols="12">
+              <p class="mb-0">له کاره وتنې نېټه</p>
               <span style="direction: ltr">
-
                 <VueDatePicker
                   v-model="payload.end_date"
                   clearable
@@ -62,34 +42,21 @@
                 v-if="validationRules($v.end_date, 'Date').length > 0"
                 class="text-error"
               >
-                {{ validationRules($v.end_date, 'Date')[0] }}
+                {{ validationRules($v.end_date, "Date")[0] }}
               </p>
             </VCol>
           </VRow>
         </VForm>
       </VCardText>
       <VCardActions class="justify-end">
-        <VBtn
-          color="secondary"
-          @click="show=false"
-        >
-          لغو
-        </VBtn>
-        <VBtn
-          ripple
-          color="primary"
-          variant="tonal"
-          @click="print"
-        >
-          پرینت راپور
-          <VIcon
-            icon="mdi-printer"
-            end
-          />
+        <VBtn color="secondary" @click="show = false"> لغوه کول </VBtn>
+        <VBtn ripple color="primary" variant="tonal" @click="print">
+          د راپور پرنت
+          <VIcon icon="mdi-printer" end />
         </VBtn>
       </VCardActions>
     </VCard>
-    
+
     <PrintReportDialog
       ref="printRefs"
       v-model:print-item="printData"
@@ -102,305 +69,300 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { axios } from '@/plugins/axios-plugin'
+import { ref } from "vue";
+import { axios } from "@/plugins/axios-plugin";
 
-import { required, numeric, minLength, maxLength, minValue, maxValue, email, helpers } from '@vuelidate/validators'
-import useRules from '@/plugins/vuelidate/vuelidateRules'
-import { useVuelidate } from '@vuelidate/core'
-import PrintReportDialog from '@/components/commons/PrintReportDialog.vue'
-import { toast } from 'vue3-toastify'
+import {
+  required,
+  numeric,
+  minLength,
+  maxLength,
+  minValue,
+  maxValue,
+  email,
+  helpers,
+} from "@vuelidate/validators";
+import useRules from "@/plugins/vuelidate/vuelidateRules";
+import { useVuelidate } from "@vuelidate/core";
+import PrintReportDialog from "@/components/commons/PrintReportDialog.vue";
+import { toast } from "vue3-toastify";
 
-const props = defineProps({
-  
- 
+const props = defineProps({});
+const emit = defineEmits(["confirm"]);
 
-})
-const emit = defineEmits(['confirm'])
-
-const sleep = ms => {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
+const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
 
 const Employee_header = [
   {
-    title: 'شماره',
-    key: 'id',
+    title: "شمیره",
+    key: "id",
   },
   {
-    title: 'اسم',
-    key: 'first_name',
+    title: "نوم",
+    key: "first_name",
   },
   {
-    title: 'تخلص',
-    key: 'last_name',
+    title: "تخلص",
+    key: "last_name",
   },
   {
-    title: 'ایمیل',
-    key: 'email',
+    title: "بریښنالیک",
+    key: "email",
   },
   {
-    title: 'عنوان وظیفه',
-    key: 'job_title',
-    width: '100px',
+    title: "د وظیفی عنوان",
+    key: "job_title",
+    width: "100px",
   },
 
   {
-    title: 'شماره تلفن',
-    key: 'phone_number',
+    title: "تیلفون شمیره",
+    key: "phone_number",
   },
   {
-    title: 'آدرس فعلی',
-    key: 'current_address',
-    width: '180px',
+    title: "فعلی آدرس",
+    key: "current_address",
+    width: "180px",
   },
   {
-    title: 'آدرس دائمی',
-    key: 'permenent_address',
-    width: '180px',
+    title: "دایمی آدرس",
+    key: "permenent_address",
+    width: "180px",
   },
   {
-    title: 'تاریخ شروع ',
-    key: 'created_at',
-    width: '130px',
+    title: "پیل نیټه ",
+    key: "created_at",
+    width: "130px",
   },
 
   {
-    title: 'معاش',
-    key: 'salary',
+    title: "معاش",
+    key: "salary",
   },
-]
+];
 
-const incoming_header= [
+const incoming_header = [
   {
-    title: '#آی دی',
-    key: 'id',
+    title: "#آی دی",
+    key: "id",
   },
   {
-    title: 'توضیحات',
-    key: 'name',
+    title: "تفصیل",
+    key: "name",
   },
   {
-    title: 'مقدار',
-    key: 'amount',
-    width: '140px',
-
+    title: "د پیسو اندازه",
+    key: "amount",
+    width: "140px",
   },
   {
-    title: 'تاریخ',
-    key: 'created_at',
-
+    title: "نیټه",
+    key: "created_at",
   },
-    
-]
+];
 const salary_header = [
   {
-    title: 'شماره',
-    key: 'ids',
-    width: '80px',
+    title: "شمیره",
+    key: "ids",
+    width: "80px",
   },
   {
-    title: 'نام کارمند',
-    key: 'employee_name',
+    title: "د کارمند نوم",
+    key: "employee_name",
   },
   {
-    title:'موقف',
-    key: 'position',
+    title: "وظیفه",
+    key: "position",
   },
   {
-    title:'مقدار معاش',
-    key: 'salary',
+    title: "د معاش اندازه",
+    key: "salary",
   },
   {
-    title:'قابل پرداختی',
-    key: 'payable_amount',
+    title: "قابل وصول",
+    key: "payable_amount",
   },
   {
-    title:'مقدار پرداختی',
-    key: 'paid',
+    title: "مقدار وصول",
+    key: "paid",
   },
   {
-    title:'تعداد حاضر',
-    key: 'present',
+    title: "تعداد حاضر",
+    key: "present",
   },
   {
-    title:'تعداد غیرحاضر',
-    key: 'absent',
+    title: "تعداد غیرحاضر",
+    key: "absent",
   },
   {
-    title:'باقیمانده معاش',
-    key: 'remainder',
+    title: "باقیمانده معاش",
+    key: "remainder",
   },
   {
-    title: 'تاریخ پرداخت',
-    key: 'created_at',
+    title: "تاریخ پرداخت",
+    key: "created_at",
   },
-]
+];
 const customer_header = [
   {
-    title: 'شماره',
-    key: 'id',
+    title: "شماره",
+    key: "id",
   },
-  
+
   // {
   //   title: 'View More',
   //   key: 'profile',
   // },
-   
+
   {
-    title: 'اسم',
-    key: 'first_name',
-                 
+    title: "اسم",
+    key: "first_name",
   },
 
   {
-    title: 'تخلص',
-    key: 'last_name',
-     
-                 
+    title: "تخلص",
+    key: "last_name",
   },
   {
-    title: 'شماره تماس',
-    key: 'phone_number',
+    title: "شماره تماس",
+    key: "phone_number",
   },
   {
-    title: 'ایمیل',
-    key: 'email',
+    title: "ایمیل",
+    key: "email",
   },
   {
-    title: 'آدرس',
-    key: 'address',
+    title: "آدرس",
+    key: "address",
   },
   {
-    title: 'مجموع پول',
-    key: 'total_price',
+    title: "د پیسو مجموعه",
+    key: "total_amount",
   },
-   
-  {
-    title: 'مجموع پرداخت شده',
-    key: 'payments_sum_amount',
-  },
-  
-  {
-    title: 'باقی مانده',
-    key: 'remainder',
-  },
-  {
-    title: 'توضیحات',
-    key: 'description',
-  },
-]
-const formRef = ref()
-const printRefs = ref()
-const headers = ref([])
-const show = ref(false)
-const printLoading = ref(false)
-const printData = ref([])
-const printType = ref('')
-const title = ref('')
 
+  {
+    title: "ټول وصول شوي",
+    key: "total_paid",
+  },
+
+  {
+    title: "پاتې",
+    key: "customer_remainders",
+  },
+  {
+    title: "توضیحات",
+    key: "description",
+  },
+];
+const formRef = ref();
+const printRefs = ref();
+const headers = ref([]);
+const show = ref(false);
+const printLoading = ref(false);
+const printData = ref([]);
+const printType = ref("");
+const title = ref("");
 
 const payload = ref({
   start_date: new Date(),
-  end_date:new Date(),
-})
+  end_date: new Date(),
+});
 
 const rules = {
   start_date: { required },
   end_date: { required },
-}
-const $v = useVuelidate(rules, payload)
+};
+const $v = useVuelidate(rules, payload);
 
-const validationRules = useRules.validate
+const validationRules = useRules.validate;
 
-const confirm = res => {
+const confirm = (res) => {
   if (res) {
-    emit('confirm', type.value)
+    emit("confirm", type.value);
   }
-  show.value = false
-}
-const showPrintConfirm = type => {
-  printType.value=type
-  payload.value=  {
+  show.value = false;
+};
+const showPrintConfirm = (type) => {
+  printType.value = type;
+  payload.value = {
     start_date: new Date(),
-    end_date:new Date(),
-  }
-  show.value = true
-}
-
-
+    end_date: new Date(),
+  };
+  show.value = true;
+};
 
 const print = async () => {
-  console.log('dfvdfvd',printType.value)
-  formRef.value.validate()
+  console.log("dfvdfvd", printType.value);
+  formRef.value.validate();
   if ($v.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
-    
-    return false
+    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!");
+
+    return false;
   }
   try {
-    printLoading.value = true
- 
+    printLoading.value = true;
 
-    if (printType.value == 'incoming') {
-      headers.value = incoming_header
-      title.value="گزارش آمد"
-    }
-
-    if (printType.value == 'outgoing') {
-      headers.value = incoming_header
-      title.value="گزارش رفت"
-    }
-    if (printType.value == 'employee ') {
-      headers.value = Employee_header
-      title.value = 'Employee Report'
-    }
-    if (printType.value == 'salaries') {
-      headers.value = salary_header
-      title.value = 'راپور معاشات'
-    }
-    if (printType.value == 'customers') {
-      headers.value = customer_header
-      title.value = 'راپور مشتری'
-    }
-    if (printType.value == 'income') {
-      headers.value = incoming_header
-      title.value = 'Income Report'
+    if (printType.value == "incoming") {
+      headers.value = incoming_header;
+      title.value = "گزارش آمد";
     }
 
-    if (printType.value == 'expense') {
-      headers.value = incoming_header
-      title.value = 'Expense Report'
+    if (printType.value == "outgoing") {
+      headers.value = incoming_header;
+      title.value = "گزارش رفت";
     }
-    let { data } = await axios.get('reports', { params: { type:printType.value, ...payload.value } })
-    
-    printData.value =  data
-    await sleep(1)
-    const printable = window.open('', '_blank')
+    if (printType.value == "employee ") {
+      headers.value = Employee_header;
+      title.value = "Employee Report";
+    }
+    if (printType.value == "salaries") {
+      headers.value = salary_header;
+      title.value = "راپور معاشات";
+    }
+    if (printType.value == "customers") {
+      headers.value = customer_header;
+      title.value = "راپور مشتری";
+    }
+    if (printType.value == "income") {
+      headers.value = incoming_header;
+      title.value = "Income Report";
+    }
 
-    printable.document.write('<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>')
-    printable.document.write('</head><body>')
-    printable.document.write(printRefs.value.$el.innerHTML)
-    printable.document.write('</body></html>')
-    printable.document.close()
-    printable.print()
-    await sleep(1)
+    if (printType.value == "expense") {
+      headers.value = incoming_header;
+      title.value = "Expense Report";
+    }
+    let { data } = await axios.get("reports", {
+      params: { type: printType.value, ...payload.value },
+    });
 
-    printable.close()
+    printData.value = data;
+    await sleep(1);
+    const printable = window.open("", "_blank");
+
+    printable.document.write(
+      '<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>'
+    );
+    printable.document.write("</head><body>");
+    printable.document.write(printRefs.value.$el.innerHTML);
+    printable.document.write("</body></html>");
+    printable.document.close();
+    printable.print();
+    await sleep(1);
+
+    printable.close();
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error);
   }
-  printLoading.value = false
-}
-
-
+  printLoading.value = false;
+};
 
 defineExpose({
   showPrintConfirm,
-})
+});
 </script>
-
-
 
 <style>
 .dp__input {

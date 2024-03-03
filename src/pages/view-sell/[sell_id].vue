@@ -4,7 +4,8 @@
       v-model="snackbar"
       timeout="20000"
     >
-      سفارش حذف شده است نمیتوانید تغیرات بیاورید!
+      سفارش یا امر دیلیت شوی بدلون نشی راتلی!     
+
 
       <template #actions>
         <VBtn
@@ -24,7 +25,7 @@
         start
         icon="mdi-undo-variant"
       />
-      بازگشت
+       بیرته تګ
     </VBtn>
     <VTabs
       v-model="activeTab"
@@ -115,11 +116,12 @@ const tabs = [
     icon: 'mdi-shape',
     tab: 'items',
   },
-  {
-    title: 'پرداختی ها',
-    icon: 'mdi-cash-multiple',
-    tab: 'payments',
-  },
+
+  // {
+  //   title: 'وصول ها',
+  //   icon: 'mdi-cash-multiple',
+  //   tab: 'payments',
+  // },
 ]
 
 const getSellInfo = async () => {

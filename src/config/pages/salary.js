@@ -2,92 +2,92 @@
 
 
 const tabs = [
-    { title: 'معاشات', icon: 'mdi-cash-multiple', count: 0 ,key:'salaries'},
-    { title: 'حذف شده ها', icon:'mdi-trash',count:0,key:'trash'},
-  ]
-  const breadCrumbs=[
-    {
-      title: 'داشبورد',
-      disabled: false,
-      href: '/',
-    },
+  { title: 'معاشونه', icon: 'mdi-cash-multiple', count: 0 ,key:'salaries'},
+  { title: 'ړنګ شوی', icon:'mdi-trash',count:0,key:'trash'},
+]
+const breadCrumbs=[
+  {
+    title: 'فهرست',
+    disabled: false,
+    href: '/',
+  },
       
-    {
-      title: 'لیست معاشات',
-      disabled: true,
-      href: 'salaries',
-    },
+  {
+    title: 'د معاشاتو لست',
+    disabled: true,
+    href: 'salaries',
+  },
   
   
-  ]
+]
   
-  const search=[
-    {
-      name: 'عمومی',
-      id: 'all',
-    },
-    {
-      name:'ای دی کارمند',
-      id: 'employee_id',
-    },
-    {
-      name:'بر اساس تاریخ',
-      id: 'created_at',
-    },
-  ]
+const search=[
+  {
+    name: 'عمومی',
+    id: 'all',
+  },
+  {
+    name:'د کارکوونکی آی دی',
+    id: 'employee_id',
+  },
+  {
+    name:'د تاریخ بر اساس',
+    id: 'created_at',
+  },
+]
   
   
-  const headers= [
-    {
-      title: '#آی دی',
-      key: 'id',
-      width:'80px',
-    },
-    {
-      title: 'نام کارمند',
-      key: 'employee',
-    },
-    {
-      title:'موقف',
-      key: 'position',
-    },
-    {
-      title:'مقدار معاش',
-      key: 'salary',
-    },
-    {
-      title:'قابل پرداختی',
-      key: 'payable_amount',
-    },
-    {
-      title:'مقدار پرداختی',
-      key: 'paid',
-    },
-    {
-      title:'تعداد حاضر',
-      key: 'present',
-    },
-    {
-      title:'تعداد غیرحاضر',
-      key: 'absent',
-    },
-    {
-      title:'باقیمانده معاش',
-      key: 'remainder',
-    },
-    {
-      title: 'تاریخ پرداخت',
-      key: 'created_at',
-    },
+const headers= [
+  {
+    title: '#آی دی',
+    key: 'id',
+    width:'80px',
+  },
+  {
+    title: 'د کارکوونکی نوم',
+    key: 'employee',
+  },
+  {
+    title:'وظیفه',
+    key: 'position',
+  },
+  {
+    title:'د معاش اندازه',
+    key: 'salary',
+  },
+  {
+    title:'د ورکړې وړ',
+    key: 'payable_amount',
+  },
+  {
+    title:'وصول شوی اندازه',
+    key: 'paid',
+  },
+  {
+    title:'د حاضرو تعداد',
+    key: 'present',
+  },
+  {
+    title:'د غیرحاضرو تعداد',
+    key: 'absent',
+  },
+  {
+    title:'پاتي معاش',
+    key: 'remainder',
+  },
+  {
+    title: 'د تادیې نیټه',
+    key: 'created_at',
+  },
       
-  ]
+]
   
-  export default function usePageConfig() {
-    return {
-      headers,
-      tabs,
-      breadCrumbs,
-      search,
-    }
+export default function usePageConfig() {
+  return {
+    headers,
+    tabs,
+    breadCrumbs,
+    search,
   }
+}
   

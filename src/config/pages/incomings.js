@@ -1,18 +1,18 @@
 const tabs = [
-  { title: 'آمد', icon: 'mdi-cash-plus', count: 0, key: 'incoming' },
-  { title: 'رفت', icon:'mdi-cash-minus',count:0, key: 'outgoing'},
-  { title: 'حذف شده ها', icon:'mdi-trash',count:0, key: 'trash'},
+  { title: 'عاید', icon: 'mdi-cash-plus', count: 0, key: 'incoming' },
+  { title: 'مصرف', icon:'mdi-cash-minus',count:0, key: 'outgoing'},
+  { title: 'ړنګ شوی', icon:'mdi-trash',count:0, key: 'trash'},
 ]
   
 const breadCrumbs=[
   {
-    title: 'داشبورد',
+    title: 'فهرست',
     disabled: false,
     href: '/',
   },
           
   {
-    title: 'رفت و آمد',
+    title: 'عاید او مصرف',
     disabled: true,
     href: '',
   },
@@ -23,7 +23,7 @@ const search=[
     id: 'all',
   },
   {
-    name: 'تاریخ ثبت',
+    name: 'د ثبت نیته',
     id: 'created_at',
   },
    
@@ -38,36 +38,36 @@ const headers= [
     key: 'id',
   },
   {
-    title: 'توضیحات',
+    title: 'تفصیل',
     key: 'name',
   },
   {
-    title: 'نوع',
+    title: 'ډول',
     key: 'type',
     width:'160px',
   
                
   },
   {
-    title: 'اسم کتگوری',
+    title: 'د کتګورۍ نوم',
     key: 'category',
-                 
+                   
   },
   {
-    title: 'مقدار',
+    title: 'اندازه',
     key: 'amount',
     width: '140px',
       
   
   },
   {
-    title: 'ثبت کننده',
+    title: 'ثبت کوونکی',
     key: "created_by",
     width:'120px',
   },
   
   {
-    title: 'تاریخ',
+    title: 'نیټه',
     key: 'created_at',
   
   },

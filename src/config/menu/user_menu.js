@@ -3,7 +3,7 @@ const $t = i18n.global.t
 const user_menu= [
   // { heading: $t('user_menu_title') },
   {
-    title: 'ثبت ولست کاربران',
+    title: 'د کارونکو راجستر او لست',
     to: 'users',
     icon: { icon: 'mdi-people' },
   },

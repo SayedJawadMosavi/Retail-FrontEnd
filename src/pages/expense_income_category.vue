@@ -6,10 +6,10 @@
       :selected-items="datatableRefs?.selectedItems"
       :items="breadCrumbs"
       :search-options="search"
-      page="لیست کتگوری"
+      page="د کټګورۍ لست"
       icon="mdi-people"
-      create-text="کتگوری جدید"
-      edit-text="ویرایش کتگوری "
+      create-text="نوی کټګوری"
+      edit-text="کټګوری ایدیت "
       
       @on-create="createCategory"
       @on-delete="deleteRecord"
@@ -32,13 +32,43 @@
       @table-change="onTableChange($event)"
     >
       <template #status="{ item }">
-        <VSwitch
-          :model-value="item.status"
-          inset
-          :true-value="1"
+        <VBtn
+          v-if="item.status == 0"
+          variant="text"
+          icon
           :loading="selectedItemStatus.id == item.id && statusLoading"
           @click="changeStatus(item)"
-        />
+        >
+          <VTooltip
+            activator="parent"
+            location="top"
+          >
+            فعال کردن
+          </VTooltip>
+          <VIcon
+            size="30"
+            :color="item.status == 0 ? 'error' : 'success'"
+            icon="mdi-close-thick"
+          />
+        </VBtn>
+        <VBtn
+          v-else
+          variant="text"
+          icon
+          @click="changeStatus(item)"
+        >
+          <VTooltip
+            activator="parent"
+            location="top"
+          >
+            غیر فعال
+          </VTooltip>
+          <VIcon
+            size="30"
+            color="success"
+            icon="mdi-check"
+          />
+        </VBtn>
       </template>
       <template #print="{ item }">
         <VBtn
@@ -111,7 +141,7 @@ const expenseLoading = ref(false)
 const printData = ref([])
 const printRefs = ref()
 const total = ref(0)
-const options = ref({ itemsPerPage: 50, page: 1, tab: 'categories' })
+const options = ref({ itemsPerPage: 20, page: 1, tab: 'categories' })
 const categories = ref([])
 const datatableRefs = ref()
 const extraTotal = ref({})
@@ -138,7 +168,8 @@ const changeStatus = async item => {
   try {
     selectedItemStatus.value = item
     statusLoading.value = true
-    const { data } = await axios.post('expense-income-category-status', item)
+    const { data } = await axios.post('expense-income-category-status/' + item.status + '/' + item.id)
+
     fetchRecord()
   } catch (error) {
     console.error(error)

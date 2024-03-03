@@ -3,7 +3,7 @@ const $t = i18n.global.t
 const reports= [
 
   {
-    title: ' راپور ها',
+    title: 'راپورونه',
     to: 'reports',
     icon: { icon: 'mdi-gesture-tap' },
   },

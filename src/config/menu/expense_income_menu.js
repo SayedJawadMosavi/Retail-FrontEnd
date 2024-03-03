@@ -3,7 +3,7 @@ const $t = i18n.global.t
 const expense_income_menu= [
 
   {
-    title: 'ثبت ولست رفت و آمد',
+    title: 'د راکړی ورکړی راجستر او لست',
     to: 'incomings',
     icon: { icon: 'mdi-gesture-tap' },
   },

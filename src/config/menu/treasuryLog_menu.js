@@ -1,7 +1,7 @@
 const treasury_menu= [
   
     {
-      title: 'لست روزنامچه',
+      title: 'روزنامچه',
       to: 'treasuryLog',
     icon: { icon: 'mdi-gesture-tap' }
  

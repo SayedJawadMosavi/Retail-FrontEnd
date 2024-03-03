@@ -2,7 +2,7 @@
   <VExpandTransition>
     <div v-show="expand">
       <VCard
-        :title="payload.id ? 'ویرایش معاش' : 'پرداخت معاش'"
+        :title="payload.id ? 'معاش ایدیت' : 'معاش ورکول'"
         class="my-5"
       >
         <VForm ref="formRef">
@@ -14,7 +14,7 @@
               >
                 <VSelect
                   v-model="payload.employee"
-                  label="کارمند"
+                  label="کارکوونکی"
                   :readonly="payload.id"
                   prepend-inner-icon="mdi-account"
                   :items="employees"
@@ -30,7 +30,7 @@
                 <VTextField
                   :model-value="payload?.employee?.salary"
                   readonly
-                  label="مقدار معاش"
+                  label="د معاش اندازه"
                   append-inner-icon="mdi-cash-multiple"
                 />
               </VCol>
@@ -42,7 +42,7 @@
                 md="6"
               >
                 <p class="mb-1">
-                  تاریخ معاش
+                  د معاش نیټه
                 </p>
                 <span style="direction: ltr">
                   <VueDatePicker
@@ -71,7 +71,7 @@
                 md="6"
               >
                 <p class="mb-1">
-                  سال وماه
+                  کال او  میاشت
                 </p>
                 <span style="direction: ltr">
                   <VueDatePicker
@@ -83,10 +83,10 @@
                   />
                 </span>
                 <p
-                  v-if="validationRules($v.year_month, 'سال وماه').length > 0"
+                  v-if="validationRules($v.year_month, 'کال او  میاشت').length > 0"
                   class="text-error"
                 >
-                  {{ validationRules($v.year_month, 'سال وماه')[0] }}
+                  {{ validationRules($v.year_month, 'کال او  میاشت')[0] }}
                 </p>
               </VCol>
             </VRow>
@@ -97,9 +97,9 @@
               >
                 <VTextField
                   v-model="payload.present"
-                  :rules="validationRules($v.present, 'تعداد حاضر')"
+                  :rules="validationRules($v.present, 'د حاضرو تعداد')"
                   prepend-inner-icon="mdi-check-underline-circle"
-                  label=" تعداد حاضر"
+                  label=" د حاضرو تعداد"
                   dir="ltr"
                   @input="convertToEnglishNumbers('present')"
                   @keypress="useRules.preventNonNumeric"
@@ -111,9 +111,9 @@
               >
                 <VTextField
                   v-model="payload.absent"
-                  :rules="validationRules($v.absent, 'تعداد غیرحاضر')"
+                  :rules="validationRules($v.absent, 'د غیرحاضرو تعداد')"
                   prepend-inner-icon="mdi-minus-circle-outline"
-                  label="تعداد غیرحاضر"
+                  label="د غیرحاضرو تعداد"
                   dir="ltr"
                   @input="convertToEnglishNumbers('absent')"
                   @keypress="useRules.preventNonNumeric"
@@ -132,7 +132,7 @@
                 <VTextField
                   :model-value="payload?.employee?.loan"
                   readonly
-                  label="مقدار قرضه"
+                  label="د قرضي اندازه"
                   append-inner-icon="mdi-cash-multiple"
                 />
               </VCol>
@@ -143,9 +143,9 @@
               >
                 <VTextField
                   v-model="payload.deduction"
-                  :rules="validationRules($v.deduction, 'کسری')"
+                  :rules="validationRules($v.deduction, 'کمول')"
                   prepend-inner-icon="mdi-minus"
-                  label=" کسری"
+                  label=" کمول"
                   dir="ltr"
                   @input="convertToEnglishNumbers('deduction')"
                   @keypress="useRules.preventNonNumeric"
@@ -159,9 +159,9 @@
               >
                 <VTextField
                   v-model="payload.paid"
-                  :rules="validationRules($v.paid, 'مقدار پرداخت')"
+                  :rules="validationRules($v.paid, 'د وصولو اندازه')"
                   prepend-inner-icon="mdi-cash-multiple"
-                  label="مقدار پرداخت"
+                  label="د وصولو اندازه"
                   dir="ltr"
                   @input="convertToEnglishNumbers('paid')"
                   @keypress="useRules.preventNonNumeric"
@@ -174,7 +174,7 @@
                 <VTextField
                   v-model:model-value="remainder"
                   prepend-inner-icon="mdi-cash-minus"
-                  label="باقیمانده معاش"
+                  label="پاتي معاش"
                   dir="ltr"
                   readonly
                 />
@@ -186,7 +186,7 @@
             >
               <VTextarea
                 v-model="payload.description"
-                label=" توضیحات"
+                label=" تفصیل"
                 prepend-inner-icon="mdi-info"
               />
             </VCol>
@@ -206,7 +206,7 @@
               variant="tonal"
               @click="closeDialog"
             >
-              بستن فورم
+              فورم بندول
             </VBtn>
           </VCardText>
         </VForm>
@@ -359,7 +359,7 @@ async function submit() {
 const validateForm = async () => {
   formRef.value.validate()
   if ($v.value.$invalid) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
 
     return false
   }

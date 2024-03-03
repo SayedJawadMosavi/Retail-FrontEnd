@@ -78,7 +78,10 @@
                 />
               </template>
 
-              <template v-else     style="white-space: nowrap">
+              <template
+                v-else
+                style="white-space: nowrap"
+              >
                 {{ header.key == 'created_at' ? formateDate(row[header.key]) : row[header.key] }}
               </template>
             </td>
@@ -95,7 +98,7 @@
             color="primary"
             indeterminate
           />
-          <p>بارگیری دیتا...</p>
+          <p>د معلوماتو بارول...</p>
         </div>
       </VTable>
       <VCardActions>
@@ -104,14 +107,22 @@
           class="d-flex align-center"
         >
           <div class="pe-3 text-primary me-5">
-            <span class="d-inline-block pe-1">مجموع آمد: </span> {{ extraInfo.total_income }}$
+            <span class="d-inline-block pe-1"> ترلاسه شوی مصارف: </span> {{ extraInfo.total_income }}$
           </div>
           <div class="pe-3 text-error me-5">
-            <span class="d-inline-block pe-1">مجموع رفت: </span> {{ extraInfo.total_outgoing }}$
+            <span class="d-inline-block pe-1">د مصارف مجموعه: </span> {{ extraInfo.total_outgoing }}$
           </div>
           <div class="pe-3 me-5">
-            <span class="d-inline-block pe-1"> موجودی حساب: </span>
+            <span class="d-inline-block pe-1"> بیلانس: </span>
             {{ extraInfo.total_income - extraInfo.total_outgoing }}$
+          </div>
+        </div>
+        <div
+          v-if="extraData"
+          class="d-flex align-center"
+        >
+          <div class="pe-3 text-primary me-5">
+            <span class="d-inline-block pe-1">   جمله کارتن: </span> {{ extraData.total_income }}
           </div>
         </div>
         <VSpacer />
@@ -157,6 +168,10 @@ const props = defineProps({
     default: () => [],
   },
   extraInfo: {
+    type: Object,
+    default: () => {},
+  },
+  extraData: {
     type: Object,
     default: () => {},
   },

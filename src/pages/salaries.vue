@@ -15,7 +15,7 @@
             <VRow>
               <VCol cols="12">
                 <p class="mb-0">
-                  شروع تاریخ
+                  پیل نیټه
                 </p>
 
                 <span style="direction: ltr">
@@ -34,7 +34,7 @@
 
               <VCol cols="12">
                 <p class="mb-0">
-                  ختم تاریخ
+                  ختم نیټه
                 </p>
                 <span style="direction: ltr">
                   <VueDatePicker
@@ -57,7 +57,7 @@
             color="secondary"
             @click="show=false"
           >
-            کنسل
+            کینسل
           </VBtn>
           
           <VBtn
@@ -66,7 +66,7 @@
             variant="tonal"
             @click="getReport"
           >
-            تهیه راپور
+            د راپور ترتیبول
             <VIcon
               icon="mdi-export"
               end
@@ -82,9 +82,9 @@
       :selected-items="datatableRefs?.selectedItems"
       :items="breadCrumbs"
       :search-options="search"
-      page="لیست معاشات"
-      create-text="پرداخت معاش"
-      edit-text="ویرایش پرداخت معاش"
+      page="د معاشاتو لست"
+      create-text="معاش ورکول"
+      edit-text="د معاش ورکول دیدیت"
       page-icon="mdi-cash"
       :show-create="scope(['salaries_create']) || true"
       :show-update="scope(['salaries_create'])"
@@ -103,7 +103,7 @@
           class="font-weight-bold mr-2"
           @click="TakeReport"
         >
-          Print
+          پرینت
           <VIcon
             end
             icon="mdi-printer"
@@ -114,7 +114,7 @@
           class="font-weight-bold bg-info"
           @click="openDialogs"
         >
-          Report
+          راپور
           <VIcon
             end
             icon="mdi-export"
@@ -265,7 +265,7 @@ const closeReset = type => {
 
 const getReport = async () => {
   if (payload.value.start_date == null || payload.value.end_date == null) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانۍ وګړی فورم صحیح ډک کړئ')
 
     return false
   }
@@ -283,13 +283,13 @@ const getReport = async () => {
 }
 const print = async () => {
   if (payload.value.start_date == null || payload.value.end_date == null) {
-    toast.error('لطفا فورم را دقیق خانه پری کنید!')
+    toast.error('مهربانۍ وګړی فورم صحیح ډک کړئ')
 
     return false
   }
   try {
     headerss.value = Employee_header
-    title.value = 'راپورکارمندان'
+    title.value = 'د کارکوونکو راپور'
     let { data } = await axios.get('reports', { params: { ...payload.value } })
     console.log('my data', data)
     printData.value = data
@@ -372,10 +372,10 @@ const getRole = item => {
     name = 'ادمین'
     color = 'primary'
   } else if (item.role == 'finance_manager') {
-    name = 'مدیر مالی'
+    name = 'مالی مدیر'
     color = 'info'
   } else {
-    name = 'مدیر صرافی'
+    name = 'د صرافی مدیر'
     color = 'warning'
   }
 
