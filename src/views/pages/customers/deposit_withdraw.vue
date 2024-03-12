@@ -1,9 +1,6 @@
 <template>
   <VRow>
-    <ConfirmDialog
-      ref="confirmRef"
-      @confirm="onConfirm"
-    />
+    <ConfirmDialog ref="confirmRef" @confirm="onConfirm" />
 
     <VCol cols="12">
       <VCard title="راکړی ورکړی">
@@ -11,15 +8,9 @@
 
         <VCardText>
           <!-- 👉 Form -->
-          <VForm
-            ref="formRef"
-            class="mt-6"
-          >
+          <VForm ref="formRef" class="mt-6">
             <VRow class="mb-3">
-              <VCol
-                cols="12"
-                md="3"
-              >
+              <VCol cols="12" md="3">
                 <span style="direction: ltr">
                   <VueDatePicker
                     v-model.trim="payload.created_at"
@@ -38,10 +29,7 @@
                   {{ validationRules($v.created_at, "نیټه")[0] }}
                 </p>
               </VCol>
-              <VCol
-                cols="12"
-                md="3"
-              >
+              <VCol cols="12" md="3">
                 <VSelect
                   v-model="payload.type"
                   :rules="validationRules($v.type, 'ډول')"
@@ -52,10 +40,7 @@
                   item-value="id"
                 />
               </VCol>
-              <VCol
-                cols="12"
-                md="3"
-              >
+              <VCol cols="12" md="3">
                 <VTextField
                   v-model="payload.amount"
                   label="اندازه"
@@ -67,10 +52,7 @@
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="12"
-              >
+              <VCol cols="12" md="12">
                 <VTextarea
                   v-model="payload.description"
                   label="نور تفصیل"
@@ -84,22 +66,12 @@
 
         <VCardText class="d-flex flex-wrap gap-4">
           <VBtn @click="validateForm">
-            <VIcon
-              start
-              icon="mdi-checkbox-marked-circle"
-            />
+            <VIcon start icon="mdi-checkbox-marked-circle" />
             ذخیره
           </VBtn>
 
-          <VBtn
-            color="red"
-            variant="tonal"
-            @click="resetForm"
-          >
-            <VIcon
-              start
-              icon="mdi-cancel"
-            />
+          <VBtn color="red" variant="tonal" @click="resetForm">
+            <VIcon start icon="mdi-cancel" />
             لغو
           </VBtn>
         </VCardText>
@@ -125,33 +97,18 @@
 
     <VCol cols="12">
       <!-- 👉 Table -->
-      <VCard
-        title=" د راکړی ورکړی لیسټ"
-        style="min-height: 300px"
-      >
+      <VCard title=" د راکړی ورکړی لیسټ" style="min-height: 300px">
         <VTable class="text-no-wrap">
           <thead>
             <tr>
-              <th scope="col">
-                #شماره
-              </th>
-              <th scope="col">
-                ډول
-              </th>
-              <th scope="col">
-                اندازه
-              </th>
+              <th scope="col">#شماره</th>
+              <th scope="col">ډول</th>
+              <th scope="col">اندازه</th>
 
-              <th scope="col">
-                نیټه
-              </th>
+              <th scope="col">نیټه</th>
 
-              <th
-                scope="col"
-                class="text-center"
-              >
-                د تفصیل
-              </th>
+              <th scope="col" class="text-center">د تفصیل</th>
+              <th scope="col" class="">د عملیه</th>
             </tr>
           </thead>
           <tbody>
@@ -184,68 +141,55 @@
               <td>{{ formateDate(item.created_at) }}</td>
 
               <td>{{ item.description }}</td>
-
-              <div v-if="item.deleted_at">
-                <VBtn
-                  variant="text"
-                  icon
-                  size="small"
-                  color="info"
-                  :loading="restoreLoading && selectedItem.id == item.id"
-                  @click="restoreRecord(item, 'items')"
-                >
-                  <VIcon
-                    start
-                    icon="mdi-restore"
-                    color="info"
-                  />
-                  بازگشت
-                </VBtn>
-
-                <VBtn
-                  class="ms-2"
-                  variant="text"
-                  icon
-                  size="small"
-                  :loading="apiLoading2 && selectedItem == item"
-                  @click="forceDelete(item, 'items')"
-                >
-                  <VIcon
-                    icon="mdi-trash"
-                    color="error"
-                  />
-                </VBtn>
-              </div>
-
-              <div v-else>
-                <!--
+              <td>
+                <div v-if="item.deleted_at">
                   <VBtn
-                  variant="text"
-                  icon
-                  size="small"
-                  @click="editForm(item, 'item')"
+                    variant="text"
+                    icon
+                    size="small"
+                    color="info"
+                    :loading="restoreLoading && selectedItem.id == item.id"
+                    @click="restoreRecord(item, 'deposit_witdraw')"
                   >
-                  <VIcon
-                  icon="mdi-pencil"
-                  color="primary"
-                  />
+                    <VIcon start icon="mdi-restore" color="info" />
+                    بازگشت
                   </VBtn>
 
                   <VBtn
-                  variant="text"
-                  icon
-                  size="small"
-                  :loading="apiLoading2 && selectedItem == item"
-                  @click="deleteRecord(item, 'items')"
+                    class="ms-2"
+                    variant="text"
+                    icon
+                    size="small"
+                    :loading="apiLoading2 && selectedItem == item"
+                    @click="forceDelete(item, 'deposit_witdraw')"
                   >
-                  <VIcon
-                  icon="mdi-trash"
-                  color="error"
-                  />
-                  </VBtn> 
-                -->
-              </div>
-              <!-- </td> -->
+                    <VIcon icon="mdi-trash" color="error" />
+                  </VBtn>
+                </div>
+
+                <div v-else>
+                  <!--
+                    <VBtn
+                    variant="text"
+                    icon
+                    size="small"
+                    @click="editForm(item, 'deposit_witdraw')"
+                    >
+                    <VIcon icon="mdi-pencil" color="primary" />
+                    </VBtn> 
+                  -->
+
+                  <VBtn
+                    variant="text"
+                    icon
+                    size="small"
+                    :loading="apiLoading2 && selectedItem == item"
+                    @click="deleteRecord(item, 'deposit_witdraw')"
+                  >
+                    <VIcon icon="mdi-trash" color="error" />
+                  </VBtn>
+                </div>
+              </td>
             </tr>
           </tbody>
         </VTable>
@@ -255,18 +199,18 @@
 </template>
 
 <script setup>
-import { required, numeric, minLength, minValue } from "@vuelidate/validators"
-import useRules from "@/plugins/vuelidate/vuelidateRules"
-import useVuelidate from "@vuelidate/core"
-import { ref, toRef } from "vue"
-import { axios } from "@/plugins/axios-plugin"
-import { toast } from "vue3-toastify"
-import { useRoute } from "vue-router"
-import { formateDate, scope } from "@/@core/utils/index"
-import ConfirmDialog from "@/components/commons/ConfirmDialog.vue"
+import { required, numeric, minLength, minValue } from "@vuelidate/validators";
+import useRules from "@/plugins/vuelidate/vuelidateRules";
+import useVuelidate from "@vuelidate/core";
+import { ref, toRef } from "vue";
+import { axios } from "@/plugins/axios-plugin";
+import { toast } from "vue3-toastify";
+import { useRoute } from "vue-router";
+import { formateDate, scope } from "@/@core/utils/index";
+import ConfirmDialog from "@/components/commons/ConfirmDialog.vue";
 
-import PrintReportDialog from "@/components/commons/PrintReportDialog.vue"
-import moment from "moment"
+import PrintReportDialog from "@/components/commons/PrintReportDialog.vue";
+import moment from "moment";
 
 const props = defineProps({
   sellInfo: {
@@ -278,51 +222,51 @@ const props = defineProps({
     type: Function,
     default: () => {},
   },
-})
+});
 
-const sleep = ms => {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
+const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
 
-const route = useRoute()
+const route = useRoute();
 
-const customer_id = ref(route.params.customer_id)
+const customer_id = ref(route.params.customer_id);
 
-const formRef = ref()
-const loadingPackage = ref(false)
+const formRef = ref();
+const loadingPackage = ref(false);
 
-const apiLoading = ref(false)
-const apiLoading2 = ref(false)
-const restoreLoading = ref(false)
-const confirmRef = ref()
-const editRef = ref()
-const packages = ref([])
-const selectedItem = ref({})
-const selectedType = ref(null)
-const showDialog = ref(false)
-const reportRefs = ref()
-const printData = ref([])
-const printRefs = ref()
-const headers = ref([])
-const printType = ref()
-const printLoading = ref(false)
+const apiLoading = ref(false);
+const apiLoading2 = ref(false);
+const restoreLoading = ref(false);
+const confirmRef = ref();
+const editRef = ref();
+const packages = ref([]);
+const selectedItem = ref({});
+const selectedType = ref(null);
+const showDialog = ref(false);
+const reportRefs = ref();
+const printData = ref([]);
+const printRefs = ref();
+const headers = ref([]);
+const printType = ref();
+const printLoading = ref(false);
 const Types = ref([
   { name: "راکړی", id: "deposit" },
   { name: "ورکړی", id: "withdraw" },
-])
+]);
 const Currency = ref([
   { name: "افغانی", id: "afn" },
   { name: "دالر", id: "usd" },
-])
-const show = ref(false)
-const title = ref("")
-const flag = ref("")
-const total = ref(0)
+]);
+const show = ref(false);
+const title = ref("");
+const flag = ref("");
+const total = ref(0);
 const formdata = ref({
   start_date: new Date(),
   end_date: new Date(),
   customer_id: customer_id.value,
-})
+});
 const payload = ref({
   created_at: new Date(),
   type: null,
@@ -331,9 +275,9 @@ const payload = ref({
   amount: 0,
   customer_id: customer_id.value,
   customer_name: props.sellInfo.first_name,
-})
+});
 
-let itemTypes = ["deposit", "withdraw"]
+let itemTypes = ["deposit", "withdraw"];
 const loan_payment_header = [
   {
     title: "ID",
@@ -358,19 +302,19 @@ const loan_payment_header = [
     title: "نیټه",
     key: "register_date",
   },
-]
+];
 
 // ==================================== START VALIDATION =======================================
-const validationRules = useRules.validate
+const validationRules = useRules.validate;
 
 const rules = {
   created_at: { required },
   type: { required },
   currency: { required },
   amount: { required, minValue: minValue(1) },
-}
+};
 
-const $v = new useVuelidate(rules, payload)
+const $v = new useVuelidate(rules, payload);
 const resetForm = (type = "items") => {
   if (type == "items") {
     payload.value = {
@@ -380,176 +324,176 @@ const resetForm = (type = "items") => {
       amount: 0,
       customer_id: customer_id.value,
       customer_name: props.sellInfo.first_name,
-    }
+    };
 
-    $v.value.$reset()
-    formRef.value.resetValidation()
+    $v.value.$reset();
+    formRef.value.resetValidation();
   }
-}
+};
 async function getPackage() {
   try {
-    loadingPackage.value = true
-    const { data } = await axios.get("package-list")
-    packages.value = data
+    loadingPackage.value = true;
+    const { data } = await axios.get("package-list");
+    packages.value = data;
   } catch (error) {
-    console.error("error", error)
+    console.error("error", error);
   }
-  loadingPackage.value = false
+  loadingPackage.value = false;
 }
 const validateForm = async () => {
-  formRef.value.validate()
-  $v.value.$touch()
+  formRef.value.validate();
+  $v.value.$touch();
 
-  submit()
-}
+  submit();
+};
 
 async function submit() {
   try {
-    apiLoading.value = true
-    const { data } = await axios.post(`customer_deposit_withdraw`, payload.value)
-    await props.updateChanges()
-    resetForm("items")
+    apiLoading.value = true;
+    const { data } = await axios.post(`customer_deposit_withdraw`, payload.value);
+    await props.updateChanges();
+    resetForm("items");
   } catch (error) {
-    console.error("error", error)
+    console.error("error", error);
   }
-  apiLoading.value = false
+  apiLoading.value = false;
 }
 
 function convertToEnglishNumbers(model, item = null, index = null) {
-  const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
-  const englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
+  const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g];
+  const englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g];
   for (let i = 0; i < 10; i++) {
     if (model == "expense.price") {
       expense.value.price = expense.value.price
         .replace(persianNumbers[i], i)
-        .replace(englishNumbers[i], i)
+        .replace(englishNumbers[i], i);
 
-      return
+      return;
     }
     if (item == null) {
       payload.value[model] = payload.value[model]
         .replace(persianNumbers[i], i)
-        .replace(englishNumbers[i], i)
+        .replace(englishNumbers[i], i);
     } else {
       payload.value[model][index][item] = payload.value[model][index][item]
         .replace(persianNumbers[i], i)
-        .replace(englishNumbers[i], i)
+        .replace(englishNumbers[i], i);
     }
   }
 }
 
 const restoreRecord = async (item, type) => {
-  selectedItem.value = item
-  selectedType.value = type
-  confirmRef.value.showDialog("restore")
-}
+  selectedItem.value = item;
+  selectedType.value = type;
+  confirmRef.value.showDialog("restore");
+};
 
 const editForm = async (item, type = "epense") => {
-  editRef.value.openDialog(item, type)
-}
+  editRef.value.openDialog(item, type);
+};
 
 const deleteRecord = async (item, type) => {
-  selectedItem.value = item
-  selectedType.value = type
+  selectedItem.value = item;
+  selectedType.value = type;
 
-  confirmRef.value.showDialog("delete")
-}
+  confirmRef.value.showDialog("delete");
+};
 
 const forceDelete = async (item, type) => {
-  selectedItem.value = item
-  selectedType.value = type
+  selectedItem.value = item;
+  selectedType.value = type;
 
-  confirmRef.value.showDialog("forceDelete")
-}
-const openDialogs = type => {
-  printType.value = "loan_payment"
+  confirmRef.value.showDialog("forceDelete");
+};
+const openDialogs = (type) => {
+  printType.value = "loan_payment";
   payload.value = {
     start_date: new Date(),
     end_date: new Date(),
-  }
-  show.value = true
-}
+  };
+  show.value = true;
+};
 const getReport = async () => {
   if (formdata.value.start_date == null || formdata.value.end_date == null) {
-    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!")
+    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!");
 
-    return false
+    return false;
   }
   try {
-    console.log("pppp", printType.value)
+    console.log("pppp", printType.value);
     if (printType.value == "loan_payment") {
-      headers.value = loan_payment_header
-      title.value = "راپور قرضه  " + props.sellInfo.first_name
-      total.value = props.sellInfo.loan
-      flag.value = "loan"
+      headers.value = loan_payment_header;
+      title.value = "راپور قرضه  " + props.sellInfo.first_name;
+      total.value = props.sellInfo.loan;
+      flag.value = "loan";
     }
 
-    printLoading.value = true
+    printLoading.value = true;
     let { data } = await axios.get("reports", {
       params: { type: printType.value, ...formdata.value },
-    })
-    printData.value = data
-    await sleep(1)
-    const printable = window.open("", "_blank")
+    });
+    printData.value = data;
+    await sleep(1);
+    const printable = window.open("", "_blank");
 
     printable.document.write(
-      '<html style="direction:ltr"><head><style>@page { size: A4 landscape }</style>',
-    )
-    printable.document.write("</head><body>")
-    printable.document.write(printRefs.value.$el.innerHTML)
-    printable.document.write("</body></html>")
-    printable.document.close()
-    printable.print()
-    await sleep(1)
+      '<html style="direction:ltr"><head><style>@page { size: A4 landscape }</style>'
+    );
+    printable.document.write("</head><body>");
+    printable.document.write(printRefs.value.$el.innerHTML);
+    printable.document.write("</body></html>");
+    printable.document.close();
+    printable.print();
+    await sleep(1);
 
-    printable.close()
+    printable.close();
   } catch (error) {
-    console.error("error", error)
+    console.error("error", error);
   }
-  printLoading.value = false
-}
-const onConfirm = async event => {
+  printLoading.value = false;
+};
+const onConfirm = async (event) => {
   if (event == "delete") {
     try {
-      apiLoading2.value = true
+      apiLoading2.value = true;
       const { data } = await axios.delete(
-        `employee_delete/${selectedType.value}/${selectedItem.value.id}`,
-      )
-      await props.updateChanges()
+        `delete/${selectedType.value}/${selectedItem.value.id}`
+      );
+      await props.updateChanges();
     } catch (error) {
-      console.error("error", error)
+      console.error("error", error);
     }
   }
 
   if (event == "forceDelete") {
     try {
-      apiLoading2.value = true
+      apiLoading2.value = true;
       const { data } = await axios.delete(
-        `employee_force_delete/${selectedType.value}/${selectedItem.value.id}`,
-      )
-      await props.updateChanges()
+        `force_delete/${selectedType.value}/${selectedItem.value.id}`
+      );
+      await props.updateChanges();
     } catch (error) {
-      console.error("error", error)
+      console.error("error", error);
     }
   }
   if (event == "restore") {
     try {
-      restoreLoading.value = true
+      restoreLoading.value = true;
       const { data } = await axios.post(
-        `employee_restore/${selectedType.value}/${selectedItem.value.id}`,
-      )
-      await props.updateChanges()
+        `restore/${selectedType.value}/${selectedItem.value.id}`
+      );
+      await props.updateChanges();
     } catch (error) {
-      console.error("error", error)
+      console.error("error", error);
     }
   }
-  restoreLoading.value = false
-  apiLoading2.value = false
-  selectedItem.value = {}
-}
+  restoreLoading.value = false;
+  apiLoading2.value = false;
+  selectedItem.value = {};
+};
 onMounted(() => {
-  getPackage()
-})
+  getPackage();
+});
 </script>
 
 <style>

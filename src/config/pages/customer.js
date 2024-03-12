@@ -52,18 +52,19 @@ const headers= [
                  
   },
 
-  {
-    title: 'تخلص',
-    key: 'last_name',  
-  },
+  // {
+  //   title: 'تخلص',
+  //   key: 'last_name',  
+  // },
   {
     title: 'تیلفون شمیره',
     key: 'phone_number',
   },
-  {
-    title: 'بریښنالیک',
-    key: 'email',
-  },
+
+  // {
+  //   title: 'بریښنالیک',
+  //   key: 'email',
+  // },
   {
     title: 'آدرس',
     key: 'address',

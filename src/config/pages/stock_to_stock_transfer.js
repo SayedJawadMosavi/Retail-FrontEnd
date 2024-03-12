@@ -60,6 +60,12 @@ const headers= [
                  
   },
   {
+    title: ' د تفصیلات',
+    key: 'description',
+     
+                 
+  },
+  {
     title: 'نیټه',
     key: 'created_at',
   

@@ -1,26 +1,13 @@
 <template>
   <VRow>
-    <ConfirmDialog
-      ref="confirmRef"
-      @confirm="onConfirm"
-    />
-    <VDialog
-      v-model="show"
-      transition="dialog-top-transition"
-      persistent
-      width="auto"
-    >
-      <VCard
-        width="auto"
-        title="راپور ترتیبول"
-      >
+    <ConfirmDialog ref="confirmRef" @confirm="onConfirm" />
+    <VDialog v-model="show" transition="dialog-top-transition" persistent width="auto">
+      <VCard width="auto" title="راپور ترتیبول">
         <VCardText style="min-height: 300px">
           <VForm ref="formRef">
             <VRow>
               <VCol cols="12">
-                <p class="mb-0">
-                  پیل نېټه
-                </p>
+                <p class="mb-0">پیل نېټه</p>
 
                 <span style="direction: ltr">
                   <VueDatePicker
@@ -36,9 +23,7 @@
               </VCol>
 
               <VCol cols="12">
-                <p class="mb-0">
-                  له کاره وتنې نېټه
-                </p>
+                <p class="mb-0">له کاره وتنې نېټه</p>
                 <span style="direction: ltr">
                   <VueDatePicker
                     v-model="formdata.end_date"
@@ -55,24 +40,11 @@
           </VForm>
         </VCardText>
         <VCardActions class="justify-end">
-          <VBtn
-            color="secondary"
-            @click="show = false"
-          >
-            لغوه کول
-          </VBtn>
+          <VBtn color="secondary" @click="show = false"> لغوه کول </VBtn>
 
-          <VBtn
-            ripple
-            color="primary"
-            variant="tonal"
-            @click="getReport"
-          >
+          <VBtn ripple color="primary" variant="tonal" @click="getReport">
             د راپور پرنت
-            <VIcon
-              icon="mdi-export"
-              end
-            />
+            <VIcon icon="mdi-export" end />
           </VBtn>
         </VCardActions>
       </VCard>
@@ -86,33 +58,20 @@
         :headers="headers"
       />
     </VDialog>
-    
+
     <VCol cols="12">
       <!-- 👉 Table -->
-      <VCard
-        title="د اجناسو لست"
-        style="min-height: 300px"
-      >
+      <VCard title="د اجناسو لست" style="min-height: 300px">
         <VTable class="text-no-wrap">
           <thead>
             <tr>
-              <th scope="col">
-                # بل نمبر
-              </th>
-            
-               
-              <th scope="col">
-                د قیمت مجموعه
-              </th>
-              <th scope="col">
-                وصول شوې مقدار
-              </th>
-              <th scope="col">
-                پاتي
-              </th>
-              <th scope="col">
-                نیټه
-              </th>
+              <th scope="col"># بل نمبر</th>
+
+              <th scope="col">تفصیلات</th>
+              <th scope="col">د قیمت مجموعه</th>
+              <th scope="col">وصول شوې مقدار</th>
+              <th scope="col">پاتي</th>
+              <th scope="col">نیټه</th>
             </tr>
           </thead>
           <tbody>
@@ -124,11 +83,12 @@
               <td>
                 {{ item.id }}
               </td>
+              <td>{{ item.description }}</td>
               <td>{{ item.total_amount }}</td>
               <td>{{ item.total_paid }}</td>
-              
-              <td>{{ item.total_amount- item.total_paid }}</td>
-             
+
+              <td>{{ item.total_amount - item.total_paid }}</td>
+
               <td>{{ moment(item.sell_date, "YYYY-MM-DD").format("ll") }}</td>
             </tr>
           </tbody>
@@ -145,10 +105,7 @@
               <div class="d-flex align-center" />
 
               <div class="d-flex align-center">
-                <p
-                  class="text-base font-weight-medium mt-2"
-                  style="min-width: 150px"
-                >
+                <p class="text-base font-weight-medium mt-2" style="min-width: 150px">
                   د قیمت مجموعه
                 </p>
                 <VChip
@@ -162,10 +119,7 @@
               </div>
 
               <div class="d-flex align-center">
-                <p
-                  class="text-base font-weight-medium mt-2"
-                  style="min-width: 150px"
-                >
+                <p class="text-base font-weight-medium mt-2" style="min-width: 150px">
                   د وصول مجموعه
                 </p>
                 <VChip
@@ -179,10 +133,7 @@
               </div>
 
               <div class="d-flex align-center">
-                <p
-                  class="text-base font-weight-medium mt-2"
-                  style="min-width: 150px"
-                >
+                <p class="text-base font-weight-medium mt-2" style="min-width: 150px">
                   د پاتي مجموعه
                 </p>
                 <VChip
@@ -197,13 +148,7 @@
             </VCardText>
             <VDivider />
           </VCol>
-          <VCol
-            v-show="sellInfo.remainder > 0"
-            cols="12"
-            md="5"
-            order-md="0"
-            order="1"
-          >
+          <VCol v-show="sellInfo.remainder > 0" cols="12" md="5" order-md="0" order="1">
             <VCardText class="">
               <VForm ref="formRefs">
                 <VRow>
@@ -223,7 +168,7 @@
                       v-if="validationRules(v$.created_at, 'Date').length > 0"
                       class="text-error mb-0"
                     >
-                      {{ validationRules(v$.created_at, 'نیټه')[0] }}
+                      {{ validationRules(v$.created_at, "نیټه")[0] }}
                     </p>
                   </VCol>
 
@@ -241,13 +186,7 @@
 
                   <!-- 👉 Create Key Button -->
                   <VCol cols="12">
-                    <VBtn
-                      block
-                      :loading="apiLoading"
-                      @click="validateForm"
-                    >
-                      ذخیره
-                    </VBtn>
+                    <VBtn block :loading="apiLoading" @click="validateForm"> ذخیره </VBtn>
                   </VCol>
                 </VRow>
               </VForm>
@@ -261,38 +200,22 @@
         style="float: right"
         @click="openDialogs"
       >
-        د راپور 
-        <VIcon
-          end
-          icon="mdi-export"
-        />
+        د راپور
+        <VIcon end icon="mdi-export" />
       </VBtn>
     </VCol>
 
     <VCol cols="12">
       <!-- 👉 Table -->
-      <VCard
-        title="د وصول لست"
-        style="min-height: 300px"
-      >
+      <VCard title="د وصول لست" style="min-height: 300px">
         <VTable class="text-no-wrap">
           <thead>
             <tr>
-              <th scope="col">
-                #آی دی
-              </th>
-              <th scope="col">
-                د وصول اندازه
-              </th>
-              <th scope="col">
-                نیټه
-              </th>
-              <th scope="col">
-                تفصیل
-              </th>
-              <th scope="col">
-                عملیات
-              </th>
+              <th scope="col">#آی دی</th>
+              <th scope="col">د وصول اندازه</th>
+              <th scope="col">نیټه</th>
+              <th scope="col">تفصیل</th>
+              <th scope="col">عملیات</th>
             </tr>
           </thead>
           <tbody>
@@ -341,10 +264,7 @@
                   {{ item.description }}
                 </p>
               </td>
-              <td
-                v-if="editData?.id == item.id"
-                class="text-center"
-              >
+              <td v-if="editData?.id == item.id" class="text-center">
                 <VBtn
                   variant="text"
                   icon
@@ -352,10 +272,7 @@
                   :loading="apiLoading2"
                   @click="editPayment(item, 'save')"
                 >
-                  <VIcon
-                    icon="mdi-check"
-                    color="primary"
-                  />
+                  <VIcon icon="mdi-check" color="primary" />
                 </VBtn>
 
                 <VBtn
@@ -364,16 +281,10 @@
                   size="small"
                   @click="editPayment(item, 'cancel')"
                 >
-                  <VIcon
-                    icon="mdi-close"
-                    color="error"
-                  />
+                  <VIcon icon="mdi-close" color="error" />
                 </VBtn>
               </td>
-              <td
-                v-else
-                class="text-center"
-              >
+              <td v-else class="text-center">
                 <div v-if="item.deleted_at">
                   <VBtn
                     variant="text"
@@ -383,11 +294,7 @@
                     :loading="restoreLoading"
                     @click="restorePayment(item, 'payments')"
                   >
-                    <VIcon
-                      start
-                      icon="mdi-restore"
-                      color="info"
-                    />
+                    <VIcon start icon="mdi-restore" color="info" />
                     Restore
                   </VBtn>
 
@@ -399,10 +306,7 @@
                     :loading="apiLoading2 && selectedItem == item"
                     @click="forceDelete(item, 'payments')"
                   >
-                    <VIcon
-                      icon="mdi-trash"
-                      color="error"
-                    />
+                    <VIcon icon="mdi-trash" color="error" />
                   </VBtn>
                 </div>
 
@@ -413,10 +317,7 @@
                     size="small"
                     @click="editPayment(item, 'open')"
                   >
-                    <VIcon
-                      icon="mdi-pencil"
-                      color="primary"
-                    />
+                    <VIcon icon="mdi-pencil" color="primary" />
                   </VBtn>
 
                   <VBtn
@@ -426,10 +327,7 @@
                     :loading="apiLoading2 && selectedItem == item"
                     @click="deletePayment(item, 'payments')"
                   >
-                    <VIcon
-                      icon="mdi-trash"
-                      color="error"
-                    />
+                    <VIcon icon="mdi-trash" color="error" />
                   </VBtn>
                 </div>
               </td>
@@ -442,18 +340,18 @@
 </template>
 
 <script setup>
-import { required, numeric, minLength, minValue, maxValue } from '@vuelidate/validators'
-import useRules from '@/plugins/vuelidate/vuelidateRules'
-import useVuelidate from '@vuelidate/core'
-import { computed, ref, toRef } from 'vue'
-import { axios } from '@/plugins/axios-plugin'
-import { toast } from 'vue3-toastify'
-import { useRoute } from 'vue-router'
-import ConfirmDialog from '@/components/commons/ConfirmDialog.vue'
-import PrintReportDialog from '@/components/commons/PrintReportDialog.vue'
-import moment from "moment"
+import { required, numeric, minLength, minValue, maxValue } from "@vuelidate/validators";
+import useRules from "@/plugins/vuelidate/vuelidateRules";
+import useVuelidate from "@vuelidate/core";
+import { computed, ref, toRef } from "vue";
+import { axios } from "@/plugins/axios-plugin";
+import { toast } from "vue3-toastify";
+import { useRoute } from "vue-router";
+import ConfirmDialog from "@/components/commons/ConfirmDialog.vue";
+import PrintReportDialog from "@/components/commons/PrintReportDialog.vue";
+import moment from "moment";
 
-import { formateDate, scope } from '@/@core/utils/index'
+import { formateDate, scope } from "@/@core/utils/index";
 
 const props = defineProps({
   sellInfo: {
@@ -464,242 +362,251 @@ const props = defineProps({
     type: Function,
     default: () => {},
   },
-})
+});
 const customer_payment_header = [
   {
-    title: '  #آی دی',
-    key: 'ids',
-    width: '80px',
-  },
-
-
-  {
-    title: '    د وصول اندازه',
-    key: 'amount',
-  },
-  {
-    title: '    د  تفصیل',
-    key: 'description',
+    title: "  #آی دی",
+    key: "ids",
+    width: "80px",
   },
 
   {
-    title: '   نیټه',
-    key: 'created_at',
+    title: "    د وصول اندازه",
+    key: "amount",
   },
-]
-const route = useRoute()
-const sleep = ms => {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-const printRefs = ref()
+  {
+    title: "    د  تفصیل",
+    key: "description",
+  },
 
-const customer_id = ref(route.params.customer_id)
-const headers = ref([])
-const title = ref('')
-const printData = ref([])
+  {
+    title: "   نیټه",
+    key: "created_at",
+  },
+];
+const route = useRoute();
+const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+const printRefs = ref();
 
-const formRefs = ref()
+const customer_id = ref(route.params.customer_id);
+const headers = ref([]);
+const title = ref("");
+const printData = ref([]);
+
+const formRefs = ref();
 const editData = ref({
   id: null,
   amount: 0,
   customer_id: customer_id.value,
-})
-const remainder = ref(0)
-const printLoading = ref(false)
+});
+const remainder = ref(0);
+const printLoading = ref(false);
 
-const apiLoading = ref(false)
-const apiLoading2 = ref(false)
-const restoreLoading = ref(false)
-const show = ref(false)
-const printType = ref()
+const apiLoading = ref(false);
+const apiLoading2 = ref(false);
+const restoreLoading = ref(false);
+const show = ref(false);
+const printType = ref();
 
-const confirmRef = ref()
-const selectedItem = ref({})
+const confirmRef = ref();
+const selectedItem = ref({});
 
 const payload = ref({
   created_at: new Date(),
   amount: null,
   customer_id: customer_id,
-})
+});
 
 const remaining = computed(() => {
-  return props.sellInfo?.total_amount - props.sellInfo.total_paid
-})
+  return props.sellInfo?.total_amount - props.sellInfo.total_paid;
+});
 onMounted(() => {
-  remainder.value = props.sellInfo?.total_amount - props.sellInfo.total_paid
-})
+  remainder.value = props.sellInfo?.total_amount - props.sellInfo.total_paid;
+});
 
 // ==================================== START VALIDATION =======================================
-const validationRules = useRules.validate
+const validationRules = useRules.validate;
 
 const expenseRule = {
   created_at: { required },
   customer_id: { required },
 
   amount: { required, minValue: minValue(0), maxValue: maxValue(remaining) },
-}
+};
 const formdata = ref({
   start_date: new Date(),
   end_date: new Date(),
   customer_id: customer_id.value,
-})
-const v$ = useVuelidate(expenseRule, payload)
-const resetForm = (type = 'items') => {
+});
+const v$ = useVuelidate(expenseRule, payload);
+const resetForm = (type = "items") => {
   payload.value = {
     created_at: new Date(),
     amount: null,
     customer_id: customer_id,
-  }
-  v$.value.$reset()
-  formRefs.value.resetValidation()
-}
-const openDialogs = type => {
-  printType.value = 'customer_payment'
+  };
+  v$.value.$reset();
+  formRefs.value.resetValidation();
+};
+const openDialogs = (type) => {
+  printType.value = "customer_payment";
   payload.value = {
     start_date: new Date(),
     end_date: new Date(),
-  }
-  show.value = true
-}
+  };
+  show.value = true;
+};
 const getReport = async () => {
   if (formdata.value.start_date == null || formdata.value.end_date == null) {
-    toast.error('please fill the form correctly')
+    toast.error("please fill the form correctly");
 
-    return false
+    return false;
   }
   try {
-    console.log('pppp', printType.value)
-    if (printType.value == 'customer_payment') {
-      headers.value = customer_payment_header
-      title.value = 'دپیرودونکی تادی راپورته  ' + props.sellInfo.first_name
+    console.log("pppp", printType.value);
+    if (printType.value == "customer_payment") {
+      headers.value = customer_payment_header;
+      title.value = "دپیرودونکی تادی راپورته  " + props.sellInfo.first_name;
     }
 
-    printLoading.value = true
-    let { data } = await axios.get('reports', { params: { type: printType.value, ...formdata.value } })
+    printLoading.value = true;
+    let { data } = await axios.get("reports", {
+      params: { type: printType.value, ...formdata.value },
+    });
 
-    console.log('nmy data', data)
-    printData.value = data
-    await sleep(1)
-    const printable = window.open('', '_blank')
+    console.log("nmy data", data);
+    printData.value = data;
+    await sleep(1);
+    const printable = window.open("", "_blank");
 
-    printable.document.write('<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>')
-    printable.document.write('</head><body>')
-    printable.document.write(printRefs.value.$el.innerHTML)
-    printable.document.write('</body></html>')
-    printable.document.close()
-    printable.print()
-    await sleep(1)
+    printable.document.write(
+      '<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>'
+    );
+    printable.document.write("</head><body>");
+    printable.document.write(printRefs.value.$el.innerHTML);
+    printable.document.write("</body></html>");
+    printable.document.close();
+    printable.print();
+    await sleep(1);
 
-    printable.close()
+    printable.close();
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error);
   }
-  printLoading.value = false
-}
-const editPayment = async (item, type = 'open') => {
-  if (type == 'open') {
-    editData.value.id = structuredClone(item.id)
-    editData.value.amount = structuredClone(item.amount)
-    editData.value.description = structuredClone(item.description)
-  } else if (type == 'cancel') {
-    editData.value.id = null
-    editData.value.amount = null
+  printLoading.value = false;
+};
+const editPayment = async (item, type = "open") => {
+  if (type == "open") {
+    editData.value.id = structuredClone(item.id);
+    editData.value.amount = structuredClone(item.amount);
+    editData.value.description = structuredClone(item.description);
+  } else if (type == "cancel") {
+    editData.value.id = null;
+    editData.value.amount = null;
   } else {
     try {
-      apiLoading2.value = true
-      const { data } = await axios.put(`sell-payment`, editData.value)
-      await props.updateChanges()
-      editData.value.id = null
-      editData.value.amount = null
-      editData.value.description = null
+      apiLoading2.value = true;
+      const { data } = await axios.put(`sell-payment`, editData.value);
+      await props.updateChanges();
+      editData.value.id = null;
+      editData.value.amount = null;
+      editData.value.description = null;
     } catch (error) {}
-    apiLoading2.value = false
+    apiLoading2.value = false;
   }
-}
-const deletePayment = async item => {
-  selectedItem.value = item
-  confirmRef.value.showDialog('delete')
-}
+};
+const deletePayment = async (item) => {
+  selectedItem.value = item;
+  confirmRef.value.showDialog("delete");
+};
 
-const restorePayment = async item => {
-  selectedItem.value = item
-  confirmRef.value.showDialog('restore')
-}
+const restorePayment = async (item) => {
+  selectedItem.value = item;
+  confirmRef.value.showDialog("restore");
+};
 
-const forceDelete = async item => {
-  selectedItem.value = item
-  confirmRef.value.showDialog('forceDelete')
-}
-const onConfirm = async event => {
-  if (event == 'delete') {
+const forceDelete = async (item) => {
+  selectedItem.value = item;
+  confirmRef.value.showDialog("forceDelete");
+};
+const onConfirm = async (event) => {
+  if (event == "delete") {
     try {
-      apiLoading2.value = true
-      const { data } = await axios.delete(`delete/payments/` + selectedItem.value.id)
-      await props.updateChanges()
+      apiLoading2.value = true;
+      const { data } = await axios.delete(`delete/payments/` + selectedItem.value.id);
+      await props.updateChanges();
     } catch (error) {
-      console.error('error', error)
+      console.error("error", error);
     }
-    apiLoading2.value = false
+    apiLoading2.value = false;
   }
 
-  if (event == 'forceDelete') {
+  if (event == "forceDelete") {
     try {
-      apiLoading2.value = true
-      const { data } = await axios.delete(`force-delete/payments/` + selectedItem.value.id)
-      await props.updateChanges()
+      apiLoading2.value = true;
+      const { data } = await axios.delete(
+        `force-delete/payments/` + selectedItem.value.id
+      );
+      await props.updateChanges();
     } catch (error) {
-      console.error('error', error)
+      console.error("error", error);
     }
-    apiLoading2.value = false
+    apiLoading2.value = false;
   }
-  if (event == 'restore') {
+  if (event == "restore") {
     try {
-      restoreLoading.value = true
-      const { data } = await axios.post(`restore/payments/` + selectedItem.value.id)
-      await props.updateChanges()
+      restoreLoading.value = true;
+      const { data } = await axios.post(`restore/payments/` + selectedItem.value.id);
+      await props.updateChanges();
     } catch (error) {
-      console.error('error', error)
+      console.error("error", error);
     }
-    restoreLoading.value = false
+    restoreLoading.value = false;
   }
 
-  selectedItem.value = {}
-}
+  selectedItem.value = {};
+};
 
 const validateForm = async () => {
-  formRefs.value.validate()
-  v$.value.$touch()
+  formRefs.value.validate();
+  v$.value.$touch();
   if (v$.value.$invalid) {
-    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
+    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!");
 
-    return false
+    return false;
   }
-  submit()
-}
+  submit();
+};
 
 async function submit() {
   try {
-    apiLoading2.value = true
+    apiLoading2.value = true;
 
-    const { data } = await axios.post(`sell-payment`, payload.value)
-    await props.updateChanges()
-    remainder.value = props.sellInfo?.total_amount - props.sellInfo.total_paid
+    const { data } = await axios.post(`sell-payment`, payload.value);
+    await props.updateChanges();
+    remainder.value = props.sellInfo?.total_amount - props.sellInfo.total_paid;
 
-    resetForm()
+    resetForm();
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error);
   }
-  apiLoading2.value = false
+  apiLoading2.value = false;
 }
 
-function convertToEnglishNumbers(model, var_name = 'payload') {
-  const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
-  const englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
+function convertToEnglishNumbers(model, var_name = "payload") {
+  const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g];
+  const englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g];
   for (let i = 0; i < 10; i++) {
-    if (var_name == 'payload')
-      payload.value[model] = payload.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
-    if (var_name == 'editData')
-      editData.value[model] = editData.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
+    if (var_name == "payload")
+      payload.value[model] = payload.value[model]
+        .replace(persianNumbers[i], i)
+        .replace(englishNumbers[i], i);
+    if (var_name == "editData")
+      editData.value[model] = editData.value[model]
+        .replace(persianNumbers[i], i)
+        .replace(englishNumbers[i], i);
   }
 }
 </script>

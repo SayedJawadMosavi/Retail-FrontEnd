@@ -339,8 +339,8 @@ const getProduct = (value) => {
     le.log("ddd", payload.value.carton_amount);
   });
   axios.get("get-product-price/" + value.id).then(function (response) {
-    payload.value.income_price = response.data.purchase_detail.per_carton_cost;
-    payload.value.cost = response.data.purchase_detail.sell_price;
+    payload.value.income_price = response.data.product.per_carton_cost;
+    payload.value.cost = response.data.product.sell_price;
   });
 };
 async function getStock() {

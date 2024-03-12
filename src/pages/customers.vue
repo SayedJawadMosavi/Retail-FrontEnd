@@ -95,6 +95,31 @@
         </VBtn>
       </template>
     </BreadCrumbs>
+    <div
+      style="border: 1px solid rebeccapurple; padding: 5px; border-radius: 10px"
+      class="d-flex align-center mt-3"
+    >
+      <VRow>
+        <VCol cols="12" md="4">
+          <div class="pe-3 text-primary me-5">
+            <span class="d-inline-block pe-1"> مجموعه:</span>
+            {{ total_amount_sell ?? 0 }}
+          </div>
+        </VCol>
+        <VCol cols="12" md="4">
+          <div class="pe-3 text-primary me-5">
+            <span class="d-inline-block pe-1"> وصول شوی :</span>
+            {{ total_paid_sell ?? 0 }}
+          </div>
+        </VCol>
+        <VCol cols="12" md="4">
+          <div class="pe-3 text-primary me-5">
+            <span class="d-inline-block pe-1"> پاتی :</span>
+            {{ total_reminder_sell ?? 0 }}
+          </div>
+        </VCol>
+      </VRow>
+    </div>
     <InsertCustomers ref="customerRef" :fetch-record="fetchRecord" />
     <ReportDialog ref="reportRefs" />
 
@@ -224,7 +249,9 @@ const reportRefs = ref();
 const printType = ref();
 const printLoading = ref(false);
 const show = ref(false);
-
+const total_amount_sell = ref(0);
+const total_paid_sell = ref(0);
+const total_reminder_sell = ref(0);
 const payload = ref({
   start_date: new Date(),
   end_date: new Date(),
@@ -345,6 +372,9 @@ const fetchRecord = async () => {
     customers.value = data.data;
     total.value = data.total;
     extraTotal.value = data.extraTotal;
+    total_amount_sell.value = data.customer_info.total_amount;
+    total_paid_sell.value = data.customer_info.total_paid;
+    total_reminder_sell.value = data.customer_info.total_reminder;
   } catch (error) {
     console.error("datatable", error);
   }
