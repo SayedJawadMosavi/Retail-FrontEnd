@@ -1,21 +1,8 @@
-
-
 <template>
   <div class="pt-5">
-    <VTabs
-      v-model="activeTab"
-      show-arrows
-    >
-      <VTab
-        v-for="item in tabs"
-        :key="item.icon"
-        class="pe-3"
-      >
-        <VIcon
-          size="20"
-          start
-          :icon="item.icon"
-        />
+    <VTabs v-model="activeTab" show-arrows>
+      <VTab v-for="item in tabs" :key="item.icon" class="pe-3">
+        <VIcon size="20" start :icon="item.icon" />
         {{ item.title }}
         <span class="d-inline-block ps-5">{{ getTotal(item.key) }}</span>
       </VTab>
@@ -55,74 +42,58 @@
           </tr>
         </thead>
         <tbody v-show="!loading">
-          <tr
-            v-for="(row, index) in items"
-            :key="index"
-          >
+          <tr v-for="(row, index) in items" :key="index">
             <td>
-              <VCheckbox
-                v-model="selectedItems"
-                :value="row"
-              />
+              <VCheckbox v-model="selectedItems" :value="row" />
             </td>
 
             <td
               v-for="(header, j) in headers"
               :key="j"
-              :style="`min-width: ${header.width};${header.key == 'created_at' ? 'white-space: nowrap' : ''}   `"
+              :style="`min-width: ${header.width};${
+                header.key == 'created_at' ? 'white-space: nowrap' : ''
+              }   `"
             >
               <template v-if="$slots[header.key]">
-                <slot
-                  :name="header.key"
-                  :item="row"
-                />
+                <slot :name="header.key" :item="row" />
               </template>
 
-              <template
-                v-else
-                style="white-space: nowrap"
-              >
-                {{ header.key == 'created_at' ? formateDate(row[header.key]) : row[header.key] }}
+              <template v-else style="white-space: nowrap">
+                {{
+                  header.key == "created_at"
+                    ? formateDate(row[header.key])
+                    : row[header.key]
+                }}
               </template>
             </td>
 
             <!-- status -->
           </tr>
         </tbody>
-        <div
-          v-show="loading"
-          class="custom-progress text-center"
-        >
-          <VProgressCircular
-            :size="50"
-            color="primary"
-            indeterminate
-          />
+        <div v-show="loading" class="custom-progress text-center">
+          <VProgressCircular :size="50" color="primary" indeterminate />
           <p>د معلوماتو بارول...</p>
         </div>
       </VTable>
       <VCardActions>
-        <div
-          v-if="extraInfo"
-          class="d-flex align-center"
-        >
+        <div v-if="extraInfo" class="d-flex align-center">
           <div class="pe-3 text-primary me-5">
-            <span class="d-inline-block pe-1"> ترلاسه شوی مصارف: </span> {{ extraInfo.total_income }}$
+            <span class="d-inline-block pe-1"> ترلاسه شوی مصارف: </span>
+            {{ extraInfo.total_income }}$
           </div>
           <div class="pe-3 text-error me-5">
-            <span class="d-inline-block pe-1">د مصارف مجموعه: </span> {{ extraInfo.total_outgoing }}$
+            <span class="d-inline-block pe-1">د مصارف مجموعه: </span>
+            {{ extraInfo.total_outgoing }}$
           </div>
           <div class="pe-3 me-5">
             <span class="d-inline-block pe-1"> بیلانس: </span>
             {{ extraInfo.total_income - extraInfo.total_outgoing }}$
           </div>
         </div>
-        <div
-          v-if="extraData"
-          class="d-flex align-center"
-        >
+        <div v-if="extra_data" class="d-flex align-center">
           <div class="pe-3 text-primary me-5">
-            <span class="d-inline-block pe-1">   جمله کارتن: </span> {{ extraData.total_income }}
+            <span class="d-inline-block pe-1"> جمله کارتن: </span>
+            {{ extra_data.total_income }}
           </div>
         </div>
         <VSpacer />
@@ -133,22 +104,16 @@
             density="compact"
             :items="[10, 20, 50, 100, 150]"
           />
-          <VPagination
-            v-model="page"
-            total-visible="5"
-            :length="pageLength"
-          />
+          <VPagination v-model="page" total-visible="5" :length="pageLength" />
         </div>
       </VCardActions>
     </VCard>
   </div>
 </template>
 
-
-
 <script setup>
-import { computed, ref } from 'vue'
-import { formateDate } from '@/@core/utils/index'
+import { computed, ref } from "vue";
+import { formateDate } from "@/@core/utils/index";
 
 const props = defineProps({
   tabs: {
@@ -171,7 +136,7 @@ const props = defineProps({
     type: Object,
     default: () => {},
   },
-  extraData: {
+  extra_data: {
     type: Object,
     default: () => {},
   },
@@ -181,7 +146,7 @@ const props = defineProps({
   },
   itemKey: {
     type: String,
-    default: 'id',
+    default: "id",
   },
   loading: {
     type: Boolean,
@@ -191,68 +156,79 @@ const props = defineProps({
     type: Number,
     default: 20,
   },
-})
+});
 
-const emit = defineEmits(['tableChange', 'tabChange'])
+const emit = defineEmits(["tableChange", "tabChange"]);
 
-const activeTab = ref(0)
-const selectedItems = ref([])
-const page = ref(1)
-const itemPerPage = ref(props.itemPerPage)
-let resetPage = false
-let resetTab = false
+const activeTab = ref(0);
+const selectedItems = ref([]);
+const page = ref(1);
+const itemPerPage = ref(props.itemPerPage);
+let resetPage = false;
+let resetTab = false;
 
 const pageLength = computed(() => {
-  return Math.ceil(props.total / itemPerPage.value)
-})
+  return Math.ceil(props.total / itemPerPage.value);
+});
 const currentTab = computed(() => {
-  return props?.tabs[activeTab.value]?.key
-})
+  return props?.tabs[activeTab.value]?.key;
+});
 
-const selectAll = all => {
+const selectAll = (all) => {
   if (all) {
-    selectedItems.value = []
+    selectedItems.value = [];
   } else {
-   
-    selectedItems.value = JSON.parse(JSON.stringify(props.items))
+    selectedItems.value = JSON.parse(JSON.stringify(props.items));
   }
-}
+};
 
-const getTotal = item => {
+const getTotal = (item) => {
   try {
-    return props.extraTotal[item]
+    return props.extraTotal[item];
   } catch (error) {
-    return 0
+    return 0;
   }
-}
+};
 watch(itemPerPage, async () => {
-  selectedItems.value = []
-
+  selectedItems.value = [];
+  console.log("sss", props.extraData);
   if (!resetTab && !resetPage) {
-    page.value = 1
-    await emit('tableChange', { page: page.value, itemPerPage: itemPerPage.value, tab: currentTab })
+    page.value = 1;
+    await emit("tableChange", {
+      page: page.value,
+      itemPerPage: itemPerPage.value,
+      tab: currentTab,
+    });
   }
-})
+});
 watch(activeTab, async () => {
-  selectedItems.value = []
-  resetPage = true
-  resetTab = true
-  page.value = 1
-  itemPerPage.value = props.itemPerPage
-  await emit('tableChange', { page: page.value, itemPerPage: itemPerPage.value, tab: currentTab })
-  resetPage = false
-  resetTab = false
-})
+  selectedItems.value = [];
+  resetPage = true;
+  resetTab = true;
+  page.value = 1;
+  itemPerPage.value = props.itemPerPage;
+  await emit("tableChange", {
+    page: page.value,
+    itemPerPage: itemPerPage.value,
+    tab: currentTab,
+  });
+  resetPage = false;
+  resetTab = false;
+});
 
 watch(page, async () => {
-  selectedItems.value = []
+  selectedItems.value = [];
   if (!resetPage && !resetTab)
-    await emit('tableChange', { page: page.value, itemPerPage: itemPerPage.value, tab: currentTab })
-})
+    await emit("tableChange", {
+      page: page.value,
+      itemPerPage: itemPerPage.value,
+      tab: currentTab,
+    });
+});
 
 defineExpose({
   selectedItems,
-})
+});
 </script>
 
 <style lang="scss">
@@ -272,5 +248,3 @@ defineExpose({
   }
 }
 </style>
-
-

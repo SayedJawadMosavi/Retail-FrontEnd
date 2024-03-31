@@ -343,13 +343,14 @@
           <thead>
             <tr>
               <th scope="col">#آی دی</th>
-              <th scope="col">د تبادلی نرخ</th>
+              <th scope="col">د محصول نوم</th>
               <th scope="col">د کارتن تعداد</th>
               <th scope="col">اندازه</th>
               <th scope="col">قیمت په ین</th>
+              <th scope="col">جمله په ین</th>
+              <th scope="col">د تبادلی نرخ</th>
               <th scope="col">مصرف فی کارتن</th>
               <th scope="col">مجموعه په دالر</th>
-              <th scope="col">د محصول نوم</th>
               <th scope="col">ترلاسه شوی</th>
 
               <th scope="col">پاتې</th>
@@ -371,13 +372,14 @@
               <td>
                 {{ item.id }}
               </td>
-              <td>{{ item.rate }}</td>
+              <td>{{ item.product.product_name }}</td>
               <td>{{ item.carton }}</td>
               <td>{{ item.quantity }}</td>
               <td>{{ item.yen_cost }}</td>
+              <td>{{ item.yen_cost * item.quantity }}</td>
+              <td>{{ item.rate }}</td>
               <td>{{ item.expense }}</td>
               <td>{{ item?.total ?? 0 }}</td>
-              <td>{{ item.product.product_name }}</td>
               <td>{{ item.received }}</td>
               <td>{{ item.quantity - item.received }}</td>
               <td>{{ item.carton_amount }}</td>

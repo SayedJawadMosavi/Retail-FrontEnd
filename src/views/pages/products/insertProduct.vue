@@ -4,14 +4,9 @@
       <VCard>
         <VForm ref="formRef">
           <VCardText>
-            <p class="text-base font-weight-medium mt-2">
-              معلومات
-            </p>
+            <p class="text-base font-weight-medium mt-2">معلومات</p>
             <VRow class="mb-3">
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.product_name"
                   label="اسم محصول "
@@ -19,10 +14,7 @@
                   :rules="validationRules(v$.product_name, 'اسم محصول')"
                 />
               </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.carton_quantity"
                   dir="ltr"
@@ -33,10 +25,7 @@
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.unit_name"
                   label="د واحد نوم "
@@ -44,10 +33,7 @@
                   :rules="validationRules(v$.unit_name, 'د واحد نوم')"
                 />
               </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.company_name"
                   label="اسم کمپنی "
@@ -56,10 +42,7 @@
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VAutocomplete
                   v-model="formData.category_id"
                   label="کتگوری"
@@ -71,10 +54,7 @@
                   :rules="validationRules(v$.category_id, 'کتگوری')"
                 />
               </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.code"
                   dir="ltr"
@@ -84,30 +64,35 @@
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.color"
                   label="رنگ"
                   prepend-inner-icon="mdi-eyedropper-variant"
                 />
               </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.size"
                   label="سایز"
                   prepend-inner-icon="mdi-size-s"
                 />
               </VCol>
-              <VCol
-                cols="12"
-                md="12"
-              >
+              <VCol cols="12" md="6">
+                <VTextField
+                  v-model="formData.per_carton_cost"
+                  label="تمام شد قیمت"
+                  prepend-inner-icon="mdi-size-s"
+                />
+              </VCol>
+              <VCol cols="12" md="6">
+                <VTextField
+                  v-model="formData.sell_price"
+                  label="د خرڅ قیمت"
+                  prepend-inner-icon="mdi-size-s"
+                />
+              </VCol>
+              <VCol cols="12" md="12">
                 <VTextarea
                   v-model="formData.description"
                   label=" توضیحات"
@@ -120,27 +105,13 @@
 
           <!-- 👉 Action Buttons -->
           <VCardText class="d-flex flex-wrap gap-4">
-            <VBtn
-              v-if="!isSubmited"
-              :loading="apiLoading"
-              @click="validateForm"
-            >
-              <VIcon
-                start
-                icon="mdi-checkbox-marked-circle"
-              />
+            <VBtn v-if="!isSubmited" :loading="apiLoading" @click="validateForm">
+              <VIcon start icon="mdi-checkbox-marked-circle" />
               ذخیره
             </VBtn>
 
-            <VBtn
-              color="red"
-              variant="tonal"
-              @click="closeDialog"
-            >
-              <VIcon
-                start
-                icon="mdi-cancel"
-              />
+            <VBtn color="red" variant="tonal" @click="closeDialog">
+              <VIcon start icon="mdi-cancel" />
               کنسل
             </VBtn>
           </VCardText>
@@ -151,28 +122,28 @@
 </template>
 
 <script setup>
-import { axios } from "@/plugins/axios-plugin"
-import useRules from "@/plugins/vuelidate/vuelidateRules"
-import { useVuelidate } from "@vuelidate/core"
-import { minLength, required } from "@vuelidate/validators"
-import { ref } from "vue"
-import { toast } from "vue3-toastify"
+import { axios } from "@/plugins/axios-plugin";
+import useRules from "@/plugins/vuelidate/vuelidateRules";
+import { useVuelidate } from "@vuelidate/core";
+import { minLength, required } from "@vuelidate/validators";
+import { ref } from "vue";
+import { toast } from "vue3-toastify";
 
 // =============================start props==============
 const props = defineProps({
   toggleExpand: { type: Function, default: () => {} },
   fetchRecord: { type: Function, default: () => {} },
-})
+});
 
 // =======================> starts states <===============================
 
-const expand = ref(false)
-const loadingCategory = ref(false)
-const Categories = ref([])
+const expand = ref(false);
+const loadingCategory = ref(false);
+const Categories = ref([]);
 
-const apiLoading = ref(false)
-const isSubmited = ref(false)
-const formRef = ref()
+const apiLoading = ref(false);
+const isSubmited = ref(false);
+const formRef = ref();
 const formData = ref({
   product_name: "",
   company_name: "",
@@ -182,11 +153,13 @@ const formData = ref({
   unit_name: "",
   carton_quantity: "",
   size: "",
+  per_carton_cost: "",
+  sell_price: "",
   description: "",
-})
+});
 
 ///   |=============================> start validation <==============================|
-const validationRules = useRules.validate
+const validationRules = useRules.validate;
 
 const rules = {
   product_name: { required, minLength: minLength(2) },
@@ -194,54 +167,54 @@ const rules = {
   category_id: { required },
   carton_quantity: { required },
   unit_name: { required },
-}
+};
 
-const v$ = useVuelidate(rules, formData)
+const v$ = useVuelidate(rules, formData);
 
 // |===================================> start Methods   <==================
 const closeDialog = () => {
-  isSubmited.value = false
-  expand.value = false
-  v$.value.$reset()
-  resetForm()
-}
+  isSubmited.value = false;
+  expand.value = false;
+  v$.value.$reset();
+  resetForm();
+};
 async function getCategory() {
   try {
-    loadingCategory.value = true
-    const { data } = await axios.get("category-list")
+    loadingCategory.value = true;
+    const { data } = await axios.get("category-list");
 
-    Categories.value = data
+    Categories.value = data;
   } catch (error) {
-    console.error("error", error)
+    console.error("error", error);
   }
-  loadingCategory.value = false
+  loadingCategory.value = false;
 }
 async function submit() {
   try {
-    apiLoading.value = true
-    if (formData.value.id) await axios.put("product/id", formData.value)
-    else await axios.post("product", formData.value)
+    apiLoading.value = true;
+    if (formData.value.id) await axios.put("product/id", formData.value);
+    else await axios.post("product", formData.value);
 
-    isSubmited.value = false
-    expand.value = false
-    resetForm()
-    props.fetchRecord()
+    isSubmited.value = false;
+    expand.value = false;
+    resetForm();
+    props.fetchRecord();
   } catch (error) {
-    console.error("error", error)
+    console.error("error", error);
 
     // toast.error(' مشکل در سرور وجود دارد !')
   }
-  apiLoading.value = false
+  apiLoading.value = false;
 }
 
 function toggleDialog(item = null) {
-  getCategory()
+  getCategory();
   if (item) {
-    formData.value = JSON.parse(JSON.stringify(item))
-    formData.value.category_id = item.category.name
-    formData.value.carton_quantity = item.carton_quantity
+    formData.value = JSON.parse(JSON.stringify(item));
+    formData.value.category_id = item.category.name;
+    formData.value.carton_quantity = item.carton_quantity;
   }
-  expand.value = true
+  expand.value = true;
 }
 
 const resetForm = () => {
@@ -254,42 +227,42 @@ const resetForm = () => {
     unit_name: null,
     color: null,
     description: null,
-  }
-  v$.value.$reset()
-  formRef.value.resetValidation()
-}
+  };
+  v$.value.$reset();
+  formRef.value.resetValidation();
+};
 
 function convertToEnglishNumbers(model, item = null, index = null) {
-  var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
-  var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
+  var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g];
+  var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g];
   for (let i = 0; i < 10; i++) {
     if (item == null) {
       formData.value[model] = formData.value[model]
         .replace(persianNumbers[i], i)
-        .replace(englishNumbers[i], i)
+        .replace(englishNumbers[i], i);
     } else {
       formData.value[model][index][item] = formData.value[model][index][item]
         .replace(persianNumbers[i], i)
-        .replace(englishNumbers[i], i)
+        .replace(englishNumbers[i], i);
     }
   }
 }
 
 const validateForm = async () => {
-  formRef.value.validate()
-  v$.value.$touch()
+  formRef.value.validate();
+  v$.value.$touch();
   if (v$.value.$invalid) {
-    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!")
+    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!");
 
-    return false
+    return false;
   }
-  submit()
-  v$.value.$reset()
-}
+  submit();
+  v$.value.$reset();
+};
 
 defineExpose({
   toggleDialog,
-})
+});
 </script>
 
 <style>

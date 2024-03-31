@@ -8,10 +8,7 @@
         <VForm ref="formRef">
           <VCardText>
             <VRow>
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <span style="direction: ltr">
                   <VueDatePicker
                     v-model="payload.created_at"
@@ -27,13 +24,10 @@
                   v-if="validationRules($v.created_at, 'نیټه').length > 0"
                   class="text-error"
                 >
-                  {{ validationRules($v.created_at, 'نیټه')[0] }}
+                  {{ validationRules($v.created_at, "نیټه")[0] }}
                 </p>
               </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VSelect
                   v-model="payload.type"
                   :items="types"
@@ -42,6 +36,7 @@
                   append-inner-icon="mdi-invert-colors"
                   item-title="name"
                   item-value="id"
+                  @update:modelValue="showData"
                 />
               </VCol>
             </VRow>
@@ -51,10 +46,7 @@
 
           <VCardText>
             <VRow>
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="payload.name"
                   label="نوم"
@@ -62,26 +54,20 @@
                   :rules="validationRules($v.name, 'نوم')"
                 />
               </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VAutocomplete
                   v-model="payload.category_id"
                   label="کتگوری"
                   prepend-inner-icon="mdi-account"
                   :items="Categories"
-                  :item-title="ca => `${ca.name}`"
+                  :item-title="(ca) => `${ca.name}`"
                   return-object
                   :loading="loadingCategory"
                   :rules="validationRules($v.category_id, 'کتگوری')"
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="payload.amount"
                   label="د پیسو اندازه"
@@ -96,18 +82,9 @@
           </VCardText>
           <!-- 👉 Action Buttons -->
           <VCardText class="d-flex flex-wrap gap-4">
-            <VBtn
-              :loading="apiLoading"
-              @click="validateForm"
-            >
-              ذخیره
-            </VBtn>
+            <VBtn :loading="apiLoading" @click="validateForm"> ذخیره </VBtn>
 
-            <VBtn
-              color="secondary"
-              variant="tonal"
-              @click="closeDialog"
-            >
+            <VBtn color="secondary" variant="tonal" @click="closeDialog">
               د فورم بندول
             </VBtn>
           </VCardText>
@@ -118,52 +95,52 @@
 </template>
 
 <script setup>
-import { axios } from '@/plugins/axios-plugin'
-import useRules from '@/plugins/vuelidate/vuelidateRules'
-import { useVuelidate } from '@vuelidate/core'
-import { minLength, minValue, numeric, required } from '@vuelidate/validators'
-import { toast } from 'vue3-toastify'
+import { axios } from "@/plugins/axios-plugin";
+import useRules from "@/plugins/vuelidate/vuelidateRules";
+import { useVuelidate } from "@vuelidate/core";
+import { minLength, minValue, numeric, required } from "@vuelidate/validators";
+import { toast } from "vue3-toastify";
 
 // ==================================== START PROPS =======================================
 
 const props = defineProps({
   fetchRecord: { type: Function, default: () => {} },
-})
+});
 
 // ==================================== START Computed =======================================
 
 // ==================================== START DATA =======================================
-const loadingCategory = ref(false)
-const Categories = ref([])
-const apiLoading = ref(false)
-const expand = ref(false)
-const formRef = ref()
+const loadingCategory = ref(false);
+const Categories = ref([]);
+const apiLoading = ref(false);
+const expand = ref(false);
+const formRef = ref();
 const types = ref([
-  { name: 'عاید', id: 'incoming' },
-  { name: 'مصرف', id: 'outgoing' },
-])
+  { name: "عاید", id: "income" },
+  { name: "مصرف", id: "expense" },
+]);
 const payload = ref({
   created_at: new Date(),
   name: null,
   type: null,
-  category_id: '',
+  category_id: "",
 
   amount: 0,
-})
+});
 
 // ==================================== START VALIDATION =======================================
-const validationRules = useRules.validate
+const validationRules = useRules.validate;
 
 const rules = {
   created_at: { required },
   name: { required, minLength: minLength(3) },
   type: { required },
-  category_id: { required},
+  category_id: { required },
 
   amount: { required, numeric, minValue: minValue(1) },
-}
+};
 
-const $v = useVuelidate(rules, payload)
+const $v = useVuelidate(rules, payload);
 
 // ==================================== START METHODS =======================================
 
@@ -175,62 +152,73 @@ const resetForm = () => {
     category_id: null,
 
     amount: 0,
-  }
-  $v.value.$reset()
-  formRef.value.resetValidation()
-}
-async function getCategory() {
-  try {
-    loadingCategory.value = true
-    const { data } = await axios.get('expense-income-category-list')
+  };
+  $v.value.$reset();
+  formRef.value.resetValidation();
+};
 
-    Categories.value = data
-  } catch (error) {
-    console.error('error', error)
-  }
-  loadingCategory.value = false
-}
+// async function getCategory() {
+//   try {
+//     loadingCategory.value = true
+//     const { data } = await axios.get('expense-income-category-list')
+
+//     Categories.value = data
+//   } catch (error) {
+//     console.error('error', error)
+//   }
+//   loadingCategory.value = false
+// }
+const showData = (value) => {
+  loadingCategory.value = true;
+  axios.get("expense-income-category/" + value).then(function (response) {
+    console.log("re", response);
+    Categories.value = response.data;
+  });
+  loadingCategory.value = false;
+};
 function openDialog(item = null) {
-  getCategory()
+  // getCategory();
 
   if (item) {
-    payload.value = JSON.parse(JSON.stringify(item))
+    payload.value = JSON.parse(JSON.stringify(item));
   }
-  expand.value = true
+  expand.value = true;
 }
 
 function closeDialog() {
-  expand.value = false
-  resetForm()
+  expand.value = false;
+  resetForm();
 }
 async function submit() {
   try {
-    apiLoading.value = true
-    if (payload.value.id) await axios.put('income-outgoing/id', payload.value)
-    else await axios.post('income-outgoing', payload.value)
-    props.fetchRecord()
-    closeDialog()
+    apiLoading.value = true;
+    if (payload.value.id) await axios.put("income-outgoing/id", payload.value);
+    else await axios.post("income-outgoing", payload.value);
+    props.fetchRecord();
+    closeDialog();
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error);
   }
-  apiLoading.value = false
+  apiLoading.value = false;
 }
 const validateForm = async () => {
-  formRef.value.validate()
-  $v.value.$touch()
+  formRef.value.validate();
+  $v.value.$touch();
   if ($v.value.$invalid) {
-    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
-    
-    return false
+    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!");
+
+    return false;
   }
-  submit()
-  $v.value.$reset()
-}
+  submit();
+  $v.value.$reset();
+};
 function convertToEnglishNumbers(model) {
-  var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
-  var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
+  var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g];
+  var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g];
   for (let i = 0; i < 10; i++) {
-    payload.value[model] = payload.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
+    payload.value[model] = payload.value[model]
+      .replace(persianNumbers[i], i)
+      .replace(englishNumbers[i], i);
   }
 }
 
@@ -238,7 +226,7 @@ function convertToEnglishNumbers(model) {
 
 defineExpose({
   openDialog,
-})
+});
 </script>
 
 <style>

@@ -57,6 +57,18 @@
                   item-title="name"
                   item-value="id"
                   :rules="validationRules(v$.type, 'Type')"
+                  @update:modelValue="showData"
+                />
+              </VCol>
+              <VCol v-if="TypeFlag == true" cols="12" md="12">
+                <VAutocomplete
+                  v-model="payload.category_id"
+                  label="کتگوری"
+                  prepend-inner-icon="mdi-account"
+                  :items="Categories"
+                  :item-title="(ca) => `${ca.name}`"
+                  return-object
+                  :loading="loadingCategory"
                 />
               </VCol>
             </VRow>
@@ -145,19 +157,19 @@
       <VRow>
         <VCol cols="12" md="4">
           <div class="pe-3 text-primary me-5">
-            <span class="d-inline-block pe-1"> مجموع :</span>
+            <span class="d-inline-block pe-1"> مجموعه :</span>
             {{ total_amount_sell ?? 0 }}
           </div>
         </VCol>
         <VCol cols="12" md="4">
           <div class="pe-3 text-primary me-5">
-            <span class="d-inline-block pe-1"> پرداخت شده :</span>
+            <span class="d-inline-block pe-1"> وصول شوی :</span>
             {{ total_paid_sell ?? 0 }}
           </div>
         </VCol>
         <VCol cols="12" md="4">
           <div class="pe-3 text-primary me-5">
-            <span class="d-inline-block pe-1"> باقی :</span>
+            <span class="d-inline-block pe-1"> پاتي :</span>
             {{ total_reminder_purchase ?? 0 }}
           </div>
         </VCol>
@@ -173,6 +185,20 @@
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> مجموعه مفاد:</span>
             {{ TotalProfit ?? 0 }}
+          </div>
+        </VCol>
+      </VRow>
+    </div>
+    <div
+      v-if="expense_income_info"
+      style="border: 1px solid rebeccapurple; padding: 5px; border-radius: 10px"
+      class="d-flex align-center mt-3"
+    >
+      <VRow>
+        <VCol cols="12" md="4">
+          <div class="pe-3 text-primary me-5">
+            <span class="d-inline-block pe-1"> مجموعه :</span>
+            {{ Total ?? 0 }}
           </div>
         </VCol>
       </VRow>
@@ -370,6 +396,7 @@ const extra = ref({});
 const info = ref({});
 const extra_profit = ref({});
 const customer_info = ref(false);
+const expense_income_info = ref(false);
 
 const st_balance = ref(0);
 const re_balance = ref(0);
@@ -849,7 +876,12 @@ const printData = ref([]);
 const printRefs = ref();
 const title = ref("");
 const total = ref(0);
+const Total = ref(0);
 const TotalProfit = ref(0);
+const Categories = ref([]);
+const loadingCategory = ref(false);
+const TypeFlag = ref(false);
+
 const total_amount_sell = ref(0);
 const total_paid_sell = ref(0);
 const total_reminder_purchase = ref(0);
@@ -867,6 +899,7 @@ const payload = ref({
   start_date: new Date(),
   end_date: new Date(),
   type: null,
+  category_id: null,
   printType: options.value.tab,
 });
 const sleep = (ms) => {
@@ -888,14 +921,39 @@ const confirm = (res) => {
   show.value = false;
 };
 
+// async function getCategory() {
+//   try {
+//     loadingCategory.value = true;
+//     const { data } = await axios.get("expense-income-category-list");
+
+//     Categories.value = data;
+//   } catch (error) {
+//     console.error("error", error);
+//   }
+//   loadingCategory.value = false;
+// }
 const TakeReport = (type) => {
   show.value = true;
+
+  // getCategory();
 };
 const closeReset = (type) => {
   show.value = false;
   getReport();
 };
-
+const showData = (value) => {
+  if (value == "expense" || value == "income") {
+    TypeFlag.value = true;
+  } else {
+    TypeFlag.value = false;
+  }
+  loadingCategory.value = true;
+  axios.get("expense-income-category/" + value).then(function (response) {
+    console.log("re", response);
+    Categories.value = response.data;
+  });
+  loadingCategory.value = false;
+};
 const getReport = async () => {
   if (
     payload.value.start_date == null ||
@@ -958,7 +1016,14 @@ const getReport = async () => {
       total_amount_sell.value = data.customer_info.total_amount;
       total_paid_sell.value = data.customer_info.total_paid;
       total_reminder_purchase.value = data.customer_info.total_reminder;
+
       customer_info.value = true;
+    }
+    if (data.expense_income_info) {
+      Total.value = data.expense_income_info.total_amount;
+
+      customer_info.value = false;
+      expense_income_info.value = true;
     }
     extra.value = data.extra;
     info.value = data.info;

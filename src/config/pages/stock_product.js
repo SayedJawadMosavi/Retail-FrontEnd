@@ -57,6 +57,12 @@ const headers= [
                
   },
   {
+    title: ' د تمام شد قیمت',
+    key: 'per_carton_cost',
+   
+               
+  },
+  {
     title: 'د گدام اندازه اخطاروی',
     key: 'alarm_amount',
    

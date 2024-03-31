@@ -1,5 +1,5 @@
 const tabs = [
-  { title: 'د محصولاتو خرڅل', icon: 'mdi-shopping-outline', count: 0, key: 'sells' },
+  { title: 'د محصولاتو خرڅلاو', icon: 'mdi-shopping-outline', count: 0, key: 'sells' },
   { title: 'ړنګ شوی', icon: 'mdi-trash', count: 0, key: 'trash' },
 ]
 const breadCrumbs = [

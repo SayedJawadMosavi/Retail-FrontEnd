@@ -153,19 +153,20 @@
         >
           دکارتن تعداد
         </th>
-
-        <th
+        <!-- 
+          <th
           style="
-            font-weight: 500 !important;
+          font-weight: 500 !important;
 
-            text-align: right;
-            font-size: 12px;
-            border: 1px solid grey;
-            padding: 0px 6px;
+          text-align: right;
+          font-size: 12px;
+          border: 1px solid grey;
+          padding: 0px 6px;
           "
-        >
+          >
           د ګدام نوم
-        </th>
+          </th> 
+        -->
         <th
           style="
             font-weight: 500 !important;
@@ -224,16 +225,18 @@
           {{ item?.carton_quantity }}
         </td>
 
-        <td
+        <!--
+          <td
           style="
-            width: 16.66%;
-            text-align: right;
-            border: 1px solid grey;
-            padding: 0px 6px;
+          width: 16.66%;
+          text-align: right;
+          border: 1px solid grey;
+          padding: 0px 6px;
           "
-        >
+          >
           {{ item?.product_stock.stock.name }}
-        </td>
+          </td> 
+        -->
         <td
           style="
             width: 30.66%;

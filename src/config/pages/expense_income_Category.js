@@ -48,6 +48,12 @@ const headers= [
     key: 'name',
                  
   },
+  {
+    title: 'د نوعیت',
+
+    key: 'type',
+                 
+  },
     
       
   {

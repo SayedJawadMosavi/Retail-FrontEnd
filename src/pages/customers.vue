@@ -85,14 +85,16 @@
           پرنت
           <VIcon end icon="mdi-printer" />
         </VBtn>
-        <VBtn
+        <!--
+          <VBtn
           v-if="options.tab != 'trash'"
           class="font-weight-bold bg-info"
           @click="openDialogs"
-        >
+          >
           راپور
           <VIcon end icon="mdi-export" />
-        </VBtn>
+          </VBtn> 
+        -->
       </template>
     </BreadCrumbs>
     <div
@@ -103,19 +105,23 @@
         <VCol cols="12" md="4">
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> مجموعه:</span>
-            {{ total_amount_sell ?? 0 }}
+            {{ typeof total_amount_sell === "number" ? total_amount_sell.toFixed(2) : 0 }}
           </div>
         </VCol>
         <VCol cols="12" md="4">
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> وصول شوی :</span>
-            {{ total_paid_sell ?? 0 }}
+
+            {{ typeof total_paid_sell === "number" ? total_paid_sell.toFixed(2) : 0 }}
           </div>
         </VCol>
         <VCol cols="12" md="4">
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> پاتی :</span>
-            {{ total_reminder_sell ?? 0 }}
+
+            {{
+              typeof total_reminder_sell === "number" ? total_reminder_sell.toFixed(2) : 0
+            }}
           </div>
         </VCol>
       </VRow>
@@ -203,7 +209,7 @@ import usePageConfig from "@/config/pages/customer";
 import SellPrint from "@/views/pages/sell/sellPrint.vue";
 
 import router from "@/router";
-import ReportDialog from "@/components/commons/ReportDialog.vue";
+import ReportDialog from "@/components/commons/CustomerReportDialog.vue";
 
 import { scope } from "@/@core/utils/index";
 import {
