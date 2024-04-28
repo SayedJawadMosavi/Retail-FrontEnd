@@ -262,6 +262,10 @@
     >
       <div>
         <div style="margin-bottom: 4px">
+          <span style="min-width: 80px; display: inline-block">د کارتن مجموعه:</span
+          >{{ printItem?.total_carton }}
+        </div>
+        <div style="margin-bottom: 4px">
           <span style="min-width: 80px; display: inline-block">د قیمت مجموعه:</span
           >{{ printItem?.total_amount }}
         </div>

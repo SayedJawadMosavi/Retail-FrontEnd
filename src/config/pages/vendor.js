@@ -34,10 +34,10 @@ const headers= [
     key: 'id',
   },
 
-  // {
-  //   title: 'تفصيلات وګورئ',
-  //   key: 'view_expense',
-  // },
+  {
+    title: 'تفصيلات وګورئ',
+    key: 'view_expense',
+  },
   {
     title: 'پرنت',
     key: 'print',

@@ -17,7 +17,7 @@
                   label="ګدام نه"
                   prepend-inner-icon="mdi-account"
                   :items="stocks"
-                  :item-title="ca => `${ca.name}`"
+                  :item-title="(ca) => `${ca.name}`"
                   return-object
                   :loading="loadingStock"
                   :rules="validationRules(v$.sender, 'ګدام نه')"
@@ -34,7 +34,9 @@
                   label="محصول"
                   prepend-inner-icon="mdi-account"
                   :items="products"
-                  :item-title="ca => `${ca.product.product_name}  ${ca.carton_quantity}`"
+                  :item-title="
+                    (ca) => `${ca.product.product_name}  ${ca.carton_quantity}`
+                  "
                   return-object
                   :loading="loadingProduct"
                   :rules="validationRules(v$.product, 'محصول')"
@@ -50,7 +52,7 @@
                   label="  ګدام ته"
                   prepend-inner-icon="mdi-account"
                   :items="Tostocks"
-                  :item-title="ca => `${ca.name}`"
+                  :item-title="(ca) => `${ca.name}`"
                   return-object
                   :loading="loadingStock2"
                   :rules="validationRules(v$.receiver, ' ګدام ته')"
@@ -60,7 +62,6 @@
                 <VTextField
                   v-model="formData.carton_quantity"
                   prepend-inner-icon="mdi-counter"
-                 
                   label="د کارتن تعداد"
                   :rules="validationRules(v$.product, 'د کارتن تعداد')"
                   dir="ltr"
@@ -68,7 +69,7 @@
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
-              
+
               <VCol
                 cols="12"
                 md="12"
@@ -116,12 +117,12 @@
 </template>
 
 <script setup>
-import { axios } from '@/plugins/axios-plugin'
-import useRules from '@/plugins/vuelidate/vuelidateRules'
-import { useVuelidate } from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
-import { ref } from 'vue'
-import { toast } from 'vue3-toastify'
+import { axios } from "@/plugins/axios-plugin"
+import useRules from "@/plugins/vuelidate/vuelidateRules"
+import { useVuelidate } from "@vuelidate/core"
+import { required } from "@vuelidate/validators"
+import { ref } from "vue"
+import { toast } from "vue3-toastify"
 
 // =============================start props==============
 const props = defineProps({
@@ -143,15 +144,15 @@ const apiLoading = ref(false)
 const isSubmited = ref(false)
 const formRef = ref()
 const formData = ref({
-  product: '',
+  product: "",
 
-  quantity_exist: '',
-  sender: '',
-  receiver: '',
-  amount: '',
-  carton_quantity: '',
-  carton_amount: '',
-  description: '',
+  quantity_exist: "",
+  sender: "",
+  receiver: "",
+  amount: "",
+  carton_quantity: "",
+  carton_amount: "",
+  description: "",
 })
 
 ///   |=============================> start validation <==============================|
@@ -179,63 +180,60 @@ const closeDialog = () => {
 async function getStocks() {
   try {
     loadingStock.value = true
-    const { data } = await axios.get('stock-list')
+    const { data } = await axios.get("stock-list")
 
     stocks.value = data
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error)
   }
   loadingStock.value = false
 }
 const CalculatQuantity = value => {
-  const total_price = parseFloat(value * formData.value.carton_amount) 
+  const total_price = parseFloat(value * formData.value.carton_amount)
   formData.value.amount = total_price.toFixed(2)
 }
 const Calculate = value => {
   try {
     loadingStock.value = true
 
-    axios.get('product-list/' + value.id).then(function (response) {
-      products.value = response.data
+    axios.get("product-list/" + value.id).then(function (response) {
+      const filteredProducts = response.data.filter(pr => pr.carton_quantity > 0)
+
+      products.value = filteredProducts
 
       loadingStock.value = false
     })
-    axios.get('stock-list/' + value.id).then(function (response) {
+    axios.get("stock-list/" + value.id).then(function (response) {
       Tostocks.value = response.data
 
       loadingStock2.value = false
     })
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error)
   }
 }
 const Calculate2 = value => {
   try {
-   
-
-   
-    axios.get('get-product-stock-list/' + value.id).then(function (response) {
+    axios.get("get-product-stock-list/" + value.id).then(function (response) {
       formData.value.carton_amount = response.data.carton_quantity
-   
     })
- 
   } catch (error) {
-    console.error('error', error)
+    console.error("error", error)
   }
 }
 async function submit() {
   try {
     apiLoading.value = true
-    if (formData.value.id) await axios.put('stock_to_stocks_transfer/id', formData.value)
-    else await axios.post('stock_to_stocks_transfer', formData.value)
+    if (formData.value.id) await axios.put("stock_to_stocks_transfer/id", formData.value)
+    else await axios.post("stock_to_stocks_transfer", formData.value)
 
     isSubmited.value = false
     expand.value = false
     resetForm()
     props.fetchRecord()
   } catch (error) {
-    console.error('error', error)
-    toast.error(' مشکل به سرور کښی موجود ده !')
+    console.error("error", error)
+    toast.error(" مشکل به سرور کښی موجود ده !")
   }
   apiLoading.value = false
 }
@@ -246,7 +244,7 @@ function toggleDialog(item = null) {
   if (item) {
     formData.value = JSON.parse(JSON.stringify(item))
     formData.value.amount = item.quantity
-    console.log('fdbdfbdf', item.product_stock.product.product_name)
+    console.log("fdbdfbdf", item.product_stock.product.product_name)
 
     // axios.get('product-list').then(function (response) {
     //   products.value = response.data
@@ -276,7 +274,9 @@ function convertToEnglishNumbers(model, item = null, index = null) {
   var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
   for (let i = 0; i < 10; i++) {
     if (item == null) {
-      formData.value[model] = formData.value[model].replace(persianNumbers[i], i).replace(englishNumbers[i], i)
+      formData.value[model] = formData.value[model]
+        .replace(persianNumbers[i], i)
+        .replace(englishNumbers[i], i)
     } else {
       formData.value[model][index][item] = formData.value[model][index][item]
         .replace(persianNumbers[i], i)
@@ -289,7 +289,7 @@ const validateForm = async () => {
   formRef.value.validate()
   v$.value.$touch()
   if (v$.value.$invalid) {
-    toast.error('مهربانی وکړې فورم صحیح ډک کړئ!')
+    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!")
 
     return false
   }

@@ -67,23 +67,23 @@
     >
       <template #paid_amount="{ item }">
         <VChip style="direction: ltr" small color="success" class="font-weight-medium">
-          {{ item?.payments_sum_amount ?? 0 }} $
+          {{ (Number(item?.total_paid) ?? 0).toFixed(2) }} $
         </VChip>
       </template>
       <template #total_price="{ item }">
         <VChip style="direction: ltr" small color="primary" class="font-weight-medium">
-          {{ item.total_price?.toFixed(2) ?? 0 }} $
+          {{ (Number(item?.total_amount) ?? 0).toFixed(2) }} $
         </VChip>
       </template>
       <template #remainder="{ item }">
         <VChip style="direction: ltr" small color="error" class="font-weight-medium">
-          {{ item.remainder?.toFixed(2) ?? 0 }} $
+          {{ item.remainder ?? 0 }} $
         </VChip>
       </template>
 
       <template #extra_expense_sum_price="{ item }">
         <VChip style="direction: ltr" small color="warning" class="font-weight-medium">
-          {{ item.extra_expense_sum_price ?? 0 }} $
+          {{ (item.total_amount - (item.total_paid ?? 0)).toFixed(2) }} $
         </VChip>
       </template>
 
@@ -300,16 +300,20 @@ const fetchRecord = async () => {
     let total_purchase = 0;
     let total_paid = 0;
     let total_remain = 0;
-    data.data.forEach((element) => {
-      console.log("ee", element.payments_sum_amount);
-      total_purchase += parseFloat(element.items_sum_total);
-      if (element.payments_sum_amount != null) {
-        total_paid += parseFloat(element.payments_sum_amount);
-      }
-    });
-    total_amount_purchase.value = parseFloat(total_purchase).toFixed(2);
-    total_paid_purchase.value = parseFloat(total_paid).toFixed(2);
-    total_reminder_purchase.value = parseFloat(total_purchase - total_paid).toFixed(2);
+    total_amount_purchase.value = data.purchase_info.total_amount;
+    total_paid_purchase.value = data.purchase_info.total_paid;
+    total_reminder_purchase.value = data.purchase_info.total_reminder;
+
+    // data.data.forEach(element => {
+    //   console.log("ee", element.payments_sum_amount)
+    //   total_purchase += parseFloat(element.items_sum_total)
+    //   if (element.payments_sum_amount != null) {
+    //     total_paid += parseFloat(element.payments_sum_amount)
+    //   }
+    // })
+    // total_amount_purchase.value = parseFloat(total_purchase).toFixed(2)
+    // total_paid_purchase.value = parseFloat(total_paid).toFixed(2)
+    // total_reminder_purchase.value = parseFloat(total_purchase - total_paid).toFixed(2)
   } catch (error) {
     console.error("datatable", error);
   }

@@ -246,7 +246,8 @@ const Calculate = value => {
     loadingSell.value = true
 
     axios.get("item-list/" + value.id).then(function (response) {
-      SoldProductList.value = response.data
+      const filteredProducts = response.data.filter(pr => pr.carton_quantity > 0)
+      SoldProductList.value = filteredProducts
 
       loadingSell.value = false
     })

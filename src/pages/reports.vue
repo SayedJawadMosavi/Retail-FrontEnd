@@ -126,7 +126,7 @@
       </template>
     </BreadCrumbs>
     <div
-      v-if="extra"
+      v-if="extra_value"
       style="border: 1px solid rebeccapurple; padding: 5px; border-radius: 10px"
       class="d-flex align-center"
     >
@@ -151,6 +151,7 @@
       </VRow>
     </div>
     <div
+      v-if="customer_info"
       style="border: 1px solid rebeccapurple; padding: 5px; border-radius: 10px"
       class="d-flex align-center mt-3"
     >
@@ -233,6 +234,15 @@
           {{ item.salary - item?.paid }}
         </VChip>
       </template>
+      <template #type="{ item }">
+        <VChip
+          small
+          :color="item.type == 'deposit' ? 'info' : 'error'"
+          class="font-weight-medium"
+        >
+          {{ item.type == "deposit" ? "عاید" : "مصرف" }}
+        </VChip>
+      </template>
       <template #employee_name="{ item }">
         {{ item.employee?.first_name + " " + item.employee?.last_name }}
       </template>
@@ -243,7 +253,7 @@
       </template>
       <template #category_name="{ item }">
         <div style="white-space: nowrap">
-          {{ item.category.name }}
+          {{ item?.category?.name }}
         </div>
       </template>
       <template #print="{ item }">
@@ -269,7 +279,12 @@
       </template>
       <template #total_price="{ item }">
         <VChip style="direction: ltr" small color="primary" class="font-weight-medium">
-          {{ item.total_price ?? 0 }} $
+          {{ (Number(item?.total_price) ?? 0).toFixed(2) }} $
+        </VChip>
+      </template>
+      <template #total_amount="{ item }">
+        <VChip style="direction: ltr" small color="primary" class="font-weight-medium">
+          {{ (Number(item?.total_price) ?? 0).toFixed(2) }} $
         </VChip>
       </template>
       <template #purchase_remainder="{ item }">
@@ -284,7 +299,7 @@
       </template>
       <template #customer_remainders="{ item }">
         <VChip style="direction: ltr" small color="error" class="font-weight-medium">
-          {{ item.total_amount - item.total_paid ?? 0 }} $
+          {{ (item.total_amount - (item.total_paid ?? 0)).toFixed(2) }} $
         </VChip>
       </template>
 
@@ -296,17 +311,17 @@
 
       <template #vendor_name="{ item }">
         <div style="white-space: nowrap">
-          {{ item.vendor.name }}
+          {{ item?.vendor?.name }}
         </div>
       </template>
       <template #customer_name="{ item }">
         <div style="white-space: nowrap">
-          {{ item.customer.first_name }}
+          {{ item?.customer?.first_name }}
         </div>
       </template>
       <template #product_name="{ item }">
         <div style="white-space: nowrap">
-          {{ item.product_stock.product.product_name }}
+          {{ item?.product_stock?.product?.product_name }}
         </div>
       </template>
       <!--
@@ -329,7 +344,7 @@
       </template>
       <template #container_name="{ item }">
         <div style="white-space: nowrap">
-          {{ item.container.name }}
+          {{ item?.container?.name }}
         </div>
       </template>
       <template #created_b="{ item }">
@@ -340,12 +355,12 @@
       </template>
       <template #products_name="{ item }">
         <div style="white-space: nowrap">
-          {{ item.product.product_name }}
+          {{ item?.product?.product_name }}
         </div>
       </template>
       <template #stocks="{ item }">
         <div style="white-space: nowrap">
-          {{ item.stock.name }}
+          {{ item?.stock?.name }}
         </div>
       </template>
       <template #profile="{ item }">
@@ -394,9 +409,11 @@ const printType = ref();
 // ]
 const extra = ref({});
 const info = ref({});
-const extra_profit = ref({});
+
 const customer_info = ref(false);
+const extra_value = ref(false);
 const expense_income_info = ref(false);
+const extra_profit = ref(false);
 
 const st_balance = ref(0);
 const re_balance = ref(0);
@@ -741,22 +758,11 @@ const customer_header = [
     key: "first_name",
   },
 
-  {
-    title: "تخلص",
-    key: "last_name",
-  },
-  {
-    title: "تیلفون شمیره",
-    key: "phone_number",
-  },
-  {
-    title: "ایمیل",
-    key: "email",
-  },
-  {
-    title: "پټه",
-    key: "address",
-  },
+  // {
+  //   title: "تخلص",
+  //   key: "last_name",
+  // },
+
   {
     title: "د پیسو مجموعه",
     key: "total_amount",
@@ -770,6 +776,18 @@ const customer_header = [
   {
     title: "پاتې",
     key: "customer_remainders",
+  },
+  {
+    title: "تیلفون شمیره",
+    key: "phone_number",
+  },
+  {
+    title: "ایمیل",
+    key: "email",
+  },
+  {
+    title: "پټه",
+    key: "address",
   },
   {
     title: "تفصیل",
@@ -1018,21 +1036,34 @@ const getReport = async () => {
       total_reminder_purchase.value = data.customer_info.total_reminder;
 
       customer_info.value = true;
+      extra_value.value = false;
     }
     if (data.expense_income_info) {
       Total.value = data.expense_income_info.total_amount;
 
-      customer_info.value = false;
       expense_income_info.value = true;
+      customer_info.value = false;
+      customer_info.value = false;
+      extra_value.value = false;
     }
     extra.value = data.extra;
     info.value = data.info;
-    let total_profit = 0;
-    data.data.forEach((element) => {
-      total_profit += parseFloat(element.total - element.income_price);
-    });
-    console.log(total_profit);
-    TotalProfit.value = parseFloat(total_profit.toFixed(2));
+    extra_profit.value = data.extra_profit;
+
+    if (data.extra_profit) {
+      TotalProfit.value = data.extra_profit.total_profit;
+      customer_info.value = false;
+      expense_income_info.value = false;
+      customer_info.value = false;
+      extra_value.value = false;
+      extra_profit.value = true;
+    }
+
+    // let total_profit = 0;
+    // data.data.forEach((element) => {
+    //   total_profit += element.total - element.income_price;
+    // });
+    // console.log(total_profit);
     if (data.extra) {
       const total_income = parseFloat(data.extra.total_amount_income_usd);
       const total_expense = parseFloat(data.extra.total_expense_usd);
@@ -1040,6 +1071,8 @@ const getReport = async () => {
       total_amount_income_usd.value = total_income.toFixed(2);
       total_expense_usd.value = total_expense.toFixed(2);
       balance.value = (total_income - total_expense).toFixed(2);
+      customer_info.value = false;
+      extra_value.value = true;
     }
   } catch (error) {
     console.error("error", error);

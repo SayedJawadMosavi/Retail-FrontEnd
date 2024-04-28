@@ -204,6 +204,18 @@
             </tr>
           </tbody>
         </VTable>
+        <VTable class="text-no-wrap">
+          <tfoot>
+            <tr>
+              <th scope="col" />
+              <th scope="col" />
+              <th scope="col">د کارتن مجموعه :{{ total_carton }}</th>
+
+              <th scope="col" />
+              <th scope="col" />
+            </tr>
+          </tfoot>
+        </VTable>
       </VCard>
     </VCol>
   </VRow>
@@ -245,6 +257,7 @@ const apiLoading2 = ref(false);
 const restoreLoading = ref(false);
 const confirmRef = ref();
 const editRef = ref();
+const total_carton = ref(0);
 
 const selectedItem = ref({});
 const selectedType = ref(null);
@@ -328,7 +341,9 @@ const resetForm = (type = "items") => {
 const getProductStock = (value) => {
   loadingProduct.value = true;
   axios.get("product-list/" + value.id).then((response) => {
-    products.value = response.data;
+    const filteredProducts = response.data.filter((pr) => pr.carton_quantity > 0);
+
+    products.value = filteredProducts;
     loadingProduct.value = false;
   });
 };
@@ -478,6 +493,16 @@ const onConfirm = async (event) => {
 };
 
 onMounted(() => {
+  total_carton.value = 0;
+  props.sellInfo.items.forEach((element) => {
+    // Check if the values are valid numbers before adding them
+
+    total_carton.value += parseFloat(element.carton_quantity);
+  });
+
+  // Round the totals to 2 decimal places after the loop
+  total_carton.value = total_carton.value.toFixed(2);
+
   getStock();
 });
 </script>

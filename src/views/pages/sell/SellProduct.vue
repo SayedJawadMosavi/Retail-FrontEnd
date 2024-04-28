@@ -29,9 +29,17 @@
         </VForm>
       </VCardText>
       <VCardText class="d-flex flex-wrap gap-4">
-        <VBtn @click="validateStockForm"> ذخیره </VBtn>
+        <VBtn @click="validateStockForm">
+          ذخیره
+        </VBtn>
 
-        <VBtn color="secondary" variant="tonal" @click="closeReset"> لغو </VBtn>
+        <VBtn
+          color="secondary"
+          variant="tonal"
+          @click="closeReset"
+        >
+          لغو
+        </VBtn>
       </VCardText>
     </VCard>
   </VDialog>
@@ -68,9 +76,20 @@
         </VForm>
       </VCardText>
       <VCardText class="d-flex flex-wrap gap-4">
-        <VBtn :loading="apiLoading2" @click="validateCustomerForm"> ثبتول </VBtn>
+        <VBtn
+          :loading="apiLoading2"
+          @click="validateCustomerForm"
+        >
+          ثبتول
+        </VBtn>
 
-        <VBtn color="secondary" variant="tonal" @click="closeReset"> لغو </VBtn>
+        <VBtn
+          color="secondary"
+          variant="tonal"
+          @click="closeReset"
+        >
+          لغو
+        </VBtn>
       </VCardText>
     </VCard>
     <PrintReportDialog
@@ -84,13 +103,21 @@
   </VDialog>
   <VExpandTransition>
     <div v-show="expand">
-      <VCard title="د خرڅ ثبت کول" class="my-5">
+      <VCard
+        title="د خرڅ ثبت کول"
+        class="my-5"
+      >
         <VForm ref="formRef">
           <VCardText>
-            <p class="text-base font-weight-medium mt-2">د خرڅ معلومات:</p>
+            <p class="text-base font-weight-medium mt-2">
+              د خرڅ معلومات:
+            </p>
 
             <VRow class="mb-3">
-              <VCol cols="12" md="4">
+              <VCol
+                cols="12"
+                md="4"
+              >
                 <span style="direction: ltr">
                   <VueDatePicker
                     v-model="payload.sell_date"
@@ -109,7 +136,10 @@
                 </p>
               </VCol>
 
-              <VCol cols="12" md="4">
+              <VCol
+                cols="12"
+                md="4"
+              >
                 <VAutocomplete
                   v-model="payload.customer_id"
                   label="پیریدونکي نوم"
@@ -130,7 +160,11 @@
                   @click="addCustomer"
                 />
               </VCol>
-              <VCol v-if="flag == true" cols="12" md="4">
+              <VCol
+                v-if="flag == true"
+                cols="12"
+                md="4"
+              >
                 <VTextField
                   v-model="payload.walkin_name"
                   label="نوم "
@@ -138,7 +172,10 @@
                 />
               </VCol>
 
-              <VCol cols="12" md="12">
+              <VCol
+                cols="12"
+                md="12"
+              >
                 <VTextarea
                   v-model="payload.description"
                   label="نور تفصیل"
@@ -152,12 +189,22 @@
 
           <!-- 👉 Password Requirements -->
           <VCardText>
-            <p class="text-base font-weight-medium mt-2">د محصول معلومات:</p>
+            <p class="text-base font-weight-medium mt-2">
+              د محصول معلومات:
+            </p>
 
-            <VRow v-for="(item, index) in payload.items" :key="index">
-              <VCol class="pb-0 pt-5" cols="12">
+            <VRow
+              v-for="(item, index) in payload.items"
+              :key="index"
+            >
+              <VCol
+                class="pb-0 pt-5"
+                cols="12"
+              >
                 <div class="d-flex align-center">
-                  <p class="mb-0 font-weight-medium pe-2">شمیره #{{ index + 1 }}</p>
+                  <p class="mb-0 font-weight-medium pe-2">
+                    شمیره #{{ index + 1 }}
+                  </p>
                   <VBtn
                     density="compact"
                     color="error"
@@ -168,7 +215,10 @@
                   />
                 </div>
               </VCol>
-              <VCol cols="12" md="2">
+              <VCol
+                cols="12"
+                md="2"
+              >
                 <VAutocomplete
                   v-model="item.stock_id"
                   label="د ګدام نوم"
@@ -193,7 +243,10 @@
                   @click="addStock"
                 />
               </VCol>
-              <VCol cols="12" md="2">
+              <VCol
+                cols="12"
+                md="2"
+              >
                 <VAutocomplete
                   v-model="item.product_id"
                   label="د محصول نوم"
@@ -213,7 +266,10 @@
                   @update:modelValue="Calculate2(index, item)"
                 />
               </VCol>
-              <VCol cols="12" md="2">
+              <VCol
+                cols="12"
+                md="2"
+              >
                 <VTextField
                   v-model="item.income_price"
                   label="د هر کارتن تمام شد قیمت"
@@ -228,7 +284,10 @@
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
-              <VCol cols="12" md="2">
+              <VCol
+                cols="12"
+                md="2"
+              >
                 <VTextField
                   v-model="item.cost"
                   label="د خرڅ قیمت"
@@ -244,7 +303,10 @@
                   @keypress="useRules.preventNonNumeric"
                 />
               </VCol>
-              <VCol cols="12" md="2">
+              <VCol
+                cols="12"
+                md="2"
+              >
                 <VTextField
                   v-model="item.quantity"
                   label="اندازه په کارتن"
@@ -261,7 +323,10 @@
                 />
               </VCol>
 
-              <VCol cols="12" md="2">
+              <VCol
+                cols="12"
+                md="2"
+              >
                 <VTextField
                   v-model="item.total"
                   label="مجموعه"
@@ -281,7 +346,10 @@
             <!-- {{ validationRules($v.items.$each.$response.$errors[0].name, 'قیمت فی کیلو') }} -->
 
             <div class="py-3">
-              <VBtn size="small" @click="addMore('items')">
+              <VBtn
+                size="small"
+                @click="addMore('items')"
+              >
                 نوی<VIcon>mdi-plus</VIcon>
               </VBtn>
             </div>
@@ -290,10 +358,15 @@
           <!-- extra expense -->
 
           <VCardText>
-            <p class="text-base font-weight-medium mt-2">مالی معلومات:</p>
+            <p class="text-base font-weight-medium mt-2">
+              مالی معلومات:
+            </p>
 
             <VRow>
-              <VCol cols="12" md="6">
+              <VCol
+                cols="12"
+                md="6"
+              >
                 <VTextField
                   prepend-inner-icon="mdi-cash-multiple"
                   readonly
@@ -305,7 +378,10 @@
             </VRow>
 
             <VRow>
-              <VCol cols="12" md="6">
+              <VCol
+                cols="12"
+                md="6"
+              >
                 <VTextField
                   v-model="payload.paid_amount"
                   dir="ltr"
@@ -318,7 +394,10 @@
               </VCol>
             </VRow>
             <VRow>
-              <VCol cols="12" md="6">
+              <VCol
+                cols="12"
+                md="6"
+              >
                 <VTextField
                   dir="ltr"
                   prepend-inner-icon="mdi-cash-minus"
@@ -332,9 +411,18 @@
 
           <!-- 👉 Action Buttons -->
           <VCardText class="d-flex flex-wrap gap-4">
-            <VBtn :loading="apiLoading" @click="validateForm"> ذخیره </VBtn>
+            <VBtn
+              :loading="apiLoading"
+              @click="validateForm"
+            >
+              ذخیره
+            </VBtn>
 
-            <VBtn color="secondary" variant="tonal" @click="closeDialog">
+            <VBtn
+              color="secondary"
+              variant="tonal"
+              @click="closeDialog"
+            >
               فورم بندول
             </VBtn>
           </VCardText>
@@ -345,9 +433,9 @@
 </template>
 
 <script setup>
-import { axios } from "@/plugins/axios-plugin";
-import useRules from "@/plugins/vuelidate/vuelidateRules";
-import { useVuelidate } from "@vuelidate/core";
+import { axios } from "@/plugins/axios-plugin"
+import useRules from "@/plugins/vuelidate/vuelidateRules"
+import { useVuelidate } from "@vuelidate/core"
 import {
   helpers,
   maxValue,
@@ -355,71 +443,71 @@ import {
   minValue,
   numeric,
   required,
-} from "@vuelidate/validators";
-import { computed, ref } from "vue";
-import { toast } from "vue3-toastify";
+} from "@vuelidate/validators"
+import { computed, ref } from "vue"
+import { toast } from "vue3-toastify"
 
 // ==================================== START PROPS =======================================
 
 const props = defineProps({
   toggleExpand: { type: Function, default: () => {} },
   fetchRecord: { type: Function, default: () => {} },
-});
+})
 
 // ==================================== START Computed =======================================
 
 const itemTotalValue = computed(() => {
-  const items = payload.value.items;
-  let totals = 0;
-  items.forEach((row) => {
-    totals += parseFloat(row.total);
-  });
+  const items = payload.value.items
+  let totals = 0
+  items.forEach(row => {
+    totals += parseFloat(row.total)
+  })
 
-  return totals;
-});
+  return totals
+})
 const finalTotal = computed(() => {
   try {
-    const val = parseFloat(itemTotalValue.value);
+    const val = parseFloat(itemTotalValue.value)
 
-    return val?.toFixed(2);
+    return val?.toFixed(2)
   } catch (error) {
-    console.error(error);
+    console.error(error)
 
-    return 0;
+    return 0
   }
-});
+})
 
 const remainder = computed(() => {
-  const FinalTotal = finalTotal.value - payload.value.paid_amount;
+  const FinalTotal = finalTotal.value - payload.value.paid_amount
 
-  return FinalTotal.toFixed(2);
-});
+  return FinalTotal.toFixed(2)
+})
 
 // ==================================== START DATA =======================================
 
-const loadingContainer = ref(false);
-const containers = ref([]);
-const loadingCustomer = ref(false);
-const flag = ref(false);
-const products = ref([]);
-const Customers = ref([]);
-const loadingProduct = ref(false);
-const loadingStock = ref(false);
-const show = ref(false);
-const stockshow = ref(false);
-const customerformRef = ref();
-const stockformRef = ref();
-const stocks = ref([]);
-const apiLoading = ref(false);
-const isSubmited = ref(false);
+const loadingContainer = ref(false)
+const containers = ref([])
+const loadingCustomer = ref(false)
+const flag = ref(false)
+const products = ref([])
+const Customers = ref([])
+const loadingProduct = ref(false)
+const loadingStock = ref(false)
+const show = ref(false)
+const stockshow = ref(false)
+const customerformRef = ref()
+const stockformRef = ref()
+const stocks = ref([])
+const apiLoading = ref(false)
+const isSubmited = ref(false)
 const formData = ref({
   first_name: "",
   phone_number: "",
-});
+})
 const stockForm = ref({
   name: "",
   address: "",
-});
+})
 const payload = ref({
   sell_date: new Date(),
   customer_id: null,
@@ -440,18 +528,18 @@ const payload = ref({
       cost: 0,
     },
   ],
-});
-const expand = ref(false);
-const formRef = ref();
+})
+const expand = ref(false)
+const formRef = ref()
 
 // ==================================== START VALIDATION =======================================
-const validationRules = useRules.validate;
-const validateCollection = useRules.validateCollection;
+const validationRules = useRules.validate
+const validateCollection = useRules.validateCollection
 const customerRule = {
   first_name: { required },
-};
+}
 
-const v$2 = useVuelidate(customerRule, formData);
+const v$2 = useVuelidate(customerRule, formData)
 const rules = {
   sell_date: { required },
 
@@ -468,46 +556,46 @@ const rules = {
       cost: { required, numeric, minValue: minValue(1) },
     }),
   },
-};
+}
 
-const $v = useVuelidate(rules, payload);
+const $v = useVuelidate(rules, payload)
 const stockRule = {
   name: { required },
   address: { required },
-};
-const addStock = (type) => {
-  stockshow.value = true;
-};
-const v$1 = useVuelidate(stockRule, stockForm);
+}
+const addStock = type => {
+  stockshow.value = true
+}
+const v$1 = useVuelidate(stockRule, stockForm)
 
 watch(
-  () => payload.value.items.map((item) => (item.stock_id ? item.stock_id.id : null)),
+  () => payload.value.items.map(item => (item.stock_id ? item.stock_id.id : null)),
 
   (newStockIds, oldStockIds) => {
     newStockIds.forEach((stockId, index) => {
       if (stockId && stockId !== oldStockIds[index]) {
-        getProduct(index);
+        getProduct(index)
       }
-    });
-  }
-);
+    })
+  },
+)
 const resetstockForm = () => {
   stockForm.value = {
     name: null,
     address: null,
-  };
-  v$1.value.$reset();
-  stockformRef.value.resetValidation();
-};
+  }
+  v$1.value.$reset()
+  stockformRef.value.resetValidation()
+}
 const resetCustomerForm = () => {
   formData.value = {
     first_name: null,
     phone_number: null,
-  };
-  v$2.value.$reset();
-  customerformRef.value.resetValidation();
-};
-const downloadForm = () => {};
+  }
+  v$2.value.$reset()
+  customerformRef.value.resetValidation()
+}
+const downloadForm = () => {}
 const resetForm = () => {
   payload.value = {
     sell_date: new Date(),
@@ -532,173 +620,175 @@ const resetForm = () => {
       },
     ],
     extra_expense: [],
-  };
-  $v.value.$reset();
-  formRef.value.resetValidation();
-};
-const addCustomer = (type) => {
-  show.value = true;
-};
-const closeReset = (type) => {
-  show.value = false;
-  stockshow.value = false;
-  getCustomer();
-  getStock();
-};
-const getAmount = (index, item) => {
-  const items = payload.value.items;
-  const total = item.quantity * item.cost;
-  items[index].total = total.toFixed(2);
-};
-const showData = (value) => {
-  console.log("ss", value.type);
-  if (value.type == "walkin") {
-    flag.value = true;
-  } else {
-    flag.value = false;
   }
-};
+  $v.value.$reset()
+  formRef.value.resetValidation()
+}
+const addCustomer = type => {
+  show.value = true
+}
+const closeReset = type => {
+  show.value = false
+  stockshow.value = false
+  getCustomer()
+  getStock()
+}
+const getAmount = (index, item) => {
+  const items = payload.value.items
+  const total = item.quantity * item.cost
+  items[index].total = total.toFixed(2)
+}
+const showData = value => {
+  console.log("ss", value.type)
+  if (value.type == "walkin") {
+    flag.value = true
+  } else {
+    flag.value = false
+  }
+}
 async function getCustomer() {
   try {
-    loadingCustomer.value = true;
-    const { data } = await axios.get("customer-list");
-    Customers.value = data;
+    loadingCustomer.value = true
+    const { data } = await axios.get("customer-list")
+    Customers.value = data
   } catch (error) {
-    console.error("error", error);
+    console.error("error", error)
   }
-  loadingCustomer.value = false;
+  loadingCustomer.value = false
 }
 async function getStock() {
   try {
-    loadingProduct.value = true;
-    const { data } = await axios.get("stock-list");
-    stocks.value = data;
+    loadingProduct.value = true
+    const { data } = await axios.get("stock-list")
+    stocks.value = data
   } catch (error) {
-    console.error("error", error);
+    console.error("error", error)
   }
-  loadingProduct.value = false;
+  loadingProduct.value = false
 }
 const Calculate2 = (index, item) => {
   try {
-    const items = payload.value.items;
-    console.log("dfgfdgdf", item);
+    const items = payload.value.items
+    console.log("dfgfdgdf", item)
     axios
       .get("get-product-alarm/" + item.product_id.product.id)
       .then(function (response) {
-        items[index].income_price = response.data.product.per_carton_cost;
-        items[index].cost = response.data.product.sell_price;
-      });
+        items[index].income_price = response.data.product.per_carton_cost
+        items[index].cost = response.data.product.sell_price
+      })
     axios.get("get-product-stock-list/" + item.product_id.id).then(function (response) {
-      console.log(response.data.carton_amount);
-      items[index].carton_amount = response.data.carton_quantity;
-    });
+      console.log(response.data.carton_amount)
+      items[index].carton_amount = response.data.carton_quantity
+    })
   } catch (error) {
-    console.error("error", error);
+    console.error("error", error)
   }
-};
-const getProduct = (index) => {
-  const items = payload.value.items;
-  const stockId = items[index].stock_id;
-  axios.get("product-list/" + stockId.id).then((response) => {
-    items[index].products = response.data;
-  });
-};
-function openDialog() {
-  expand.value = true;
+}
+const getProduct = index => {
+  const items = payload.value.items
+  const stockId = items[index].stock_id
+  axios.get("product-list/" + stockId.id).then(response => {
+    const filteredProducts = response.data.filter(pr => pr.carton_quantity > 0)
 
-  getCustomer();
-  getStock();
+    items[index].products = filteredProducts
+  })
+}
+function openDialog() {
+  expand.value = true
+
+  getCustomer()
+  getStock()
 }
 
 function closeDialog() {
-  isSubmited.value = false;
-  expand.value = false;
-  resetForm();
+  isSubmited.value = false
+  expand.value = false
+  resetForm()
 }
 
 function convertToEnglishNumbers(model, item = null, index = null) {
-  var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g];
-  var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g];
+  var persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
+  var englishNumbers = [/0/g, /1/g, /2/g, /3/g, /4/g, /5/g, /6/g, /7/g, /8/g, /9/g]
   for (let i = 0; i < 10; i++) {
     if (item == null) {
       payload.value[model] = payload.value[model]
         .replace(persianNumbers[i], i)
-        .replace(englishNumbers[i], i);
+        .replace(englishNumbers[i], i)
     } else {
       payload.value[model][index][item] = payload.value[model][index][item]
         .replace(persianNumbers[i], i)
-        .replace(englishNumbers[i], i);
+        .replace(englishNumbers[i], i)
     }
   }
 }
 async function submitStock() {
   try {
-    if (stockForm.value.id) await axios.put("stock/id", stockForm.value);
-    else await axios.post("stock", stockForm.value);
+    if (stockForm.value.id) await axios.put("stock/id", stockForm.value)
+    else await axios.post("stock", stockForm.value)
 
-    getStock();
-    resetstockForm();
+    getStock()
+    resetstockForm()
 
-    stockshow.value = false;
+    stockshow.value = false
   } catch (error) {
-    console.error("error", error);
-    toast.error(" مشکل په سرور کښی موجود دی!");
+    console.error("error", error)
+    toast.error(" مشکل په سرور کښی موجود دی!")
   }
 }
 const validateStockForm = async () => {
-  stockformRef.value.validate();
-  v$1.value.$touch();
+  stockformRef.value.validate()
+  v$1.value.$touch()
   if (v$1.value.$invalid) {
-    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!");
+    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!")
 
-    return false;
+    return false
   }
-  submitStock();
-  v$1.value.$reset();
-};
+  submitStock()
+  v$1.value.$reset()
+}
 async function submitCustomer() {
   try {
-    apiLoading.value = true;
-    if (formData.value.id) await axios.put("customer/id", formData.value);
-    else await axios.post("customer", formData.value);
+    apiLoading.value = true
+    if (formData.value.id) await axios.put("customer/id", formData.value)
+    else await axios.post("customer", formData.value)
 
-    getCustomer();
-    resetCustomerForm();
-    isSubmited.value = false;
-    show.value = false;
+    getCustomer()
+    resetCustomerForm()
+    isSubmited.value = false
+    show.value = false
   } catch (error) {
-    console.error("error", error);
-    toast.error(" مشکل په سرور کښی موجودی دي !");
+    console.error("error", error)
+    toast.error(" مشکل په سرور کښی موجودی دي !")
   }
-  apiLoading.value = false;
+  apiLoading.value = false
 }
 const validateCustomerForm = async () => {
-  customerformRef.value.validate();
-  v$2.value.$touch();
+  customerformRef.value.validate()
+  v$2.value.$touch()
   if (v$2.value.$invalid) {
-    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!");
+    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!")
 
-    return false;
+    return false
   }
-  submitCustomer();
-  v$2.value.$reset();
-};
+  submitCustomer()
+  v$2.value.$reset()
+}
 async function submit() {
   try {
-    apiLoading.value = true;
-    const res = await axios.post("sell", payload.value);
-    isSubmited.value = true;
-    resetForm();
-    props.fetchRecord();
-    closeDialog();
+    apiLoading.value = true
+    const res = await axios.post("sell", payload.value)
+    isSubmited.value = true
+    resetForm()
+    props.fetchRecord()
+    closeDialog()
   } catch (error) {
-    console.error("error", error);
+    console.error("error", error)
   }
-  apiLoading.value = false;
+  apiLoading.value = false
 }
 
-const addMore = (type) => {
-  const items = payload.value[type];
+const addMore = type => {
+  const items = payload.value[type]
 
   if (type == "items") {
     items.push({
@@ -710,37 +800,37 @@ const addMore = (type) => {
       income_price: null,
       total: null,
       amount: null,
-    });
-    const newIndex = items.length - 1;
-    getProduct(newIndex);
+    })
+    const newIndex = items.length - 1
+    getProduct(newIndex)
   } else if (type == "extra_expense") {
     items.push({
       name: null,
       price: 0,
-    });
+    })
   }
-};
+}
 const removeItem = (index, type) => {
-  const items = payload.value[type];
-  items.splice(index, 1);
-};
+  const items = payload.value[type]
+  items.splice(index, 1)
+}
 
 const validateForm = async () => {
-  formRef.value.validate();
+  formRef.value.validate()
 
   if ($v.value.$invalid) {
-    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!");
+    toast.error("مهربانی وکړې فورم صحیح ډک کړئ!")
 
-    return false;
+    return false
   }
-  submit();
-};
+  submit()
+}
 
 // ==================================== START Expose =======================================
 
 defineExpose({
   openDialog,
-});
+})
 </script>
 
 <style>

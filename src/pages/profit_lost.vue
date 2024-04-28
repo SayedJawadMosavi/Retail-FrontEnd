@@ -233,12 +233,13 @@ const fetchRecord = async () => {
     total.value = data.total;
     extraTotal.value = data.extraTotal;
     extra_profit.value = data.extra_profit;
-    let total_profit = 0;
-    data.data.forEach((element) => {
-      total_profit += element.total - element.income_price;
-    });
-    console.log(total_profit);
-    TotalProfit.value = total_profit.toFixed(2);
+
+    // let total_profit = 0;
+    // data.data.forEach((element) => {
+    //   total_profit += element.total - element.income_price;
+    // });
+    // console.log(total_profit);
+    TotalProfit.value = data.extra_profit.total_profit;
   } catch (error) {}
   apiLoading.value = false;
 };

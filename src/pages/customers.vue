@@ -144,17 +144,17 @@
       </template>
       <template #paid_amount="{ item }">
         <VChip style="direction: ltr" small color="success" class="font-weight-medium">
-          {{ item?.total_paid ?? 0 }} $
+          {{ (Number(item?.total_paid) ?? 0).toFixed(2) }} $
         </VChip>
       </template>
       <template #total_price="{ item }">
         <VChip style="direction: ltr" small color="primary" class="font-weight-medium">
-          {{ item.total_amount ?? 0 }} $
+          {{ (Number(item?.total_amount) ?? 0).toFixed(2) }} $
         </VChip>
       </template>
       <template #reminder="{ item }">
         <VChip style="direction: ltr" small color="error" class="font-weight-medium">
-          {{ item.total_amount - item.total_paid ?? 0 }} $
+          {{ (item.total_amount - (item.total_paid ?? 0)).toFixed(2) }} $
         </VChip>
       </template>
 
