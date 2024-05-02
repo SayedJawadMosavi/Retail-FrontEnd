@@ -323,7 +323,7 @@ const print = async () => {
     }
     if (printType.value == "customers") {
       headers.value = customer_header;
-      title.value = "راپور مشتری";
+      title.value = "د پیرودونکی راپور";
     }
     if (printType.value == "income") {
       headers.value = incoming_header;

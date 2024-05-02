@@ -1,12 +1,22 @@
 <template>
   <div>
-    <VDialog v-model="show" transition="dialog-top-transition" persistent width="auto">
-      <VCard width="auto" title="راپور ترتیبول">
+    <VDialog
+      v-model="show"
+      transition="dialog-top-transition"
+      persistent
+      width="auto"
+    >
+      <VCard
+        width="auto"
+        title="راپور ترتیبول"
+      >
         <VCardText style="min-height: 300px">
           <VForm ref="formRef">
             <VRow>
               <VCol cols="12">
-                <p class="mb-0">پیل نیټه</p>
+                <p class="mb-0">
+                  پیل نیټه
+                </p>
 
                 <span style="direction: ltr">
                   <VueDatePicker
@@ -28,7 +38,9 @@
               </VCol>
 
               <VCol cols="12">
-                <p class="mb-0">ختم نیټه</p>
+                <p class="mb-0">
+                  ختم نیټه
+                </p>
                 <span style="direction: ltr">
                   <VueDatePicker
                     v-model="payload.end_date"
@@ -47,7 +59,10 @@
                   {{ validationRules(v$.end_date, "ختم نیټه")[0] }}
                 </p>
               </VCol>
-              <VCol cols="12" md="12">
+              <VCol
+                cols="12"
+                md="12"
+              >
                 <VSelect
                   v-model="payload.type"
                   :items="items"
@@ -60,7 +75,11 @@
                   @update:modelValue="showData"
                 />
               </VCol>
-              <VCol v-if="TypeFlag == true" cols="12" md="12">
+              <VCol
+                v-if="TypeFlag == true"
+                cols="12"
+                md="12"
+              >
                 <VAutocomplete
                   v-model="payload.category_id"
                   label="کتگوری"
@@ -75,14 +94,35 @@
           </VForm>
         </VCardText>
         <VCardActions class="justify-end">
-          <VBtn color="secondary" @click="closeReset"> کینسل </VBtn>
-          <VBtn ripple color="primary" variant="tonal" @click="print">
-            پرنت
-            <VIcon icon="mdi-printer" end />
+          <VBtn
+            color="secondary"
+            @click="closeReset"
+          >
+            کینسل
           </VBtn>
-          <VBtn ripple color="primary" variant="tonal" @click="getReport">
+          <VBtn
+            ripple
+            color="primary"
+            variant="tonal"
+            @click="print"
+          >
+            پرنت
+            <VIcon
+              icon="mdi-printer"
+              end
+            />
+          </VBtn>
+          <VBtn
+            ripple
+            color="primary"
+            variant="tonal"
+            @click="getReport"
+          >
             راپور
-            <VIcon icon="mdi-export" end />
+            <VIcon
+              icon="mdi-export"
+              end
+            />
           </VBtn>
         </VCardActions>
       </VCard>
@@ -121,7 +161,10 @@
           @click="TakeReport"
         >
           راپور ترتیبول
-          <VIcon end icon="mdi-printer" />
+          <VIcon
+            end
+            icon="mdi-printer"
+          />
         </VBtn>
       </template>
     </BreadCrumbs>
@@ -131,19 +174,28 @@
       class="d-flex align-center"
     >
       <VRow>
-        <VCol cols="12" md="4">
+        <VCol
+          cols="12"
+          md="4"
+        >
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> مجموعه راغله :</span>
             {{ total_amount_income_usd ?? 0 }}
           </div>
         </VCol>
-        <VCol cols="12" md="4">
+        <VCol
+          cols="12"
+          md="4"
+        >
           <div class="pe-3 text-error me-5">
             <span class="d-inline-block pe-1"> ټول مصرف : </span>
             {{ total_expense_usd ?? 0 }}
           </div>
         </VCol>
-        <VCol cols="12" md="4">
+        <VCol
+          cols="12"
+          md="4"
+        >
           <div class="pe-3 me-5 text-warning">
             <span class="d-inline-block pe-1"> موجودی : </span> {{ balance ?? 0 }}
           </div>
@@ -156,19 +208,28 @@
       class="d-flex align-center mt-3"
     >
       <VRow>
-        <VCol cols="12" md="4">
+        <VCol
+          cols="12"
+          md="4"
+        >
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> مجموعه :</span>
             {{ total_amount_sell ?? 0 }}
           </div>
         </VCol>
-        <VCol cols="12" md="4">
+        <VCol
+          cols="12"
+          md="4"
+        >
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> وصول شوی :</span>
             {{ total_paid_sell ?? 0 }}
           </div>
         </VCol>
-        <VCol cols="12" md="4">
+        <VCol
+          cols="12"
+          md="4"
+        >
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> پاتي :</span>
             {{ total_reminder_purchase ?? 0 }}
@@ -182,7 +243,10 @@
       class="d-flex align-center mt-3"
     >
       <VRow>
-        <VCol cols="12" md="4">
+        <VCol
+          cols="12"
+          md="4"
+        >
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> مجموعه مفاد:</span>
             {{ TotalProfit ?? 0 }}
@@ -196,7 +260,10 @@
       class="d-flex align-center mt-3"
     >
       <VRow>
-        <VCol cols="12" md="4">
+        <VCol
+          cols="12"
+          md="4"
+        >
           <div class="pe-3 text-primary me-5">
             <span class="d-inline-block pe-1"> مجموعه :</span>
             {{ Total ?? 0 }}
@@ -220,17 +287,30 @@
         {{ item?.employee?.job_title }}
       </template>
       <template #salary="{ item }">
-        <VChip style="direction: ltr" small color="success" class="font-weight-medium">
+        <VChip
+          style="direction: ltr"
+          small
+          color="success"
+          class="font-weight-medium"
+        >
           {{ item?.salary ?? 0 }} $
         </VChip>
       </template>
       <template #payable_amount="{ item }">
-        <VChip small color="info" class="font-weight-medium">
+        <VChip
+          small
+          color="info"
+          class="font-weight-medium"
+        >
           {{ item?.salary }}
         </VChip>
       </template>
       <template #remainder="{ item }">
-        <VChip small color="error" class="font-weight-medium">
+        <VChip
+          small
+          color="error"
+          class="font-weight-medium"
+        >
           {{ item.salary - item?.paid }}
         </VChip>
       </template>
@@ -247,7 +327,12 @@
         {{ item.employee?.first_name + " " + item.employee?.last_name }}
       </template>
       <template #reminders="{ item }">
-        <VChip style="direction: ltr" small color="error" class="font-weight-medium">
+        <VChip
+          style="direction: ltr"
+          small
+          color="error"
+          class="font-weight-medium"
+        >
           {{ item.remainders?.toFixed(2) ?? 0 }} $
         </VChip>
       </template>
@@ -257,8 +342,16 @@
         </div>
       </template>
       <template #print="{ item }">
-        <VBtn variant="text" icon class="font-weight-bold" @click="print(item)">
-          <VIcon size="30" icon="mdi-printer" />
+        <VBtn
+          variant="text"
+          icon
+          class="font-weight-bold"
+          @click="print(item)"
+        >
+          <VIcon
+            size="30"
+            icon="mdi-printer"
+          />
         </VBtn>
       </template>
       <template #view_profile="{ item }">
@@ -269,42 +362,80 @@
           :loading="detailLoading && selectedId == item.id"
           @click="viewDetails(item)"
         >
-          <VIcon size="30" icon="mdi-eye-arrow-right" />
+          <VIcon
+            size="30"
+            icon="mdi-eye-arrow-right"
+          />
         </VBtn>
       </template>
       <template #paid_amount="{ item }">
-        <VChip style="direction: ltr" small color="success" class="font-weight-medium">
+        <VChip
+          style="direction: ltr"
+          small
+          color="success"
+          class="font-weight-medium"
+        >
           {{ item?.payments_sum_amount ?? 0 }} $
         </VChip>
       </template>
       <template #total_price="{ item }">
-        <VChip style="direction: ltr" small color="primary" class="font-weight-medium">
+        <VChip
+          style="direction: ltr"
+          small
+          color="primary"
+          class="font-weight-medium"
+        >
           {{ (Number(item?.total_price) ?? 0).toFixed(2) }} $
         </VChip>
       </template>
       <template #total_amount="{ item }">
-        <VChip style="direction: ltr" small color="primary" class="font-weight-medium">
+        <VChip
+          style="direction: ltr"
+          small
+          color="primary"
+          class="font-weight-medium"
+        >
           {{ (Number(item?.total_price) ?? 0).toFixed(2) }} $
         </VChip>
       </template>
       <template #purchase_remainder="{ item }">
-        <VChip style="direction: ltr" small color="error" class="font-weight-medium">
+        <VChip
+          style="direction: ltr"
+          small
+          color="error"
+          class="font-weight-medium"
+        >
           {{ item.remainder ?? 0 }} $
         </VChip>
       </template>
       <template #sell_remainder="{ item }">
-        <VChip style="direction: ltr" small color="error" class="font-weight-medium">
+        <VChip
+          style="direction: ltr"
+          small
+          color="error"
+          class="font-weight-medium"
+        >
           {{ item.remainder ?? 0 }} $
         </VChip>
       </template>
       <template #customer_remainders="{ item }">
-        <VChip style="direction: ltr" small color="error" class="font-weight-medium">
+        <VChip
+          style="direction: ltr"
+          small
+          color="error"
+          class="font-weight-medium"
+        >
           {{ (item.total_amount - (item.total_paid ?? 0)).toFixed(2) }} $
         </VChip>
       </template>
 
       <template #extra_expense_sum_price="{ item }">
-        <VChip style="direction: ltr" small color="warning" class="font-weight-medium">
+        <VChip
+          style="direction: ltr"
+          small
+          color="warning"
+          class="font-weight-medium"
+        >
           {{ item.extra_expense_sum_price ?? 0 }} $
         </VChip>
       </template>
@@ -350,7 +481,11 @@
       <template #created_b="{ item }">
         {{ item.user?.name }}
       </template>
-      <template v-for="i in 1" #ids="{ item }" :key="i">
+      <template
+        v-for="i in 1"
+        #ids="{ item }"
+        :key="i"
+      >
         {{ i++ }}
       </template>
       <template #products_name="{ item }">
@@ -370,7 +505,11 @@
           :loading="profileLoading && selectedId == item.id"
           @click="viewProfile(item)"
         >
-          <VIcon size="30" start icon="mdi-eye-arrow-right" />
+          <VIcon
+            size="30"
+            start
+            icon="mdi-eye-arrow-right"
+          />
         </VBtn>
       </template>
     </DataTable>
@@ -378,20 +517,20 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import { axios } from "@/plugins/axios-plugin";
-import BreadCrumbs from "@/components/commons/BreadCrumbs.vue";
-import DataTable from "@/components/commons/DataTable.vue";
-import InsertEmployee from "@/views/pages/employee/InsertEmployee.vue";
+import { onMounted, ref } from "vue"
+import { axios } from "@/plugins/axios-plugin"
+import BreadCrumbs from "@/components/commons/BreadCrumbs.vue"
+import DataTable from "@/components/commons/DataTable.vue"
+import InsertEmployee from "@/views/pages/employee/InsertEmployee.vue"
 
-import usePageConfig from "@/config/pages/report";
-import PrintReportDialog from "@/components/commons/PrintReportDialog.vue";
-import useRules from "@/plugins/vuelidate/vuelidateRules";
-import { useVuelidate } from "@vuelidate/core";
-import { minLength, required } from "@vuelidate/validators";
-import router from "@/router";
-import { scope } from "@/@core/utils/index";
-import { toast } from "vue3-toastify";
+import usePageConfig from "@/config/pages/report"
+import PrintReportDialog from "@/components/commons/PrintReportDialog.vue"
+import useRules from "@/plugins/vuelidate/vuelidateRules"
+import { useVuelidate } from "@vuelidate/core"
+import { minLength, required } from "@vuelidate/validators"
+import router from "@/router"
+import { scope } from "@/@core/utils/index"
+import { toast } from "vue3-toastify"
 
 const CaloriesTemplate = defineComponent({
   props: ["data"],
@@ -400,23 +539,23 @@ const CaloriesTemplate = defineComponent({
         {{ data }}
       </div>
     `,
-});
-const printType = ref();
+})
+const printType = ref()
 
 // const tabs = [
 //   { title: 'گزارش', icon: 'mdi-account-group-outline', count: 0, key: 'reports' },
 //   { title: 'حذف شده ها', icon: 'mdi-trash', count: 0, key: 'trash' },
 // ]
-const extra = ref({});
-const info = ref({});
+const extra = ref({})
+const info = ref({})
 
-const customer_info = ref(false);
-const extra_value = ref(false);
-const expense_income_info = ref(false);
-const extra_profit = ref(false);
+const customer_info = ref(false)
+const extra_value = ref(false)
+const expense_income_info = ref(false)
+const extra_profit = ref(false)
 
-const st_balance = ref(0);
-const re_balance = ref(0);
+const st_balance = ref(0)
+const re_balance = ref(0)
 const items = [
   { id: "journal", name: "د روزنامچه راپور" },
   { id: "product", name: "د محصولاتو راپور" },
@@ -431,7 +570,7 @@ const items = [
   { id: "income_price", name: " د خرڅه مفاد راپور" },
 
   // { id: 'profit_lost', name: ' د مفاد او ضرر راپور' },
-];
+]
 const product_headers = [
   {
     title: "شمیره",
@@ -493,7 +632,7 @@ const product_headers = [
     title: "حالت",
     key: "status",
   },
-];
+]
 
 const purchase_headers = [
   {
@@ -553,7 +692,7 @@ const purchase_headers = [
     title: "د ثبت نیټه",
     key: "created_at",
   },
-];
+]
 const sell_headers = [
   {
     title: "#آی دی",
@@ -598,7 +737,7 @@ const sell_headers = [
     title: "د ثبت نیټه",
     key: "sell_date",
   },
-];
+]
 const journal_headers = [
   {
     title: "آی دی#",
@@ -631,7 +770,7 @@ const journal_headers = [
     title: "نیټه",
     key: "created_at",
   },
-];
+]
 const Employee_header = [
   {
     title: "شمیره",
@@ -679,7 +818,7 @@ const Employee_header = [
     title: "معاش",
     key: "salary",
   },
-];
+]
 const salary_header = [
   {
     title: "شمیره",
@@ -722,7 +861,7 @@ const salary_header = [
     title: "د تادیې نیټه",
     key: "created_at",
   },
-];
+]
 const incoming_header = [
   {
     title: "#آی دی",
@@ -741,7 +880,7 @@ const incoming_header = [
     title: "نیټه",
     key: "created_at",
   },
-];
+]
 const customer_header = [
   {
     title: "شمیره",
@@ -781,19 +920,20 @@ const customer_header = [
     title: "تیلفون شمیره",
     key: "phone_number",
   },
-  {
-    title: "ایمیل",
-    key: "email",
-  },
-  {
-    title: "پټه",
-    key: "address",
-  },
+
+  // {
+  //   title: "ایمیل",
+  //   key: "email",
+  // },
+  // {
+  //   title: "پټه",
+  //   key: "address",
+  // },
   {
     title: "تفصیل",
     key: "description",
   },
-];
+]
 const product_back_headers = [
   {
     title: "#آی دی",
@@ -834,7 +974,7 @@ const product_back_headers = [
     title: "نیټه",
     key: "created_at",
   },
-];
+]
 const Income_price_headers = [
   {
     title: "آی دی#",
@@ -881,63 +1021,63 @@ const Income_price_headers = [
     key: "created_at",
     width: "160px",
   },
-];
-const { tabs, headers, breadCrumbs, search } = usePageConfig();
+]
+const { tabs, headers, breadCrumbs, search } = usePageConfig()
 
-const apiLoading = ref(false);
-const expand = ref(false);
-const searchOption = ref({});
-const show = ref(false);
-const printLoading = ref(false);
-const headerss = ref([]);
-const printData = ref([]);
-const printRefs = ref();
-const title = ref("");
-const total = ref(0);
-const Total = ref(0);
-const TotalProfit = ref(0);
-const Categories = ref([]);
-const loadingCategory = ref(false);
-const TypeFlag = ref(false);
+const apiLoading = ref(false)
+const expand = ref(false)
+const searchOption = ref({})
+const show = ref(false)
+const printLoading = ref(false)
+const headerss = ref([])
+const printData = ref([])
+const printRefs = ref()
+const title = ref("")
+const total = ref(0)
+const Total = ref(0)
+const TotalProfit = ref(0)
+const Categories = ref([])
+const loadingCategory = ref(false)
+const TypeFlag = ref(false)
 
-const total_amount_sell = ref(0);
-const total_paid_sell = ref(0);
-const total_reminder_purchase = ref(0);
-const total_amount_income_usd = ref(0);
-const total_expense_usd = ref(0);
-const balance = ref(0);
-const options = ref({ itemsPerPage: 20, page: 1, tab: "reports" });
-const reports = ref([]);
-const datatableRefs = ref();
-const extraTotal = ref({});
-const employeeRef = ref();
-const profileLoading = ref(false);
-const selectedId = ref(null);
+const total_amount_sell = ref(0)
+const total_paid_sell = ref(0)
+const total_reminder_purchase = ref(0)
+const total_amount_income_usd = ref(0)
+const total_expense_usd = ref(0)
+const balance = ref(0)
+const options = ref({ itemsPerPage: 20, page: 1, tab: "reports" })
+const reports = ref([])
+const datatableRefs = ref()
+const extraTotal = ref({})
+const employeeRef = ref()
+const profileLoading = ref(false)
+const selectedId = ref(null)
 const payload = ref({
   start_date: new Date(),
   end_date: new Date(),
   type: null,
   category_id: null,
   printType: options.value.tab,
-});
-const sleep = (ms) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-const validationRules = useRules.validate;
+})
+const sleep = ms => {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+const validationRules = useRules.validate
 
 const rules = {
   start_date: { required },
   end_date: { required },
   type: { required },
-};
+}
 
-const v$ = useVuelidate(rules, payload);
-const confirm = (res) => {
+const v$ = useVuelidate(rules, payload)
+const confirm = res => {
   if (res) {
-    emit("confirm", type.value);
+    emit("confirm", type.value)
   }
-  show.value = false;
-};
+  show.value = false
+}
 
 // async function getCategory() {
 //   try {
@@ -950,113 +1090,113 @@ const confirm = (res) => {
 //   }
 //   loadingCategory.value = false;
 // }
-const TakeReport = (type) => {
-  show.value = true;
+const TakeReport = type => {
+  show.value = true
 
   // getCategory();
-};
-const closeReset = (type) => {
-  show.value = false;
-  getReport();
-};
-const showData = (value) => {
+}
+const closeReset = type => {
+  show.value = false
+  getReport()
+}
+const showData = value => {
   if (value == "expense" || value == "income") {
-    TypeFlag.value = true;
+    TypeFlag.value = true
   } else {
-    TypeFlag.value = false;
+    TypeFlag.value = false
   }
-  loadingCategory.value = true;
+  loadingCategory.value = true
   axios.get("expense-income-category/" + value).then(function (response) {
-    console.log("re", response);
-    Categories.value = response.data;
-  });
-  loadingCategory.value = false;
-};
+    console.log("re", response)
+    Categories.value = response.data
+  })
+  loadingCategory.value = false
+}
 const getReport = async () => {
   if (
     payload.value.start_date == null ||
     payload.value.end_date == null ||
     payload.value.type == null
   ) {
-    toast.error("مهربانۍ وګړی فورم صحیح ډک کړئ");
+    toast.error("مهربانۍ وګړی فورم صحیح ډک کړئ")
 
-    return false;
+    return false
   }
 
   if (payload.value.type == "product") {
-    headerss.value = product_headers;
+    headerss.value = product_headers
   }
   if (payload.value.type == "purchase") {
-    headerss.value = purchase_headers;
+    headerss.value = purchase_headers
   }
   if (payload.value.type == "sell") {
-    headerss.value = sell_headers;
+    headerss.value = sell_headers
   }
   if (payload.value.type == "salaries") {
-    headerss.value = salary_header;
-    title.value = "د معاشاتو راپور";
+    headerss.value = salary_header
+    title.value = "د معاشاتو راپور"
   }
   if (payload.value.type == "employee") {
-    headerss.value = Employee_header;
-    title.value = "د کارکوونکو راپور";
+    headerss.value = Employee_header
+    title.value = "د کارکوونکو راپور"
   }
   if (payload.value.type == "income" || payload.value.type == "expense") {
-    headerss.value = incoming_header;
+    headerss.value = incoming_header
   }
   if (payload.value.type == "customers") {
-    headerss.value = customer_header;
+    headerss.value = customer_header
   }
   if (payload.value.type == "journal") {
-    headerss.value = journal_headers;
+    headerss.value = journal_headers
   }
   if (payload.value.type == "product_back") {
-    headerss.value = product_back_headers;
+    headerss.value = product_back_headers
   }
   if (payload.value.type == "income_price") {
-    headerss.value = Income_price_headers;
+    headerss.value = Income_price_headers
   }
   if (payload.value.type == "profit_lost") {
   }
   try {
-    apiLoading.value = true;
-    printLoading.value = true;
+    apiLoading.value = true
+    printLoading.value = true
     let { data } = await axios.get("get_report", {
       params: { ...options.value, ...payload.value },
-    });
-    show.value = false;
-    reports.value = data.data;
+    })
+    show.value = false
+    reports.value = data.data
 
-    total.value = data.total;
-    extraTotal.value = data.extraTotal;
-    extra_profit.value = data.extra_profit;
-    customer_info.value = false;
+    total.value = data.total
+    extraTotal.value = data.extraTotal
+    extra_profit.value = data.extra_profit
+    customer_info.value = false
     if (data.customer_info) {
-      total_amount_sell.value = data.customer_info.total_amount;
-      total_paid_sell.value = data.customer_info.total_paid;
-      total_reminder_purchase.value = data.customer_info.total_reminder;
+      total_amount_sell.value = data.customer_info.total_amount
+      total_paid_sell.value = data.customer_info.total_paid
+      total_reminder_purchase.value = data.customer_info.total_reminder
 
-      customer_info.value = true;
-      extra_value.value = false;
+      customer_info.value = true
+      extra_value.value = false
     }
     if (data.expense_income_info) {
-      Total.value = data.expense_income_info.total_amount;
+      Total.value = data.expense_income_info.total_amount
 
-      expense_income_info.value = true;
-      customer_info.value = false;
-      customer_info.value = false;
-      extra_value.value = false;
+      expense_income_info.value = true
+      customer_info.value = false
+      customer_info.value = false
+      extra_value.value = false
     }
-    extra.value = data.extra;
-    info.value = data.info;
-    extra_profit.value = data.extra_profit;
+    extra.value = data.extra
+    info.value = data.info
+    extra_profit.value = data.extra_profit
 
     if (data.extra_profit) {
-      TotalProfit.value = data.extra_profit.total_profit;
-      customer_info.value = false;
-      expense_income_info.value = false;
-      customer_info.value = false;
-      extra_value.value = false;
-      extra_profit.value = true;
+      TotalProfit.value = data.extra_profit.total_profit
+      customer_info.value = false
+      expense_income_info.value = false
+      customer_info.value = false
+      extra_value.value = false
+      extra_profit.value = true
     }
 
     // let total_profit = 0;
@@ -1065,126 +1205,126 @@ const getReport = async () => {
     // });
     // console.log(total_profit);
     if (data.extra) {
-      const total_income = parseFloat(data.extra.total_amount_income_usd);
-      const total_expense = parseFloat(data.extra.total_expense_usd);
+      const total_income = parseFloat(data.extra.total_amount_income_usd)
+      const total_expense = parseFloat(data.extra.total_expense_usd)
 
-      total_amount_income_usd.value = total_income.toFixed(2);
-      total_expense_usd.value = total_expense.toFixed(2);
-      balance.value = (total_income - total_expense).toFixed(2);
-      customer_info.value = false;
-      extra_value.value = true;
+      total_amount_income_usd.value = total_income.toFixed(2)
+      total_expense_usd.value = total_expense.toFixed(2)
+      balance.value = (total_income - total_expense).toFixed(2)
+      customer_info.value = false
+      extra_value.value = true
     }
   } catch (error) {
-    console.error("error", error);
+    console.error("error", error)
   }
-  apiLoading.value = false;
-  printLoading.value = false;
-};
+  apiLoading.value = false
+  printLoading.value = false
+}
 const print = async () => {
   if (
     payload.value.start_date == null ||
     payload.value.end_date == null ||
     payload.value.type == null
   ) {
-    toast.error("مهربانۍ وګړی فورم صحیح ډک کړئ");
+    toast.error("مهربانۍ وګړی فورم صحیح ډک کړئ")
 
-    return false;
+    return false
   }
   try {
     if (payload.value.type == "income") {
-      headerss.value = incoming_header;
-      title.value = "د عایداتو راپور";
+      headerss.value = incoming_header
+      title.value = "د عایداتو راپور"
     }
 
     if (payload.value.type == "expense") {
-      headerss.value = incoming_header;
-      title.value = "د مصرفونو راپور";
+      headerss.value = incoming_header
+      title.value = "د مصرفونو راپور"
     }
     if (payload.value.type == "employee ") {
-      headerss.value = Employee_header;
-      title.value = "Employee Report";
+      headerss.value = Employee_header
+      title.value = "Employee Report"
     }
     if (payload.value.type == "salaries") {
-      headerss.value = salary_header;
-      title.value = "د معاشاتو راپور";
+      headerss.value = salary_header
+      title.value = "د معاشاتو راپور"
     }
     if (payload.value.type == "customers") {
-      headerss.value = customer_header;
-      title.value = "د پیرودونکي راپور";
+      headerss.value = customer_header
+      title.value = "د پیرودونکي راپور"
     }
     if (payload.value.type == "income") {
-      headerss.value = incoming_header;
-      title.value = "Income Report";
+      headerss.value = incoming_header
+      title.value = "Income Report"
     }
 
     if (payload.value.type == "expense") {
-      headerss.value = incoming_header;
-      title.value = "Expense Report";
+      headerss.value = incoming_header
+      title.value = "Expense Report"
     }
     if (payload.value.type == "customers") {
-      headerss.value = customer_header;
-      title.value = "د پیرودونکي راپور";
+      headerss.value = customer_header
+      title.value = "د پیرودونکي راپور"
     }
     if (payload.value.type == "product") {
-      headerss.value = product_headers;
-      title.value = "د محصولاتو راپور";
+      headerss.value = product_headers
+      title.value = "د محصولاتو راپور"
     }
     if (payload.value.type == "purchase") {
-      headerss.value = purchase_headers;
-      title.value = "د پیرود راپور";
+      headerss.value = purchase_headers
+      title.value = "د پیرود راپور"
     }
     if (payload.value.type == "sell") {
-      headerss.value = sell_headers;
-      title.value = "د خرڅ راپور";
+      headerss.value = sell_headers
+      title.value = "د خرڅ راپور"
     }
     if (payload.value.type == "journal") {
-      headerss.value = journal_headers;
-      title.value = " د روزنامچه راپور";
+      headerss.value = journal_headers
+      title.value = " د روزنامچه راپور"
     }
     if (payload.value.type == "income_price") {
-      headerss.value = Income_price_headers;
+      headerss.value = Income_price_headers
     }
     if (payload.value.type == "product_back") {
-      headerss.value = product_back_headers;
-      title.value = " د واپسی راپور";
+      headerss.value = product_back_headers
+      title.value = " د واپسی راپور"
     }
-    let { data } = await axios.get("reports", { params: { ...payload.value } });
-    console.log("my data", data);
-    printData.value = data;
-    await sleep(1);
-    const printable = window.open("", "_blank");
+    let { data } = await axios.get("reports", { params: { ...payload.value } })
+    console.log("my data", data)
+    printData.value = data
+    await sleep(1)
+    const printable = window.open("", "_blank")
     printable.document.write(
-      '<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>'
-    );
-    printable.document.write("</head><body>");
-    printable.document.write(printRefs.value.$el.innerHTML);
-    printable.document.write("</body></html>");
-    printable.document.close();
-    printable.print();
-    await sleep(1);
+      '<html style="direction:rtl"><head><style>@page { size: A4 landscape }</style>',
+    )
+    printable.document.write("</head><body>")
+    printable.document.write(printRefs.value.$el.innerHTML)
+    printable.document.write("</body></html>")
+    printable.document.close()
+    printable.print()
+    await sleep(1)
 
-    printable.close();
+    printable.close()
   } catch (error) {
-    console.error("error", error);
+    console.error("error", error)
   }
-  printLoading.value = false;
-};
-const searchRecord = (data) => {
-  searchOption.value = data;
-  options.value = { ...options.value, ...data };
-  getReport();
-};
+  printLoading.value = false
+}
+const searchRecord = data => {
+  searchOption.value = data
+  options.value = { ...options.value, ...data }
+  getReport()
+}
 
-const onTableChange = (value) => {
-  console.log("test", value);
+const onTableChange = value => {
+  console.log("test", value)
 
-  options.value = value;
-  getReport();
-};
+  options.value = value
+  getReport()
+}
 
 onMounted(() => {
   // getReport()
-});
+})
 </script>
 
 <route lang="yaml">

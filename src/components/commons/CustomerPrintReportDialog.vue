@@ -7,8 +7,11 @@
       </div>
     </div>
 
-    <hr style="padding: 0 10px; height: 1px; background-color: black; margin: 10px 0px" />
-    <table style="width: 100%; border-collapse: collapse" class="print-table">
+    <hr style="padding: 0 10px; height: 1px; background-color: black; margin: 10px 0px">
+    <table
+      style="width: 100%; border-collapse: collapse"
+      class="print-table"
+    >
       <tr class="">
         <th
           v-for="(header, index) in headers"
@@ -23,7 +26,10 @@
           {{ header.title }}
         </th>
       </tr>
-      <tr v-for="(item, i) in printItem" :key="i">
+      <tr
+        v-for="(item, i) in printItem"
+        :key="i"
+      >
         <td
           v-for="(header, index) in headers"
           :key="index"
@@ -39,7 +45,11 @@
           {{ header.key == "category_name" ? item?.category?.name : "" }}
           {{ header.key == "created_b" ? item?.user?.name : "" }}
           {{ header.key == "paid_amount" ? item?.payments_sum_amount : "" }}
-          {{ header.key == "total_prices" ? item?.total_price : "" }}
+          {{
+            header.key == "total_prices"
+              ? (Number(item?.total_price) ?? 0).toFixed(2)
+              : ""
+          }}
           {{ header.key == "products_name" ? item?.product?.product_name : "" }}
           {{
             header.key == "product_name" ? item?.product_stock?.product?.product_name : ""
@@ -52,7 +62,7 @@
           {{ header.key == "sell_remainder" ? item?.remainder : "" }}
           {{
             header.key == "customer_remainders"
-              ? item?.total_amount - item?.total_paid
+              ? (item.total_amount - (item.total_paid ?? 0)).toFixed(2)
               : ""
           }}
           {{ header.key == "employee_name" ? item?.employee?.first_name : "" }}
@@ -70,9 +80,9 @@
 </template>
 
 <script setup>
-import { format } from "@/@core/utils/index";
-import logo from "@/assets/logo.svg?raw";
-import moment from "moment";
+import { format } from "@/@core/utils/index"
+import logo from "@/assets/logo.svg?raw"
+import moment from "moment"
 
 const props = defineProps({
   printItem: {
@@ -103,7 +113,7 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-});
+})
 </script>
 
 <style>

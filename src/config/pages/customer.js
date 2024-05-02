@@ -56,19 +56,16 @@ const headers= [
   //   title: 'تخلص',
   //   key: 'last_name',  
   // },
-  {
-    title: 'تیلفون شمیره',
-    key: 'phone_number',
-  },
+
 
   // {
   //   title: 'بریښنالیک',
   //   key: 'email',
   // },
-  {
-    title: 'آدرس',
-    key: 'address',
-  },
+  // {
+  //   title: 'آدرس',
+  //   key: 'address',
+  // },
   {
     title: 'د پیسو مجموعه',
     key: 'total_price',
@@ -82,6 +79,10 @@ const headers= [
   {
     title: 'پاتې',
     key: 'reminder',
+  },
+  {
+    title: 'تیلفون شمیره',
+    key: 'phone_number',
   },
   {
     title: 'تفصیل',
